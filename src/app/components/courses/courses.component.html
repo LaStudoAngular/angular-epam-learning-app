@@ -1,8 +1,20 @@
-<div>
-  <form action="#">
-    <input type="text" placeholder="text to search">
-    <button type="submit">search</button>
-  </form>
-  <button type="button">add course</button>
+<div class="ep-courses">
+  <div class="container">
+    <header class="ep-courses__header">
+      <div class="ep-courses__row">
+        <form class="ep-courses__form" action="#">
+          <input class="ep-courses__input form-control" type="text" placeholder="text to search">
+          <button class="ep-courses__submit btn" type="submit">search</button>
+        </form>
+      </div>
+      <div class="ep-courses__row ep-courses__row--right">
+        <button class="ep-courses__button btn" type="button">
+          <i class="fa fa-plus"></i>
+          add course
+        </button>
+      </div>
+    </header>
+    <ep-courses-list></ep-courses-list>
+  </div>
 </div>
-<ep-courses-list></ep-courses-list>
+
