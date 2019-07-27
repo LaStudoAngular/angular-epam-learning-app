@@ -1,0 +1,44 @@
+.ep-courses-item {
+  background-color: #fff;
+  margin-bottom: 24px;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 1px 24px 0 rgba(18, 21, 35, 0.08);
+  display: flex;
+  justify-content: space-between;
+
+  &__secondary {
+    margin-left: 90px;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  &__title {
+    font-size: 24px;
+    color: #2c2f3c;
+  }
+
+  &__button {
+    display: flex;
+    align-items: center;
+    border-radius: 3px;
+    background-color: #30b6dd;
+    color: white;
+    text-transform: capitalize;
+    font-size: 12px;
+
+    &:not(:last-child) {
+      margin-right: 12px;
+    }
+
+    & .fa {
+      margin-right: 8px;
+    }
+  }
+
+  &__content > p {
+    font-size: 14px;
+    color: #525462;
+    line-height: 1.7;
+  }
+}
