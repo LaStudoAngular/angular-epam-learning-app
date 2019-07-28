@@ -9,7 +9,6 @@ import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.compo
 import { CoursesComponent } from './components/courses/courses.component';
 import { CoursesListComponent } from './components/courses/courses-list/courses-list.component';
 import { CoursesListItemComponent } from './components/courses/courses-list/courses-list-item/courses-list-item.component';
-import { HeaderLogoComponent } from './components/header/header-logo/header-logo.component';
 
 @NgModule({
   declarations: [
@@ -20,13 +19,9 @@ import { HeaderLogoComponent } from './components/header/header-logo/header-logo
     CoursesComponent,
     CoursesListComponent,
     CoursesListItemComponent,
-    HeaderLogoComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  imports: [BrowserModule, AppRoutingModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
