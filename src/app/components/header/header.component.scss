@@ -10,9 +10,18 @@
 
   &__item {
     //
+
+    &:not(:first-child) {
+      margin-left: 25px;
+    }
   }
 
   &__link {
-    //
+    color: white;
+    font-size: 14px;
+
+    & > .fa {
+      margin-right: 6px;
+    }
   }
 }
