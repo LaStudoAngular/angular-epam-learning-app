@@ -1,5 +1,12 @@
 $soft-blue: #577ce6;
 $pale-grey: #f2f3f7;
+$sick-green: #9bc837;
+$dark-sky-blue: #30b6dd;
+
+::placeholder {
+  color: #c0c3ce;
+  font-size: 14px;
+}
 
 :host {
   display: block;
@@ -23,19 +30,45 @@ $pale-grey: #f2f3f7;
 .input {
   width: 360px;
   height: 48px;
+  padding-left: 44px;
   margin-right: 6px;
+  background-image: url('../../../assets/images/ic-search.svg');
+  background-repeat: no-repeat;
+  background-size: 24px;
+  background-position: 12px 50%;
+  color: #c0c3ce;
+  font-size: 14px;
+}
+
+.input-container {
+  display: flex;
 }
 
 .submit {
   border-radius: 3px;
-  background-color: #9bc837;
+  background-color: $sick-green;
   color: white;
   text-transform: capitalize;
+  transition: background-color .2s ease-in-out;
+
+  &:hover {
+    background-color: darken($sick-green, 10%);
+  }
 }
 
 .button {
-  background-color: #30b6dd;
+  background-color: $dark-sky-blue;
   color: white;
+  font-size: 14px;
+  transition: background-color .2s ease-in-out;
+
+  & > .fa {
+    margin-right: 12px;
+  }
+
+  &:hover {
+    background-color: darken($dark-sky-blue, 10%);
+  }
 }
 
 .more {
@@ -54,4 +87,6 @@ $pale-grey: #f2f3f7;
     color: $soft-blue;
   }
 }
+
+
 
