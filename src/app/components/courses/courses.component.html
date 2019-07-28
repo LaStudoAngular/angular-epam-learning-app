@@ -1,23 +1,21 @@
-<div class="ep-courses">
-  <div class="container">
-    <header class="ep-courses__header">
-      <div class="ep-courses__row">
-        <form class="ep-courses__form">
-          <input class="ep-courses__input form-control" type="text" placeholder="text to search">
-          <button class="ep-courses__submit btn" type="submit">search</button>
-        </form>
-      </div>
-      <div class="ep-courses__row ep-courses__row--right">
-        <button class="ep-courses__button btn" type="button">
-          <i class="fa fa-plus"></i>
-          add course
-        </button>
-      </div>
-    </header>
-    <ep-courses-list></ep-courses-list>
-    <div class="ep-courses__more">
-      <a class="ep-courses__link" href="#">load more</a>
+<div class="container">
+  <header class="header">
+    <div class="band">
+      <form class="d-flex">
+        <input class="input form-control" type="text" placeholder="text to search">
+        <button class="submit btn" type="submit">search</button>
+      </form>
     </div>
+    <div class="band band--right">
+      <button class="button btn" type="button">
+        <i class="fa fa-plus"></i>
+        add course
+      </button>
+    </div>
+  </header>
+  <ep-courses-list></ep-courses-list>
+  <div class="more">
+    <a class="more__link" href="#">load more</a>
   </div>
 </div>
 
