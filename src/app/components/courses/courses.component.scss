@@ -1,6 +1,9 @@
+$soft-blue: #577ce6;
+$pale-grey: #f2f3f7;
+
 :host {
   display: block;
-  background-color: #f2f3f7;
+  background-color: $pale-grey;
   padding: 24px 0 80px;
 }
 
@@ -46,6 +49,9 @@
     font-size: 12px;
     line-height: 1.5;
     text-transform: uppercase;
+    text-decoration: underline;
+    cursor: pointer;
+    color: $soft-blue;
   }
 }
 
