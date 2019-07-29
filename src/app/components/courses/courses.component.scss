@@ -9,7 +9,8 @@ $dark-sky-blue: #30b6dd;
 }
 
 :host {
-  display: block;
+  display: flex;
+  flex: 1;
   background-color: $pale-grey;
   padding: 24px 0 80px;
 }
