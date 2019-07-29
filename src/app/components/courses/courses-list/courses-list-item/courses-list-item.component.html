@@ -1,19 +1,19 @@
 <div class="primary">
   <header class="header d-flex justify-content-between">
-    <h3 class="title text-capitalize">video course 1. name tag</h3>
+    <h3 class="title text-capitalize">{{ course.title }}</h3>
     <ul class="meta d-flex justify-content-between align-items-end">
       <li class="item">
         <i class="fa fa-clock-o"></i>
-        <a class="item__link" href="#">1h 28 min</a>
+        <a class="item__link" href="#">{{ course.duration }}</a>
       </li>
       <li class="item">
         <i class="fa fa-calendar"></i>
-        <a class="item__link" href="#">9 Nov, 2018</a>
+        <a class="item__link" href="#">{{ course.creation_date }}</a>
       </li>
     </ul>
   </header>
   <div class="content">
-    <p>Learn about where you can find course descriptions, what information they include, how they work, and details about various components of a course description. Course descriptions report information about a university or college's classes. They're published both in course catalogs that outline degree requirements and in course schedules that contain descriptions for all courses offered during a particular semester.</p>
+    <p>{{ course.description }}</p>
   </div>
 </div>
 
