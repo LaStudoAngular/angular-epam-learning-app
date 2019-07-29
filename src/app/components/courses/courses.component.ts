@@ -22,4 +22,8 @@ export class CoursesComponent implements OnInit {
   onAdd(): void {
     console.log(`add new course`);
   }
+
+  loadMore(): void {
+    console.log(`load more courses`);
+  }
 }
