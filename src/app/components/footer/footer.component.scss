@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  background-color: #414452;
+  padding: 20px 0;
+  text-align: right;
+  font-size: 14px;
+  color: #c0c3ce;
+  line-height: 1.7;
+  font-weight: normal;
+
+  & .footer-link {
+    color: #c0c3ce;
+  }
+}
