@@ -37,9 +37,14 @@ describe('CoursesListItemComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  fit(`should emit #deleteCourse event when method #onDelete is called`, () => {
+  it(`should emit #deleteCourse event when method #onDelete is called`, () => {
     spyOn(component.deleteCourse, 'emit');
     component.onDelete(course);
     expect(component.deleteCourse.emit).toHaveBeenCalledWith(course);
+  });
+
+  fit(`should have method #onDelete`, () => {
+    const comp = new CoursesListItemComponent();
+    expect(comp.onDelete).toBeDefined();
   });
 });
