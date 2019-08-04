@@ -1,10 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoursesListItemComponent } from './courses-list-item.component';
-// import { Course } from '../../../../@interfaces/course';
+import { Course } from '../../../../@interfaces/course';
 
 describe('CoursesListItemComponent', () => {
   let component: CoursesListItemComponent;
   let fixture: ComponentFixture<CoursesListItemComponent>;
+  let course: Course;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,6 +23,13 @@ describe('CoursesListItemComponent', () => {
       creation_date: 'creation_date',
       description: 'description',
     };
+    course = {
+      id: 1,
+      title: 'title',
+      duration: 'duration',
+      creation_date: 'creation_date',
+      description: 'description',
+    };
     fixture.detectChanges();
   });
 
@@ -29,9 +37,9 @@ describe('CoursesListItemComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  fit(`should emit #deleteCourse event when the button is clicked`, () => {
+  fit(`should emit #deleteCourse event when method #onDelete is called`, () => {
     spyOn(component.deleteCourse, 'emit');
-    component.onDelete();
-    expect(component.deleteCourse.emit).toHaveBeenCalled();
+    component.onDelete(course);
+    expect(component.deleteCourse.emit).toHaveBeenCalledWith(course);
   });
 });
