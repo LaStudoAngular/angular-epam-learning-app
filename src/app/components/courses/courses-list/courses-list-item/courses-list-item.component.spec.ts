@@ -43,7 +43,7 @@ describe('CoursesListItemComponent', () => {
     expect(component.deleteCourse.emit).toHaveBeenCalledWith(course);
   });
 
-  fit(`should have method #onDelete`, () => {
+  it(`should have method #onDelete`, () => {
     const comp = new CoursesListItemComponent();
     expect(comp.onDelete).toBeDefined();
   });
