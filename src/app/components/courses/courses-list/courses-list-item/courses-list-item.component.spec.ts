@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoursesListItemComponent } from './courses-list-item.component';
+// import { Course } from '../../../../@interfaces/course';
 
 describe('CoursesListItemComponent', () => {
   let component: CoursesListItemComponent;
@@ -24,7 +25,14 @@ describe('CoursesListItemComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  fit(`should emit #deleteCourse event when the button is clicked`, () => {
+    spyOn(component.deleteCourse, 'emit');
+    const button = fixture.nativeElement.querySelector('#delete');
+    button.click();
+    expect(component.deleteCourse.emit).toHaveBeenCalled();
   });
 });
