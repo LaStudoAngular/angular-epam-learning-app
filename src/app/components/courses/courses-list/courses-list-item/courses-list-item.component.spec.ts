@@ -14,10 +14,17 @@ describe('CoursesListItemComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CoursesListItemComponent);
     component = fixture.componentInstance;
+    component.course = {
+      id: 1,
+      title: 'title',
+      duration: 'duration',
+      creation_date: 'creation_date',
+      description: 'description',
+    };
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
   });
 });
