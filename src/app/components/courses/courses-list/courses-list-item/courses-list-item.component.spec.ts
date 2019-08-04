@@ -31,8 +31,7 @@ describe('CoursesListItemComponent', () => {
 
   fit(`should emit #deleteCourse event when the button is clicked`, () => {
     spyOn(component.deleteCourse, 'emit');
-    const button = fixture.nativeElement.querySelector('#delete');
-    button.click();
+    component.onDelete();
     expect(component.deleteCourse.emit).toHaveBeenCalled();
   });
 });
