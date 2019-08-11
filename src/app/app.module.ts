@@ -12,6 +12,7 @@ import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.compo
 import { CoursesComponent } from './components/courses/courses.component';
 import { CoursesListItemComponent } from './components/courses/courses-list-item/courses-list-item.component';
 import { CreationDateDirective } from './@directives/creation-date.directive';
+import { HouresPipe } from './@pipes/houres.pipe';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { CreationDateDirective } from './@directives/creation-date.directive';
     CoursesComponent,
     CoursesListItemComponent,
     CreationDateDirective,
+    HouresPipe,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
