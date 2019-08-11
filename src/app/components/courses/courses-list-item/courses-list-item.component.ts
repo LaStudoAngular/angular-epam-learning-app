@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Course } from '../../../../@interfaces/course';
+import { Course } from '../../../@interfaces/course';
 
 @Component({
   selector: 'ep-courses-list-item',
