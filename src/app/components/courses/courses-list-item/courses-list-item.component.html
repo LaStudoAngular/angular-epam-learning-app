@@ -1,7 +1,10 @@
-<div class="wrapper" epCreationDate [creationDate]="course.creation_date">
+<div class="wrapper" [ngClass]="{'wrapper-top': course.topRated}" epCreationDate [creationDate]="course.creationDate">
   <div class="primary">
     <header class="header d-flex justify-content-between">
-      <h3 class="title text-capitalize">{{ course.title }}</h3>
+      <div class="d-flex align-items-center">
+        <h3 class="title text-capitalize mr-2">{{ course.title }}</h3>
+        <i *ngIf="course.topRated" class="fa fa-star"></i>
+      </div>
       <ul class="meta d-flex justify-content-between align-items-end">
         <li class="item">
           <i class="fa fa-clock-o"></i>
@@ -9,7 +12,7 @@
         </li>
         <li class="item">
           <i class="fa fa-calendar"></i>
-          <a class="item__link" href="#">{{ course.creation_date | date:'dd MMM yyyy' }}</a>
+          <a class="item__link" href="#">{{ course.creationDate | date:'dd MMM yyyy' }}</a>
         </li>
       </ul>
     </header>
