@@ -18,10 +18,9 @@ export class CoursesComponent implements OnInit {
   }
 
   onSearch(): void {
-    if (!this.search) {
-      return;
-    }
-    console.log(this.search);
+    this.courses = this.courseService
+      .getAllCourses()
+      .filter((el: Course) => el.title.toLowerCase().indexOf(this.search.toLowerCase()) !== -1);
   }
 
   onAdd(): void {

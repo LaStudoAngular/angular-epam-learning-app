@@ -11,7 +11,7 @@ export class CourseService {
     this.courses = [
       {
         id: 1,
-        title: 'video course 1. name tag',
+        title: 'video course 1. Angular',
         creationDate: new Date(2019, 1, 9),
         duration: 88,
         description:
@@ -20,7 +20,7 @@ export class CourseService {
       },
       {
         id: 2,
-        title: 'video course 2. name tag',
+        title: 'video course 2. Vue.js',
         creationDate: new Date(2019, 7, 10),
         duration: 148,
         description:
@@ -29,7 +29,7 @@ export class CourseService {
       },
       {
         id: 3,
-        title: 'video course 3. name tag',
+        title: 'video course 3. React.js',
         creationDate: new Date(2019, 10, 5),
         duration: 208,
         description:
