@@ -13,6 +13,7 @@ import { CoursesComponent } from './components/courses/courses.component';
 import { CoursesListItemComponent } from './components/courses/courses-list-item/courses-list-item.component';
 import { CreationDateDirective } from './@directives/creation-date.directive';
 import { HouresPipe } from './@pipes/houres.pipe';
+import { OrderByPipe } from './@pipes/order-by.pipe';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { HouresPipe } from './@pipes/houres.pipe';
     CoursesListItemComponent,
     CreationDateDirective,
     HouresPipe,
+    OrderByPipe,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],

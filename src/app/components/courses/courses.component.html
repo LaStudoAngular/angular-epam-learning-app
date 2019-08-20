@@ -2,7 +2,13 @@
   <header class="header">
     <div class="band">
       <form class="d-flex">
-        <input [(ngModel)]="search" class="input form-control" name="search" type="text" placeholder="Text to search">
+        <input
+          [(ngModel)]="search"
+          class="input form-control"
+          name="search"
+          type="text"
+          placeholder="Text to search"
+        />
         <button (click)="onSearch()" class="submit btn" type="submit">search</button>
       </form>
     </div>
@@ -17,7 +23,7 @@
     <ep-courses-list-item
       (deleteCourse)="removeCourse($event)"
       [course]="course"
-      *ngFor="let course of courses; trackBy: trackByFn"
+      *ngFor="let course of courses | orderBy; trackBy: trackByFn"
     ></ep-courses-list-item>
     <div class="more">
       <span (click)="loadMore()" class="more__link">load more</span>
@@ -25,4 +31,3 @@
   </div>
   <div class="nodata" *ngIf="courses.length === 0">no data. feel free to add new course</div>
 </div>
-
