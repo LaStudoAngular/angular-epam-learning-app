@@ -10,8 +10,14 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 import { CoursesComponent } from './components/courses/courses.component';
-import { CoursesListComponent } from './components/courses/courses-list/courses-list.component';
-import { CoursesListItemComponent } from './components/courses/courses-list/courses-list-item/courses-list-item.component';
+import { CoursesListItemComponent } from './components/courses/courses-list-item/courses-list-item.component';
+
+// DIRECTIVES
+import { CreationDateDirective } from './@directives/creation-date.directive';
+
+// PIPES
+import { HouresPipe } from './@pipes/houres.pipe';
+import { OrderByPipe } from './@pipes/order-by.pipe';
 
 @NgModule({
   declarations: [
@@ -20,8 +26,10 @@ import { CoursesListItemComponent } from './components/courses/courses-list/cour
     FooterComponent,
     BreadcrumbsComponent,
     CoursesComponent,
-    CoursesListComponent,
     CoursesListItemComponent,
+    CreationDateDirective,
+    HouresPipe,
+    OrderByPipe,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CourseService } from '../../@services/course.service';
+import { Course } from '../../@interfaces/course';
 
 @Component({
   selector: 'ep-courses',
@@ -7,16 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoursesComponent implements OnInit {
   search: string;
+  courses: Course[] = [];
 
-  constructor() {}
+  constructor(private courseService: CourseService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.courses = this.courseService.getAllCourses();
+  }
 
   onSearch(): void {
-    if (!this.search) {
-      return;
-    }
-    console.log(this.search);
+    this.courses = this.courseService
+      .getAllCourses()
+      .filter((el: Course) => el.title.toLowerCase().indexOf(this.search.toLowerCase()) !== -1);
   }
 
   onAdd(): void {
@@ -25,5 +29,13 @@ export class CoursesComponent implements OnInit {
 
   loadMore(): void {
     console.log(`load more courses`);
+  }
+
+  removeCourse(course: Course) {
+    console.log(course.id);
+  }
+
+  trackByFn(index, item): void {
+    return item ? item.id : undefined;
   }
 }

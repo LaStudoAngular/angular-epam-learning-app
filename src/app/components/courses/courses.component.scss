@@ -89,5 +89,15 @@ $dark-sky-blue: #30b6dd;
   }
 }
 
+.nodata {
+  border-radius: 6px;
+  box-shadow: 0 1px 24px 0 rgba(18, 21, 35, 0.08);
+  background-color: white;
+  text-align: center;
+  padding: 12px 0;
+  text-transform: uppercase;
+  color: #2c2f3c;
+}
+
 
 
