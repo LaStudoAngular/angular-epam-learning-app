@@ -11,10 +11,14 @@ export class CoursesListItemComponent {
   @Input() course: Course;
   constructor(private courseService: CourseService) {}
 
-  onDelete(course: Course): void {
+  onDeleteCourse(course: Course): void {
     const answer = confirm('Do you really want to delete this course? Yes/No');
     if (answer) {
       this.courseService.removeCourse(course);
     }
+  }
+
+  onEditCourse(course: Course): void {
+    this.courseService.updateCourse(course);
   }
 }

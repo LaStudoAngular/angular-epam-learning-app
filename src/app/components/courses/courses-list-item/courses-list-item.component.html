@@ -22,11 +22,11 @@
   </div>
 
   <div class="secondary d-flex align-items-center">
-    <button class="button btn">
+    <button (click)="onEditCourse(course)" class="button btn btn-warning bg-warning">
       <i class="fa fa-pencil"></i>
       edit
     </button>
-    <button id="delete" (click)="onDelete(course)" class="button btn">
+    <button id="delete" (click)="onDeleteCourse(course)" class="button btn btn-danger bg-danger">
       <i class="fa fa-trash"></i>
       delete
     </button>
