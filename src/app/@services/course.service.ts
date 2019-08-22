@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Course } from '../@interfaces/course';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -43,16 +43,37 @@ export class CourseService {
     this.stream$.next(this.courses);
   }
 
-  getAllCourses(): Observable<Course[]> {
+  public getAllCourses(): Observable<Course[]> {
     return this.source;
   }
 
-  createCourse() {
-    //
+  public createCourse(title, creationDate, duration, description): Observable<boolean> {
+    const newCourse = {
+      id: this.getID(),
+      title,
+      creationDate: new Date(creationDate),
+      duration,
+      description,
+      topRated: false,
+    };
+    this.courses.push(newCourse);
+    this.stream$.next(this.courses);
+    return of(true);
   }
 
-  removeCourse(course: Course) {
+  public removeCourse(course: Course): void {
     this.courses = this.courses.filter(el => el.id !== course.id);
     this.stream$.next(this.courses);
+  }
+
+  private getID(): number {
+    let count = 1;
+    this.courses.forEach(el => {
+      if (el.id > count) {
+        count = el.id;
+      }
+    });
+    count += 1;
+    return count;
   }
 }
