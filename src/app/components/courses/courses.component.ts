@@ -14,21 +14,17 @@ export class CoursesComponent implements OnInit {
   constructor(private courseService: CourseService) {}
 
   ngOnInit() {
-    this.courses = this.courseService.getAllCourses();
+    this.courseService.getAllCourses().subscribe((response: Course[]) => (this.courses = response));
   }
 
   onSearch(): void {
-    this.courses = this.courseService
-      .getAllCourses()
-      .filter((el: Course) => el.title.toLowerCase().indexOf(this.search.toLowerCase()) !== -1);
+    // this.courses = this.courseService
+    //   .getAllCourses()
+    //   .filter((el: Course) => el.title.toLowerCase().indexOf(this.search.toLowerCase()) !== -1);
   }
 
-  onAdd(): void {
+  onAddNewCourse(): void {
     console.log(`add new course`);
-  }
-
-  loadMore(): void {
-    console.log(`load more courses`);
   }
 
   removeCourse(course: Course) {
@@ -36,6 +32,10 @@ export class CoursesComponent implements OnInit {
     if (answer) {
       this.courseService.removeCourse(course);
     }
+  }
+
+  loadMore(): void {
+    console.log(`load more courses`);
   }
 
   trackByFn(index, item): void {
