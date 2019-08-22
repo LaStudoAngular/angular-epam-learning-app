@@ -32,7 +32,10 @@ export class CoursesComponent implements OnInit {
   }
 
   removeCourse(course: Course) {
-    console.log(course.id);
+    const answer = confirm('Do you really want to delete this course? Yes/No');
+    if (answer) {
+      this.courseService.removeCourse(course);
+    }
   }
 
   trackByFn(index, item): void {

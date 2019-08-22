@@ -42,4 +42,12 @@ export class CourseService {
   getAllCourses(): Course[] {
     return this.courses;
   }
+
+  createCourse() {
+    //
+  }
+
+  removeCourse(course: Course) {
+    this.courses = this.courses.filter(el => el.id !== course.id);
+  }
 }
