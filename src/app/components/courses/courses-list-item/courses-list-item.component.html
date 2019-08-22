@@ -26,9 +26,29 @@
       <i class="fa fa-pencil"></i>
       edit
     </button>
-    <button id="delete" (click)="onDeleteCourse(course)" class="button btn btn-danger bg-danger">
+    <button id="delete" (click)="onDeleteCourse()" class="button btn btn-danger bg-danger">
       <i class="fa fa-trash"></i>
       delete
     </button>
+  </div>
+</div>
+
+<div class="modal" [ngClass]="{'show': show}" [ngStyle]="{'display': show ? 'block' : 'none'}" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Deleting course</h5>
+        <button (click)="cancelDelete()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Do you really want to delete the course <span class="text-danger">{{ course.title | uppercase }}</span>?</p>
+      </div>
+      <div class="modal-footer">
+        <button (click)="deleteCourse(course)" type="button" class="btn btn-danger bg-danger">Yes, delete this course!</button>
+        <button (click)="cancelDelete()" type="button" class="btn btn-success bg-success" data-dismiss="modal">No, save it</button>
+      </div>
+    </div>
   </div>
 </div>

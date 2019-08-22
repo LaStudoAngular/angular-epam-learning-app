@@ -9,13 +9,19 @@ import { CourseService } from '../../../@services/course.service';
 })
 export class CoursesListItemComponent {
   @Input() course: Course;
+  show = false;
   constructor(private courseService: CourseService) {}
 
-  onDeleteCourse(course: Course): void {
-    const answer = confirm('Do you really want to delete this course? Yes/No');
-    if (answer) {
-      this.courseService.removeCourse(course);
-    }
+  onDeleteCourse(): void {
+    this.show = true;
+  }
+
+  deleteCourse(course: Course) {
+    this.courseService.removeCourse(course);
+  }
+
+  cancelDelete() {
+    this.show = false;
   }
 
   onEditCourse(course: Course): void {
