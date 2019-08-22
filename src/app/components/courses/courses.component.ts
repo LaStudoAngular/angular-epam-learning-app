@@ -48,13 +48,6 @@ export class CoursesComponent implements OnInit {
     }
   }
 
-  removeCourse(course: Course) {
-    const answer = confirm('Do you really want to delete this course? Yes/No');
-    if (answer) {
-      this.courseService.removeCourse(course);
-    }
-  }
-
   onClose(): void {
     this.show = false;
   }

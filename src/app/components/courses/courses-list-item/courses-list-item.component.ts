@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Course } from '../../../@interfaces/course';
+import { CourseService } from '../../../@services/course.service';
 
 @Component({
   selector: 'ep-courses-list-item',
@@ -8,9 +9,12 @@ import { Course } from '../../../@interfaces/course';
 })
 export class CoursesListItemComponent {
   @Input() course: Course;
-  @Output() deleteCourse = new EventEmitter<Course>();
+  constructor(private courseService: CourseService) {}
 
   onDelete(course: Course): void {
-    this.deleteCourse.emit(course);
+    const answer = confirm('Do you really want to delete this course? Yes/No');
+    if (answer) {
+      this.courseService.removeCourse(course);
+    }
   }
 }
