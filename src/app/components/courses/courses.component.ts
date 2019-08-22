@@ -10,6 +10,7 @@ import { Course } from '../../@interfaces/course';
 export class CoursesComponent implements OnInit {
   search: string;
   courses: Course[] = [];
+  show = false;
 
   constructor(private courseService: CourseService) {}
 
@@ -24,7 +25,7 @@ export class CoursesComponent implements OnInit {
   }
 
   onAddNewCourse(): void {
-    console.log(`add new course`);
+    this.show = true;
   }
 
   removeCourse(course: Course) {
@@ -32,6 +33,10 @@ export class CoursesComponent implements OnInit {
     if (answer) {
       this.courseService.removeCourse(course);
     }
+  }
+
+  onClose(): void {
+    this.show = false;
   }
 
   loadMore(): void {
