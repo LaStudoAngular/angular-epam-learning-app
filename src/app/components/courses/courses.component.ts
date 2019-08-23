@@ -57,17 +57,32 @@ export class CoursesComponent implements OnInit {
       if (this.button === 'create') {
         this.courseService
           .editCourse(title, creationDate, duration, description, 'create')
-          .subscribe(response => (this.show = false), error => console.log(error));
+          .subscribe(
+            response => {
+              this.show = false;
+              this.course = null;
+            },
+            error => console.log(error),
+          );
       } else {
         this.courseService
           .editCourse(title, creationDate, duration, description, 'edit', this.course.id)
-          .subscribe(response => (this.show = false), error => console.log(error));
+          .subscribe(
+            response => {
+              this.show = false;
+              this.button = 'create';
+              this.course = null;
+            },
+            error => console.log(error),
+          );
       }
     }
   }
 
   onClose(): void {
     this.show = false;
+    this.button = 'create';
+    this.course = null;
   }
 
   loadMore(): void {

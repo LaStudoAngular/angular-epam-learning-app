@@ -80,11 +80,6 @@ export class CourseService {
     return of(true);
   }
 
-  public updateCourse(course: Course) {
-    console.log(course);
-    //
-  }
-
   public removeCourse(course: Course): void {
     this.courses = this.courses.filter(el => el.id !== course.id);
     this.stream$.next(this.courses);

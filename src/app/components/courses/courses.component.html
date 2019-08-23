@@ -63,7 +63,7 @@
         </div>
         <div class="modal-footer">
           <button (click)="onClose()" type="button" class="btn btn-secondary text-capitalize" data-dismiss="modal">cancel</button>
-          <button type="submit" class="btn btn-primary text-capitalize" (click)="submit.click()">{{ button }} course</button>
+          <button type="submit" class="btn btn-primary text-capitalize" [ngClass]="{'btn-success': button === 'edit'}" (click)="submit.click()">{{ button }} course</button>
         </div>
       </div>
     </div>
