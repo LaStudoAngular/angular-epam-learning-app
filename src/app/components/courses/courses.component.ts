@@ -11,8 +11,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class CoursesComponent implements OnInit {
   search: string;
   courses: Course[] = [];
+  course: Course;
   show = false;
   form: FormGroup;
+  button = 'create';
 
   constructor(private courseService: CourseService, private fb: FormBuilder) {}
 
@@ -32,7 +34,17 @@ export class CoursesComponent implements OnInit {
     //   .filter((el: Course) => el.title.toLowerCase().indexOf(this.search.toLowerCase()) !== -1);
   }
 
-  onAddNewCourse(): void {
+  onAddNewCourse(course?: Course): void {
+    if (course) {
+      this.course = course;
+      this.form.patchValue({
+        title: this.course.title,
+        creationDate: this.formatDate(this.course.creationDate),
+        duration: this.course.duration,
+        description: this.course.description,
+      });
+      this.button = 'edit';
+    }
     this.show = true;
   }
 
@@ -42,9 +54,15 @@ export class CoursesComponent implements OnInit {
       const creationDate: Date = this.form.get('creationDate').value;
       const duration: number = this.form.get('duration').value;
       const description: string = this.form.get('description').value;
-      this.courseService
-        .createCourse(title, creationDate, duration, description)
-        .subscribe(response => (this.show = false), error => console.log(error));
+      if (this.button === 'create') {
+        this.courseService
+          .editCourse(title, creationDate, duration, description, 'create')
+          .subscribe(response => (this.show = false), error => console.log(error));
+      } else {
+        this.courseService
+          .editCourse(title, creationDate, duration, description, 'edit', this.course.id)
+          .subscribe(response => (this.show = false), error => console.log(error));
+      }
     }
   }
 
@@ -58,5 +76,22 @@ export class CoursesComponent implements OnInit {
 
   trackByFn(index, item): void {
     return item ? item.id : undefined;
+  }
+
+  private formatDate(date) {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+
+    if (month.length < 2) {
+      month = '0' + month;
+    }
+
+    if (day.length < 2) {
+      day = '0' + day;
+    }
+
+    return [year, month, day].join('-');
   }
 }

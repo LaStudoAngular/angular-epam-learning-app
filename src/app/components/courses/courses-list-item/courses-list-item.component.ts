@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Course } from '../../../@interfaces/course';
 import { CourseService } from '../../../@services/course.service';
 
@@ -9,7 +9,9 @@ import { CourseService } from '../../../@services/course.service';
 })
 export class CoursesListItemComponent {
   @Input() course: Course;
+  @Output() editCourse = new EventEmitter<Course>();
   show = false;
+
   constructor(private courseService: CourseService) {}
 
   onDeleteCourse(): void {
@@ -25,6 +27,6 @@ export class CoursesListItemComponent {
   }
 
   onEditCourse(course: Course): void {
-    this.courseService.updateCourse(course);
+    this.editCourse.emit(course);
   }
 }

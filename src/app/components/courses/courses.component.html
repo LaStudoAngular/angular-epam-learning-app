@@ -22,6 +22,7 @@
   <div *ngIf="courses.length > 0">
     <ep-courses-list-item
       [course]="course"
+      (editCourse)="onAddNewCourse($event)"
       *ngFor="let course of courses | orderBy; trackBy: trackByFn"
     ></ep-courses-list-item>
     <div class="more">
@@ -62,7 +63,7 @@
         </div>
         <div class="modal-footer">
           <button (click)="onClose()" type="button" class="btn btn-secondary text-capitalize" data-dismiss="modal">cancel</button>
-          <button type="submit" class="btn btn-primary text-capitalize" (click)="submit.click()">create course</button>
+          <button type="submit" class="btn btn-primary text-capitalize" (click)="submit.click()">{{ button }} course</button>
         </div>
       </div>
     </div>

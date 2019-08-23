@@ -47,16 +47,35 @@ export class CourseService {
     return this.source;
   }
 
-  public createCourse(title, creationDate, duration, description): Observable<boolean> {
-    const newCourse = {
-      id: this.getID(),
-      title,
-      creationDate: new Date(creationDate),
-      duration,
-      description,
-      topRated: false,
-    };
-    this.courses.push(newCourse);
+  public editCourse(
+    title,
+    creationDate,
+    duration,
+    description,
+    flag: 'create' | 'edit',
+    id?,
+  ): Observable<boolean> {
+    if (flag === 'create') {
+      const newCourse = {
+        id: this.getID(),
+        title,
+        creationDate: new Date(creationDate),
+        duration,
+        description,
+        topRated: false,
+      };
+      this.courses.push(newCourse);
+    } else {
+      this.courses = this.courses.map((course: Course) => {
+        if (course.id === id) {
+          course.title = title;
+          course.creationDate = creationDate;
+          course.duration = duration;
+          course.description = description;
+        }
+        return course;
+      });
+    }
     this.stream$.next(this.courses);
     return of(true);
   }
