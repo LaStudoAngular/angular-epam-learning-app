@@ -77,12 +77,14 @@ export class CoursesComponent implements OnInit {
           );
       }
     }
+    this.form.reset();
   }
 
   onClose(): void {
     this.show = false;
     this.button = 'create';
     this.course = null;
+    this.form.reset();
   }
 
   loadMore(): void {
