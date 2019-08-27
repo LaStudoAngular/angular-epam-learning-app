@@ -9,7 +9,7 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('./components/login/login.module').then(mod => mod.LoginModule),
   },
-  { path: '', redirectTo: '/courses', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
 @NgModule({

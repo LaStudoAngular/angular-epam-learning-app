@@ -14,10 +14,6 @@ export class HeaderComponent implements OnInit {
     this.authService.isAuthSource.subscribe((response: boolean) => (this.isAuth = response));
   }
 
-  onLogIn(): void {
-    this.authService.login();
-  }
-
   onLogOut(): void {
     this.authService.logout();
   }
