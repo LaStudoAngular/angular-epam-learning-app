@@ -18,6 +18,7 @@ import { CreationDateDirective } from './@directives/creation-date.directive';
 // PIPES
 import { HouresPipe } from './@pipes/houres.pipe';
 import { OrderByPipe } from './@pipes/order-by.pipe';
+import { LoginModule } from './components/login/login.module';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { OrderByPipe } from './@pipes/order-by.pipe';
     HouresPipe,
     OrderByPipe,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, LoginModule],
   providers: [],
   bootstrap: [AppComponent],
 })
