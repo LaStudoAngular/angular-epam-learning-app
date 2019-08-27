@@ -9,9 +9,10 @@ import { AuthService } from '../../@services/auth.service';
 export class BreadcrumbsComponent implements OnInit {
   @HostBinding() readonly class = 'container';
   isAuth: boolean;
+
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.authService.getIsAuth().subscribe((response: boolean) => (this.isAuth = response));
+    this.authService.isAuthSource.subscribe((response: boolean) => (this.isAuth = response));
   }
 }

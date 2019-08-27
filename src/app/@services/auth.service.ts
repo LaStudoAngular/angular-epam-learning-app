@@ -1,26 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   isAuthenticated = false;
+  isAuth$ = new BehaviorSubject<boolean>(true);
+  isAuthSource = this.isAuth$.asObservable();
 
   constructor(private router: Router) {}
 
-  public login(email: string, password: string): void {
+  public login(email?: string, password?: string): void {
     this.isAuthenticated = true;
+    this.isAuth$.next(false);
+    this.router.navigate(['login']);
     localStorage.setItem('user', JSON.stringify({ email, password }));
     console.log(`logged in successfully`);
   }
 
   public logout(): void {
     this.isAuthenticated = false;
-    window.localStorage.removeItem('user');
+    this.isAuth$.next(true);
     this.router.navigate(['courses']);
-    console.log(`user logout`);
+    window.localStorage.removeItem('user');
   }
 
   public getUserInfo(): { email: string; password: string } {
@@ -28,9 +32,5 @@ export class AuthService {
     if (loginUser) {
       return loginUser;
     }
-  }
-
-  public getIsAuth(): Observable<boolean> {
-    return of(this.isAuthenticated);
   }
 }
