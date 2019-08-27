@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../@services/auth.service';
 
 @Component({
   selector: 'ep-header',
@@ -6,7 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  constructor() {}
+  isAuth: boolean;
+  constructor(private authService: AuthService) {}
 
-  ngOnInit() {}
+  ngOnInit(): void {
+    this.isAuth = this.authService.getIsAuth();
+  }
+
+  onLogOut(): void {
+    this.authService.logout();
+  }
 }

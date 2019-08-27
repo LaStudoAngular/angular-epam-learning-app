@@ -3,14 +3,14 @@
     <img src="../../../assets/images/logo.png" width="137" alt="video courses">
   </a>
   <ul class="list d-flex">
-    <li class="list__item">
+    <li *ngIf="!isAuth" class="list__item">
       <a class="list__link" [routerLink]="['/login']">
         <i class="fa fa-user"></i>
         User login
       </a>
     </li>
     <li class="list__item">
-      <a class="list__link" [routerLink]="['/logout']">
+      <a (click)="onLogOut()" class="list__link" style="cursor: pointer; color: white">
         <i class="fa fa-sign-out"></i>
         Log off
       </a>

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { User } from '../@interfaces/user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor() {}
-  isAuthenticated = false;
+  private isAuthenticated = false;
+
+  constructor(private router: Router) {}
 
   public login(email: string, password: string): void {
     this.isAuthenticated = true;
@@ -17,6 +18,7 @@ export class AuthService {
   public logout(): void {
     this.isAuthenticated = false;
     window.localStorage.removeItem('user');
+    this.router.navigate(['courses']);
     console.log(`user logout`);
   }
 
@@ -25,5 +27,9 @@ export class AuthService {
     if (loginUser) {
       return loginUser;
     }
+  }
+
+  public getIsAuth(): boolean {
+    return this.isAuthenticated;
   }
 }

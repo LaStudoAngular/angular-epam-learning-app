@@ -1,4 +1,5 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
+import { AuthService } from '../../@services/auth.service';
 
 @Component({
   selector: 'ep-breadcrumbs',
@@ -7,8 +8,10 @@ import { Component, HostBinding, OnInit } from '@angular/core';
 })
 export class BreadcrumbsComponent implements OnInit {
   @HostBinding() readonly class = 'container';
+  isAuth: boolean;
+  constructor(private authService: AuthService) {}
 
-  constructor() {}
-
-  ngOnInit() {}
+  ngOnInit(): void {
+    this.isAuth = this.authService.getIsAuth();
+  }
 }
