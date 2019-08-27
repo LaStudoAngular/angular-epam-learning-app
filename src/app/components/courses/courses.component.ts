@@ -28,12 +28,6 @@ export class CoursesComponent implements OnInit {
     });
   }
 
-  onSearch(): void {
-    // this.courses = this.courseService
-    //   .getAllCourses()
-    //   .filter((el: Course) => el.title.toLowerCase().indexOf(this.search.toLowerCase()) !== -1);
-  }
-
   onAddNewCourse(course?: Course): void {
     if (course) {
       this.course = course;
