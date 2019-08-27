@@ -15,7 +15,7 @@ export class AuthService {
   public login(email?: string, password?: string): void {
     this.isAuthenticated = true;
     this.isAuth$.next(false);
-    this.router.navigate(['login']);
+    this.router.navigate(['courses']);
     localStorage.setItem('user', JSON.stringify({ email, password }));
     console.log(`logged in successfully`);
   }
@@ -23,7 +23,7 @@ export class AuthService {
   public logout(): void {
     this.isAuthenticated = false;
     this.isAuth$.next(true);
-    this.router.navigate(['courses']);
+    this.router.navigate(['login']);
     window.localStorage.removeItem('user');
   }
 
