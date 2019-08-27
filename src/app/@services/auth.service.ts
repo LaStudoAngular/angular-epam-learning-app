@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private isAuthenticated = false;
+  isAuthenticated = false;
 
   constructor(private router: Router) {}
 
@@ -29,7 +30,7 @@ export class AuthService {
     }
   }
 
-  public getIsAuth(): boolean {
-    return this.isAuthenticated;
+  public getIsAuth(): Observable<boolean> {
+    return of(this.isAuthenticated);
   }
 }
