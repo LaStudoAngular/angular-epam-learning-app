@@ -1,7 +1,7 @@
 // MODULES
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 
 // COMPONENTS
@@ -18,6 +18,8 @@ import { CreationDateDirective } from './@directives/creation-date.directive';
 // PIPES
 import { HouresPipe } from './@pipes/houres.pipe';
 import { OrderByPipe } from './@pipes/order-by.pipe';
+import { LoginModule } from './components/login/login.module';
+import { SearchByPipe } from './@pipes/search-by.pipe';
 
 @NgModule({
   declarations: [
@@ -30,8 +32,9 @@ import { OrderByPipe } from './@pipes/order-by.pipe';
     CreationDateDirective,
     HouresPipe,
     OrderByPipe,
+    SearchByPipe,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, LoginModule],
   providers: [],
   bootstrap: [AppComponent],
 })

@@ -9,11 +9,11 @@
           type="text"
           placeholder="Text to search"
         />
-        <button (click)="onSearch()" class="submit btn" type="submit">search</button>
+        <button class="submit btn" type="submit">search</button>
       </form>
     </div>
     <div class="band band--right">
-      <button (click)="onAdd()" class="button btn" type="button">
+      <button (click)="onAddNewCourse()" class="button btn" type="button">
         <i class="fa fa-plus"></i>
         Add course
       </button>
@@ -21,13 +21,51 @@
   </header>
   <div *ngIf="courses.length > 0">
     <ep-courses-list-item
-      (deleteCourse)="removeCourse($event)"
       [course]="course"
-      *ngFor="let course of courses | orderBy; trackBy: trackByFn"
+      (editCourse)="onAddNewCourse($event)"
+      *ngFor="let course of courses | orderBy | searchBy: search; trackBy: trackByFn"
     ></ep-courses-list-item>
     <div class="more">
       <span (click)="loadMore()" class="more__link">load more</span>
     </div>
   </div>
   <div class="nodata" *ngIf="courses.length === 0">no data. feel free to add new course</div>
+  <!--  modal-->
+  <div class="modal fade" [ngClass]="{'show': show}" [ngStyle]="{'display': show ? 'block' : 'none'}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-capitalize">add new course</h5>
+          <button (click)="onClose()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label class="text-capitalize" for="title">title course</label>
+              <input formControlName="title" type="text" class="form-control" id="title" placeholder="add title of course">
+            </div>
+            <div class="form-group">
+              <label class="text-capitalize" for="creationDate">date of creation</label>
+              <input formControlName="creationDate" type="date" class="form-control" id="creationDate" placeholder="add date of creation">
+            </div>
+            <div class="form-group">
+              <label class="text-capitalize" for="duration">duration of course</label>
+              <input formControlName="duration" type="number" class="form-control" id="duration" placeholder="add duration of course">
+            </div>
+            <div class="form-group">
+              <label class="text-capitalize" for="description">description of course</label>
+              <textarea formControlName="description" type="text" class="form-control" id="description" rows="3" placeholder="add description of course"></textarea>
+            </div>
+            <button hidden #submit type="submit"></button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button (click)="onClose()" type="button" class="btn btn-secondary text-capitalize" data-dismiss="modal">cancel</button>
+          <button type="submit" class="btn btn-primary text-capitalize" [ngClass]="{'btn-success': button === 'edit'}" (click)="submit.click()">{{ button }} course</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Course } from '../../../@interfaces/course';
+import { CourseService } from '../../../@services/course.service';
 
 @Component({
   selector: 'ep-courses-list-item',
@@ -8,9 +9,24 @@ import { Course } from '../../../@interfaces/course';
 })
 export class CoursesListItemComponent {
   @Input() course: Course;
-  @Output() deleteCourse = new EventEmitter<Course>();
+  @Output() editCourse = new EventEmitter<Course>();
+  show = false;
 
-  onDelete(course: Course): void {
-    this.deleteCourse.emit(course);
+  constructor(private courseService: CourseService) {}
+
+  onDeleteCourse(): void {
+    this.show = true;
+  }
+
+  deleteCourse(course: Course) {
+    this.courseService.removeCourse(course);
+  }
+
+  cancelDelete() {
+    this.show = false;
+  }
+
+  onEditCourse(course: Course): void {
+    this.editCourse.emit(course);
   }
 }
