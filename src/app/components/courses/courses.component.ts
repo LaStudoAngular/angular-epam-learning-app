@@ -27,6 +27,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
       creationDate: [null, Validators.required],
       duration: [null, Validators.required],
       description: [null, Validators.required],
+      authors: [null, [Validators.required]],
     });
   }
 
@@ -38,6 +39,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
         creationDate: this.formatDate(this.course.creationDate),
         duration: this.course.duration,
         description: this.course.description,
+        authors: this.course.authors,
       });
       this.button = 'edit';
     }
@@ -46,32 +48,22 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   private onSubmit() {
     if (this.form.valid) {
-      const { title, creationDate, duration, description } = this.form.value;
+      const { title, creationDate, duration, description, authors } = this.form.value;
       if (this.button === 'create') {
-        this.courseService.createCourse(title, creationDate, duration, description).subscribe(() => {
-          // this.show = false;
-          // this.course = null;
-          takeUntil(this.destroyedSource);
-        });
+        this.courseService
+          .createCourse(title, creationDate, duration, description, authors)
+          .subscribe(() => {
+            takeUntil(this.destroyedSource);
+          });
       } else {
         this.courseService
-          .editCourse(title, creationDate, duration, description, this.course.id)
-          .subscribe(
-            () => {
-              // this.show = false;
-              this.button = 'create';
-              // this.course = null;
-              takeUntil(this.destroyedSource);
-            },
-            error => console.log(error), // TODO: rewrite error handler
-          );
+          .editCourse(title, creationDate, duration, description, this.course.id, authors)
+          .subscribe(() => {
+            takeUntil(this.destroyedSource);
+          });
       }
-      //
-      this.show = false;
-      this.course = null;
-      //
+      this.onClose();
     }
-    this.form.reset();
   }
 
   private onClose(): void {

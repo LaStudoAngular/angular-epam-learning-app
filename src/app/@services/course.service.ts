@@ -20,6 +20,7 @@ export class CourseService {
         description:
           "Learn about where you can find course descriptions, what information they include, how they work, and details about various components of a course description.Course descriptions report information about a university or college's classes. They're published both in course catalogs that outline degree requirements and in course schedules that contain descriptions for all courses offered during a particular semester.",
         topRated: false,
+        authors: ['john papa'],
       },
       {
         id: 2,
@@ -29,6 +30,7 @@ export class CourseService {
         description:
           "Learn about where you can find course descriptions, what information they include, how they work, and details about various components of a course description. Course descriptions report information about a university or college's classes. They're published both in course catalogs that outline degree requirements and in course schedules that contain descriptions for all courses offered during a particular semester.",
         topRated: true,
+        authors: ['john papa'],
       },
       {
         id: 3,
@@ -38,16 +40,13 @@ export class CourseService {
         description:
           "Learn about where you can find course descriptions, what information they include, how they work, and details about various components of a course description. Course descriptions report information about a university or college's classes. They're published both in course catalogs that outline degree requirements and in course schedules that contain descriptions for all courses offered during a particular semester.",
         topRated: false,
+        authors: ['john papa', 'mary dotson'],
       },
     ];
     this.stream$.next(this.courses);
   }
 
-  // public getAllCourses(): Observable<Course[]> {
-  //   return this.source;
-  // }
-
-  public createCourse(title, creationDate, duration, description): Observable<boolean> {
+  public createCourse(title, creationDate, duration, description, authors): Observable<boolean> {
     const newCourse = {
       id: this.setID(),
       title,
@@ -55,13 +54,14 @@ export class CourseService {
       duration,
       description,
       topRated: false,
+      authors: authors.split(','),
     };
     this.courses.push(newCourse);
     this.stream$.next(this.courses);
     return of(true);
   }
 
-  public editCourse(title, creationDate, duration, description, id): Observable<boolean> {
+  public editCourse(title, creationDate, duration, description, id, authors): Observable<boolean> {
     this.courses = [...this.courses].map((course: Course) => {
       if (course.id === id) {
         return {
@@ -70,7 +70,8 @@ export class CourseService {
           creationDate,
           duration,
           description,
-          topRated: course.topRated
+          topRated: course.topRated,
+          authors: authors.split(','),
         };
       }
       return course;
