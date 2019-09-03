@@ -1,20 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CourseService } from '../../@services/course.service';
 import { Course } from '../../@interfaces/course';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReplaySubject } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'ep-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss'],
 })
-export class CoursesComponent implements OnInit {
+export class CoursesComponent implements OnInit, OnDestroy {
   search: string;
   courses: Course[] = [];
   course: Course;
   show = false;
   form: FormGroup;
   button = 'create';
+  private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
   constructor(private courseService: CourseService, private fb: FormBuilder) {}
 
@@ -44,6 +47,7 @@ export class CoursesComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
+      // TODO: maybe use destructuring
       const title: string = this.form.get('title').value;
       const creationDate: Date = this.form.get('creationDate').value;
       const duration: number = this.form.get('duration').value;
@@ -52,10 +56,10 @@ export class CoursesComponent implements OnInit {
         this.courseService
           .editCourse(title, creationDate, duration, description, 'create')
           .subscribe(
-            response => {
+            () => {
               this.show = false;
               this.course = null;
-              // TODO: add unsubscribe
+              takeUntil(this.destroyedSource);
             },
             error => console.log(error), // TODO: rewrite error handler
           );
@@ -63,11 +67,11 @@ export class CoursesComponent implements OnInit {
         this.courseService
           .editCourse(title, creationDate, duration, description, 'edit', this.course.id)
           .subscribe(
-            response => {
+            () => {
               this.show = false;
               this.button = 'create';
               this.course = null;
-              // TODO: add unsubscribe
+              takeUntil(this.destroyedSource);
             },
             error => console.log(error), // TODO: rewrite error handler
           );
@@ -76,14 +80,14 @@ export class CoursesComponent implements OnInit {
     this.form.reset();
   }
 
-  onClose(): void {
+  private onClose(): void {
     this.show = false;
     this.button = 'create';
     this.course = null;
     this.form.reset();
   }
 
-  loadMore(): void {
+  private loadMore(): void {
     console.log(`load more courses`);
   }
 
@@ -91,20 +95,22 @@ export class CoursesComponent implements OnInit {
     return item ? item.id : undefined;
   }
 
+  ngOnDestroy(): void {
+    this.destroyedSource.next(true);
+    this.destroyedSource.complete();
+  }
+
   private formatDate(date) {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
     let day = '' + d.getDate();
     const year = d.getFullYear();
-
     if (month.length < 2) {
       month = '0' + month;
     }
-
     if (day.length < 2) {
       day = '0' + day;
     }
-
     return [year, month, day].join('-');
   }
 }
