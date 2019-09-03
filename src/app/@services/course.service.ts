@@ -56,22 +56,25 @@ export class CourseService {
       description,
       topRated: false,
     };
-    this.courses.push(newCourse); // ? зачем оно здесь?
+    this.courses.push(newCourse);
     this.stream$.next(this.courses);
     return of(true);
   }
 
   public editCourse(title, creationDate, duration, description, id): Observable<boolean> {
-    this.courses = this.courses.map((course: Course) => {
+    this.courses = [...this.courses].map((course: Course) => {
       if (course.id === id) {
-        course.title = title;
-        course.creationDate = creationDate;
-        course.duration = duration;
-        course.description = description;
+        return {
+          id,
+          title,
+          creationDate,
+          duration,
+          description,
+          topRated: course.topRated
+        };
       }
       return course;
     });
-    console.log(this.courses);
     this.stream$.next(this.courses);
     return of(true);
   }
