@@ -43,39 +43,35 @@ export class CourseService {
     this.stream$.next(this.courses);
   }
 
-  public getAllCourses(): Observable<Course[]> {
-    return this.source;
+  // public getAllCourses(): Observable<Course[]> {
+  //   return this.source;
+  // }
+
+  public createCourse(title, creationDate, duration, description): Observable<boolean> {
+    const newCourse = {
+      id: this.setID(),
+      title,
+      creationDate: new Date(creationDate),
+      duration,
+      description,
+      topRated: false,
+    };
+    this.courses.push(newCourse); // ? зачем оно здесь?
+    this.stream$.next(this.courses);
+    return of(true);
   }
 
-  public editCourse(
-    title,
-    creationDate,
-    duration,
-    description,
-    flag: 'create' | 'edit',
-    id?,
-  ): Observable<boolean> {
-    if (flag === 'create') {
-      const newCourse = {
-        id: this.getID(),
-        title,
-        creationDate: new Date(creationDate),
-        duration,
-        description,
-        topRated: false,
-      };
-      this.courses.push(newCourse);
-    } else {
-      this.courses = this.courses.map((course: Course) => {
-        if (course.id === id) {
-          course.title = title;
-          course.creationDate = creationDate;
-          course.duration = duration;
-          course.description = description;
-        }
-        return course;
-      });
-    }
+  public editCourse(title, creationDate, duration, description, id): Observable<boolean> {
+    this.courses = this.courses.map((course: Course) => {
+      if (course.id === id) {
+        course.title = title;
+        course.creationDate = creationDate;
+        course.duration = duration;
+        course.description = description;
+      }
+      return course;
+    });
+    console.log(this.courses);
     this.stream$.next(this.courses);
     return of(true);
   }
@@ -85,7 +81,7 @@ export class CourseService {
     this.stream$.next(this.courses);
   }
 
-  private getID(): number {
+  private setID(): number {
     let count = 1;
     this.courses.forEach(el => {
       if (el.id > count) {

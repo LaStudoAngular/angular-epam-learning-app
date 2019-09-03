@@ -18,11 +18,10 @@ export class CoursesComponent implements OnInit, OnDestroy {
   form: FormGroup;
   button = 'create';
   private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
-
   constructor(private courseService: CourseService, private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.courseService.getAllCourses().subscribe((response: Course[]) => (this.courses = response));
+    this.courseService.source.subscribe((response: Course[]) => (this.courses = response));
     this.form = this.fb.group({
       title: [null, Validators.required],
       creationDate: [null, Validators.required],
@@ -45,33 +44,32 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.show = true;
   }
 
-  onSubmit() {
+  private onSubmit() {
     if (this.form.valid) {
       const { title, creationDate, duration, description } = this.form.value;
       if (this.button === 'create') {
-        this.courseService
-          .editCourse(title, creationDate, duration, description, 'create')
-          .subscribe(
-            () => {
-              this.show = false;
-              this.course = null;
-              takeUntil(this.destroyedSource);
-            },
-            error => console.log(error), // TODO: rewrite error handler
-          );
+        this.courseService.createCourse(title, creationDate, duration, description).subscribe(() => {
+          // this.show = false;
+          // this.course = null;
+          takeUntil(this.destroyedSource);
+        });
       } else {
         this.courseService
-          .editCourse(title, creationDate, duration, description, 'edit', this.course.id)
+          .editCourse(title, creationDate, duration, description, this.course.id)
           .subscribe(
             () => {
-              this.show = false;
+              // this.show = false;
               this.button = 'create';
-              this.course = null;
+              // this.course = null;
               takeUntil(this.destroyedSource);
             },
             error => console.log(error), // TODO: rewrite error handler
           );
       }
+      //
+      this.show = false;
+      this.course = null;
+      //
     }
     this.form.reset();
   }
