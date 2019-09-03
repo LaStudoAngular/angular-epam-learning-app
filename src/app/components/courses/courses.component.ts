@@ -55,8 +55,9 @@ export class CoursesComponent implements OnInit {
             response => {
               this.show = false;
               this.course = null;
+              // TODO: add unsubscribe
             },
-            error => console.log(error),
+            error => console.log(error), // TODO: rewrite error handler
           );
       } else {
         this.courseService
@@ -66,8 +67,9 @@ export class CoursesComponent implements OnInit {
               this.show = false;
               this.button = 'create';
               this.course = null;
+              // TODO: add unsubscribe
             },
-            error => console.log(error),
+            error => console.log(error), // TODO: rewrite error handler
           );
       }
     }
