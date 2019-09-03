@@ -9,7 +9,7 @@ import { AuthService } from '../../@services/auth.service';
 export class BreadcrumbsComponent implements OnInit {
   @HostBinding() readonly class = 'container';
 
-  constructor(private authService: AuthService) {}
+  constructor(public authService: AuthService) {}
 
   ngOnInit(): void {}
 }

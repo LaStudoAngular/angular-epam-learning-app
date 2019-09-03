@@ -71,7 +71,7 @@ export class CourseService {
           duration,
           description,
           topRated: course.topRated,
-          authors: authors.split(','),
+          authors: Array.isArray(authors) ? authors : authors.split(','),
         };
       }
       return course;

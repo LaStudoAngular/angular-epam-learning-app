@@ -46,7 +46,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.show = true;
   }
 
-  private onSubmit() {
+  public onSubmit() {
     if (this.form.valid) {
       const { title, creationDate, duration, description, authors } = this.form.value;
       if (this.button === 'create') {
@@ -66,14 +66,14 @@ export class CoursesComponent implements OnInit, OnDestroy {
     }
   }
 
-  private onClose(): void {
+  public onClose(): void {
     this.show = false;
     this.button = 'create';
     this.course = null;
     this.form.reset();
   }
 
-  private loadMore(): void {
+  public loadMore(): void {
     console.log(`load more courses`);
   }
 
@@ -86,7 +86,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.destroyedSource.complete();
   }
 
-  private formatDate(date) {
+  public formatDate(date) {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
     let day = '' + d.getDate();
