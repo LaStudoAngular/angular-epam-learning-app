@@ -47,11 +47,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.valid) {
-      // TODO: maybe use destructuring
-      const title: string = this.form.get('title').value;
-      const creationDate: Date = this.form.get('creationDate').value;
-      const duration: number = this.form.get('duration').value;
-      const description: string = this.form.get('description').value;
+      const { title, creationDate, duration, description } = this.form.value;
       if (this.button === 'create') {
         this.courseService
           .editCourse(title, creationDate, duration, description, 'create')
