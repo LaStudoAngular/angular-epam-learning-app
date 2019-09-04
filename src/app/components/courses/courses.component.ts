@@ -1,30 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CourseService } from '../../@services/course.service';
 import { Course } from '../../@interfaces/course';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReplaySubject } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'ep-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss'],
 })
-export class CoursesComponent implements OnInit {
+export class CoursesComponent implements OnInit, OnDestroy {
   search: string;
   courses: Course[] = [];
   course: Course;
   show = false;
   form: FormGroup;
   button = 'create';
-
+  private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   constructor(private courseService: CourseService, private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.courseService.getAllCourses().subscribe((response: Course[]) => (this.courses = response));
+    this.courseService.source.subscribe((response: Course[]) => (this.courses = response));
     this.form = this.fb.group({
       title: [null, Validators.required],
       creationDate: [null, Validators.required],
       duration: [null, Validators.required],
       description: [null, Validators.required],
+      authors: [null, [Validators.required]],
     });
   }
 
@@ -36,52 +39,41 @@ export class CoursesComponent implements OnInit {
         creationDate: this.formatDate(this.course.creationDate),
         duration: this.course.duration,
         description: this.course.description,
+        authors: this.course.authors,
       });
       this.button = 'edit';
     }
     this.show = true;
   }
 
-  onSubmit() {
+  public onSubmit() {
     if (this.form.valid) {
-      const title: string = this.form.get('title').value;
-      const creationDate: Date = this.form.get('creationDate').value;
-      const duration: number = this.form.get('duration').value;
-      const description: string = this.form.get('description').value;
+      const { title, creationDate, duration, description, authors } = this.form.value;
       if (this.button === 'create') {
         this.courseService
-          .editCourse(title, creationDate, duration, description, 'create')
-          .subscribe(
-            response => {
-              this.show = false;
-              this.course = null;
-            },
-            error => console.log(error),
-          );
+          .createCourse(title, creationDate, duration, description, authors)
+          .subscribe(() => {
+            takeUntil(this.destroyedSource);
+          });
       } else {
         this.courseService
-          .editCourse(title, creationDate, duration, description, 'edit', this.course.id)
-          .subscribe(
-            response => {
-              this.show = false;
-              this.button = 'create';
-              this.course = null;
-            },
-            error => console.log(error),
-          );
+          .editCourse(title, creationDate, duration, description, this.course.id, authors)
+          .subscribe(() => {
+            takeUntil(this.destroyedSource);
+          });
       }
+      this.onClose();
     }
-    this.form.reset();
   }
 
-  onClose(): void {
+  public onClose(): void {
     this.show = false;
     this.button = 'create';
     this.course = null;
     this.form.reset();
   }
 
-  loadMore(): void {
+  public loadMore(): void {
     console.log(`load more courses`);
   }
 
@@ -89,20 +81,22 @@ export class CoursesComponent implements OnInit {
     return item ? item.id : undefined;
   }
 
-  private formatDate(date) {
+  ngOnDestroy(): void {
+    this.destroyedSource.next(true);
+    this.destroyedSource.complete();
+  }
+
+  public formatDate(date) {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
     let day = '' + d.getDate();
     const year = d.getFullYear();
-
     if (month.length < 2) {
       month = '0' + month;
     }
-
     if (day.length < 2) {
       day = '0' + day;
     }
-
     return [year, month, day].join('-');
   }
 }

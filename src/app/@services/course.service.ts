@@ -18,8 +18,12 @@ export class CourseService {
         creationDate: new Date(2019, 1, 9),
         duration: 88,
         description:
-          "Learn about where you can find course descriptions, what information they include, how they work, and details about various components of a course description.Course descriptions report information about a university or college's classes. They're published both in course catalogs that outline degree requirements and in course schedules that contain descriptions for all courses offered during a particular semester.",
+          'Learn about where you can find course descriptions, what information they include, how they work, ' +
+          'and details about various components of a course description.Course descriptions report information about ' +
+          'a university or college\'s classes. They\'re published both in course catalogs that outline degree requirements ' +
+          'and in course schedules that contain descriptions for all courses offered during a particular semester.',
         topRated: false,
+        authors: ['john papa'],
       },
       {
         id: 2,
@@ -27,8 +31,12 @@ export class CourseService {
         creationDate: new Date(2019, 7, 10),
         duration: 148,
         description:
-          "Learn about where you can find course descriptions, what information they include, how they work, and details about various components of a course description. Course descriptions report information about a university or college's classes. They're published both in course catalogs that outline degree requirements and in course schedules that contain descriptions for all courses offered during a particular semester.",
+          'Learn about where you can find course descriptions, what information they include, how they work, ' +
+          'and details about various components of a course description. Course descriptions report information ' +
+          'about a university or college\'s classes. They\'re published both in course catalogs that outline degree ' +
+          'requirements and in course schedules that contain descriptions for all courses offered during a particular semester.',
         topRated: true,
+        authors: ['john papa'],
       },
       {
         id: 3,
@@ -36,46 +44,47 @@ export class CourseService {
         creationDate: new Date(2019, 10, 5),
         duration: 208,
         description:
-          "Learn about where you can find course descriptions, what information they include, how they work, and details about various components of a course description. Course descriptions report information about a university or college's classes. They're published both in course catalogs that outline degree requirements and in course schedules that contain descriptions for all courses offered during a particular semester.",
+          'Learn about where you can find course descriptions, what information they include, how they work, ' +
+          'and details about various components of a course description. Course descriptions report information ' +
+          'about a university or college\'s classes. They\'re published both in course catalogs that outline degree ' +
+          'requirements and in course schedules that contain descriptions for all courses offered during a particular semester.',
         topRated: false,
+        authors: ['john papa', 'mary dotson'],
       },
     ];
     this.stream$.next(this.courses);
   }
 
-  public getAllCourses(): Observable<Course[]> {
-    return this.source;
+  public createCourse(title, creationDate, duration, description, authors): Observable<boolean> {
+    const newCourse = {
+      id: this.setID(),
+      title,
+      creationDate: new Date(creationDate),
+      duration,
+      description,
+      topRated: false,
+      authors: authors.split(','),
+    };
+    this.courses.push(newCourse);
+    this.stream$.next(this.courses);
+    return of(true);
   }
 
-  public editCourse(
-    title,
-    creationDate,
-    duration,
-    description,
-    flag: 'create' | 'edit',
-    id?,
-  ): Observable<boolean> {
-    if (flag === 'create') {
-      const newCourse = {
-        id: this.getID(),
-        title,
-        creationDate: new Date(creationDate),
-        duration,
-        description,
-        topRated: false,
-      };
-      this.courses.push(newCourse);
-    } else {
-      this.courses = this.courses.map((course: Course) => {
-        if (course.id === id) {
-          course.title = title;
-          course.creationDate = creationDate;
-          course.duration = duration;
-          course.description = description;
-        }
-        return course;
-      });
-    }
+  public editCourse(title, creationDate, duration, description, id, authors): Observable<boolean> {
+    this.courses = [...this.courses].map((course: Course) => {
+      if (course.id === id) {
+        return {
+          id,
+          title,
+          creationDate,
+          duration,
+          description,
+          topRated: course.topRated,
+          authors: Array.isArray(authors) ? authors : authors.split(','),
+        };
+      }
+      return course;
+    });
     this.stream$.next(this.courses);
     return of(true);
   }
@@ -85,7 +94,7 @@ export class CourseService {
     this.stream$.next(this.courses);
   }
 
-  private getID(): number {
+  private setID(): number {
     let count = 1;
     this.courses.forEach(el => {
       if (el.id > count) {
