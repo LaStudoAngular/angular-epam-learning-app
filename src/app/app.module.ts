@@ -11,6 +11,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 import { CoursesComponent } from './components/courses/courses.component';
 import { CoursesListItemComponent } from './components/courses/courses-list-item/courses-list-item.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 // DIRECTIVES
 import { CreationDateDirective } from './@directives/creation-date.directive';
@@ -33,6 +34,7 @@ import { SearchByPipe } from './@pipes/search-by.pipe';
     HouresPipe,
     OrderByPipe,
     SearchByPipe,
+    NotFoundComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, LoginModule],
   providers: [],
