@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CourseService } from '../../../@services/course.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Course } from '../../../@interfaces/course';
 
 @Component({
   selector: 'ep-course-edit-item',
@@ -15,10 +16,12 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private courseService: CourseService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
   public title = 'edit course';
   private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   public form: FormGroup;
+  private courseID: number;
 
   public ngOnInit(): void {
     this.form = this.fb.group({
@@ -28,13 +31,25 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
       description: [null, Validators.required],
       authors: [null, [Validators.required]],
     });
+    this.route.params.subscribe((data: { id: string }) => {
+      this.courseID = Number(data.id);
+      this.courseService.getSelectedCourse(this.courseID).subscribe((course: Course) => {
+        this.form.patchValue({
+          title: course.title,
+          creationDate: this.formatDate(course.creationDate),
+          duration: course.duration,
+          description: course.description,
+          authors: course.authors,
+        });
+      });
+    });
   }
 
   onSubmit(): void {
     if (this.form.valid) {
       const { title, creationDate, duration, description, authors } = this.form.value;
       this.courseService
-        .editCourse(title, creationDate, duration, description, this.course.id, authors)
+        .editCourse(title, creationDate, duration, description, this.courseID, authors)
         .subscribe(() => {
           this.goBack();
           takeUntil(this.destroyedSource);
@@ -57,6 +72,8 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
   }
 
   public goBack(): void {
+    this.form.reset();
+    this.courseID = null;
     this.router.navigateByUrl('/courses');
   }
 

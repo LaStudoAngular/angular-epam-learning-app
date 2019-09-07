@@ -12,33 +12,16 @@ export class CoursesComponent implements OnInit {
   search: string;
   courses: Course[] = [];
   course: Course;
-  show = false;
+  // show = false;
   constructor(private courseService: CourseService, private router: Router) {}
 
   ngOnInit() {
     this.courseService.source.subscribe((response: Course[]) => (this.courses = response));
   }
 
-  onAddNewCourse(course?: Course): void {
+  onAddNewCourse(): void {
     this.router.navigateByUrl('/courses/new');
-    // if (course) {
-    //   this.course = course;
-    //   this.form.patchValue({
-    //     title: this.course.title,
-    //     creationDate: this.formatDate(this.course.creationDate),
-    //     duration: this.course.duration,
-    //     description: this.course.description,
-    //     authors: this.course.authors,
-    //   });
-    //   this.button = 'edit';
-    // }
-    this.show = true;
-  }
-
-  public onClose(): void {
-    this.show = false;
-    this.course = null;
-    // this.form.reset();
+    // this.show = true;
   }
 
   public loadMore(): void {
