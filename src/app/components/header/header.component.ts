@@ -8,8 +8,11 @@ import { AuthService } from '../../@services/auth.service';
 })
 export class HeaderComponent implements OnInit {
   constructor(public authService: AuthService) {}
+  userName: string;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userName = JSON.parse(localStorage.getItem('user')).email;
+  }
 
   onLogOut(): void {
     this.authService.logout();

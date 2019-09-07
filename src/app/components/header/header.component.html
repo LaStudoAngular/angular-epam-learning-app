@@ -6,7 +6,7 @@
     <li *ngIf="authService.isAuth$ | async" class="list__item">
       <a class="list__link" style="color: white">
         <i class="fa fa-user"></i>
-        User login
+        {{ userName }}
       </a>
     </li>
       <li *ngIf="authService.isNotAuth$ | async" class="list__item">
