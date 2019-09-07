@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { CourseService } from '../../../@services/course.service';
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   templateUrl: './course-new-item.component.html',
   styleUrls: ['./course-new-item.component.scss'],
 })
-export class CourseNewItemComponent implements OnInit {
+export class CourseNewItemComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   constructor(
@@ -19,7 +19,7 @@ export class CourseNewItemComponent implements OnInit {
     private router: Router,
   ) {}
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.form = this.fb.group({
       title: [null, Validators.required],
       creationDate: [null, Validators.required],
@@ -39,6 +39,11 @@ export class CourseNewItemComponent implements OnInit {
           takeUntil(this.destroyedSource);
         });
     }
+  }
+
+  public ngOnDestroy(): void {
+    this.destroyedSource.next(true);
+    this.destroyedSource.complete();
   }
 
   public goBack(): void {

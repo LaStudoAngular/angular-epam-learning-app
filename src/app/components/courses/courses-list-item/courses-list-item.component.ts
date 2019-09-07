@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Course } from '../../../@interfaces/course';
 import { CourseService } from '../../../@services/course.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ep-courses-list-item',
@@ -10,10 +11,9 @@ import { CourseService } from '../../../@services/course.service';
 })
 export class CoursesListItemComponent {
   @Input() course: Course;
-  @Output() editCourse = new EventEmitter<Course>();
   show = false;
 
-  constructor(private courseService: CourseService) {}
+  constructor(private courseService: CourseService, private router: Router) {}
 
   onDeleteCourse(): void {
     this.show = true;
@@ -28,6 +28,6 @@ export class CoursesListItemComponent {
   }
 
   onEditCourse(course: Course): void {
-    this.editCourse.emit(course);
+    this.router.navigate(['courses', `${course.id}`]);
   }
 }
