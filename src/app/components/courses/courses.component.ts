@@ -13,7 +13,6 @@ export class CoursesComponent implements OnInit {
   courses: Course[] = [];
   course: Course;
   show = false;
-  // button = 'create';
   constructor(private courseService: CourseService, private router: Router) {}
 
   ngOnInit() {
@@ -38,7 +37,6 @@ export class CoursesComponent implements OnInit {
 
   public onClose(): void {
     this.show = false;
-    // this.button = 'create';
     this.course = null;
     // this.form.reset();
   }

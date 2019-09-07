@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class CourseNewItemComponent implements OnInit, OnDestroy {
   public form: FormGroup;
+  public title = 'create new course';
   private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   constructor(
     private fb: FormBuilder,

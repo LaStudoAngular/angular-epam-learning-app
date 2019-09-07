@@ -16,6 +16,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     private courseService: CourseService,
     private router: Router,
   ) {}
+  public title = 'edit course';
   private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   public form: FormGroup;
 
