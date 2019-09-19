@@ -1,25 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private isAuthSource = new BehaviorSubject<boolean>(true);
+  private isAuthSource = new BehaviorSubject<boolean>(null);
   public isAuth$ = this.isAuthSource.asObservable();
-  public isNotAuth$ = this.isAuth$.pipe(map(v => !v));
+  // public isNotAuth$ = this.isAuth$.pipe(map(v => !v));
 
-  constructor(private router: Router) {}
+  constructor() {}
 
   public login(email?: string, password?: string): void {
-    this.isAuthSource.next(false);
+    this.isAuthSource.next(true);
     localStorage.setItem('user', JSON.stringify({ email, password }));
   }
 
   public logout(): void {
-    this.isAuthSource.next(true);
+    this.isAuthSource.next(false);
     localStorage.removeItem('user');
   }
 

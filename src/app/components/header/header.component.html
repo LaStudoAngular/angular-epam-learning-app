@@ -2,7 +2,7 @@
   <a href="#">
     <img src="../../../assets/images/logo.png" width="137" alt="video courses">
   </a>
-  <ul *ngIf="authService.isNotAuth$ | async" class="list d-flex">
+  <ul *ngIf="authService.isAuth$ | async" class="list d-flex">
     <li class="list__item">
       <a (click)="onLogOut()" class="list__link list__logoff">
         <i class="fa fa-sign-out"></i>
