@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +7,6 @@ import { map } from 'rxjs/operators';
 export class AuthService {
   private isAuthSource = new BehaviorSubject<boolean>(null);
   public isAuth$ = this.isAuthSource.asObservable();
-  // public isNotAuth$ = this.isAuth$.pipe(map(v => !v));
 
   constructor() {}
 
