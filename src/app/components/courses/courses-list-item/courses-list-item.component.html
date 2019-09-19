@@ -2,7 +2,7 @@
   <div class="primary" style="width: 100%">
     <header class="header d-flex justify-content-between">
       <div class="d-flex align-items-center">
-        <h3 class="title mr-2">{{ course.title | uppercase }}</h3>
+        <h3 class="title text-capitalize mr-2">{{ course.id }}. video course - {{ course.title | uppercase }}</h3>
         <i *ngIf="course.topRated" class="fa fa-star"></i>
       </div>
       <ul class="meta d-flex justify-content-between align-items-end">

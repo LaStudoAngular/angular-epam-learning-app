@@ -1,28 +1,32 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { Login } from '../@interfaces/login';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private isAuthSource = new BehaviorSubject<boolean>(true);
+  private isAuthSource = new BehaviorSubject<boolean>(null);
   public isAuth$ = this.isAuthSource.asObservable();
-  public isNotAuth$ = this.isAuth$.pipe(map(v => !v));
 
-  constructor(private router: Router) {}
+  constructor() {
+    // костыль из-за отсутствия NgRx
+    // при перезагрузки страницы isAuth === null, даже если user есть в localStorage
+    const user: Login = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      this.isAuthSource.next(true);
+    } else {
+      this.isAuthSource.next(false);
+    }
+  }
 
   public login(email?: string, password?: string): void {
-    this.isAuthSource.next(false);
-    this.router.navigate(['courses']);
+    this.isAuthSource.next(true);
     localStorage.setItem('user', JSON.stringify({ email, password }));
-    console.log(`logged in successfully`);
   }
 
   public logout(): void {
-    this.isAuthSource.next(true);
-    this.router.navigate(['login']);
+    this.isAuthSource.next(false);
     localStorage.removeItem('user');
   }
 

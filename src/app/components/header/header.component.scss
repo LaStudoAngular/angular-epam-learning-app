@@ -8,20 +8,20 @@
   padding: 0;
   margin: 0;
 
-  &__item {
-    //
-
-    &:not(:first-child) {
-      margin-left: 25px;
-    }
+  &__item:not(:first-child) {
+    margin-left: 25px;
   }
 
   &__link {
-    color: white;
+    color: white !important;
     font-size: 14px;
 
     & > .fa {
       margin-right: 6px;
     }
+  }
+
+  &__logoff {
+    cursor: pointer;
   }
 }

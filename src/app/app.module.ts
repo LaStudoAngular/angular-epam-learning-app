@@ -11,6 +11,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 import { CoursesComponent } from './components/courses/courses.component';
 import { CoursesListItemComponent } from './components/courses/courses-list-item/courses-list-item.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 // DIRECTIVES
 import { CreationDateDirective } from './@directives/creation-date.directive';
@@ -20,6 +21,8 @@ import { HouresPipe } from './@pipes/houres.pipe';
 import { OrderByPipe } from './@pipes/order-by.pipe';
 import { LoginModule } from './components/login/login.module';
 import { SearchByPipe } from './@pipes/search-by.pipe';
+import { CourseNewItemComponent } from './components/courses/course-new-item/course-new-item.component';
+import { CourseEditItemComponent } from './components/courses/course-edit-item/course-edit-item.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,9 @@ import { SearchByPipe } from './@pipes/search-by.pipe';
     HouresPipe,
     OrderByPipe,
     SearchByPipe,
+    NotFoundComponent,
+    CourseNewItemComponent,
+    CourseEditItemComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, LoginModule],
   providers: [],

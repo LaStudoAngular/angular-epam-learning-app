@@ -7,52 +7,62 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 })
 export class CourseService {
   private courses: Course[];
+
+  // STREAM OF COURSES
   private stream$ = new BehaviorSubject<Course[]>(null);
   public source = this.stream$.asObservable();
+
+  // STREAM OF BREADCRUMBS TITLE
+  public title$ = new BehaviorSubject<string>(null);
+  public titleSource = this.title$.asObservable();
 
   constructor() {
     this.courses = [
       {
         id: 1,
-        title: 'video course 1. Angular',
+        title: 'Angular',
         creationDate: new Date(2019, 1, 9),
         duration: 88,
         description:
           'Learn about where you can find course descriptions, what information they include, how they work, ' +
           'and details about various components of a course description.Course descriptions report information about ' +
-          'a university or college\'s classes. They\'re published both in course catalogs that outline degree requirements ' +
+          "a university or college's classes. They're published both in course catalogs that outline degree requirements " +
           'and in course schedules that contain descriptions for all courses offered during a particular semester.',
         topRated: false,
         authors: ['john papa'],
       },
       {
         id: 2,
-        title: 'video course 2. Vue.js',
+        title: 'Vue.js',
         creationDate: new Date(2019, 7, 10),
         duration: 148,
         description:
           'Learn about where you can find course descriptions, what information they include, how they work, ' +
           'and details about various components of a course description. Course descriptions report information ' +
-          'about a university or college\'s classes. They\'re published both in course catalogs that outline degree ' +
+          "about a university or college's classes. They're published both in course catalogs that outline degree " +
           'requirements and in course schedules that contain descriptions for all courses offered during a particular semester.',
         topRated: true,
-        authors: ['john papa'],
+        authors: ['evan you'],
       },
       {
         id: 3,
-        title: 'video course 3. React.js',
+        title: 'React.js',
         creationDate: new Date(2019, 10, 5),
         duration: 208,
         description:
           'Learn about where you can find course descriptions, what information they include, how they work, ' +
           'and details about various components of a course description. Course descriptions report information ' +
-          'about a university or college\'s classes. They\'re published both in course catalogs that outline degree ' +
+          "about a university or college's classes. They're published both in course catalogs that outline degree " +
           'requirements and in course schedules that contain descriptions for all courses offered during a particular semester.',
         topRated: false,
-        authors: ['john papa', 'mary dotson'],
+        authors: ['den abramov'],
       },
     ];
     this.stream$.next(this.courses);
+  }
+
+  public getSelectedCourse(id: number): Observable<Course> {
+    return of(this.courses.find((course: Course) => course.id === id));
   }
 
   public createCourse(title, creationDate, duration, description, authors): Observable<boolean> {

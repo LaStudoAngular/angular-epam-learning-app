@@ -1,0 +1,14 @@
+:host {
+  display: block;
+  width: 80%;
+  margin: auto;
+}
+
+.form-label {
+  width: 100%;
+  display: flex;
+
+  & span {
+    margin-left: .5rem;
+  }
+}

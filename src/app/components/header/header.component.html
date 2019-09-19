@@ -2,18 +2,12 @@
   <a href="#">
     <img src="../../../assets/images/logo.png" width="137" alt="video courses">
   </a>
-  <ul class="list d-flex">
-    <li *ngIf="authService.isAuth$ | async" class="list__item">
-      <a class="list__link" style="color: white">
-        <i class="fa fa-user"></i>
-        User login
+  <ul *ngIf="authService.isAuth$ | async" class="list d-flex">
+    <li class="list__item">
+      <a (click)="onLogOut()" class="list__link list__logoff">
+        <i class="fa fa-sign-out"></i>
+        Log off
       </a>
     </li>
-      <li *ngIf="authService.isNotAuth$ | async" class="list__item">
-        <a (click)="onLogOut()" class="list__link" style="cursor: pointer; color: white">
-          <i class="fa fa-sign-out"></i>
-          Log off
-        </a>
-      </li>
   </ul>
 </div>
