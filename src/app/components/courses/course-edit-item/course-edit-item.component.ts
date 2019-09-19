@@ -41,9 +41,9 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
           description: course.description,
           authors: course.authors,
         });
+        this.courseService.title$.next(`video course ${course.title}`);
       });
     });
-    this.courseService.title$.next(String(this.courseID));
   }
 
   onSubmit(): void {

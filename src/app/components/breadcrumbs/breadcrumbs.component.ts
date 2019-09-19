@@ -14,6 +14,10 @@ export class BreadcrumbsComponent implements OnInit {
   constructor(public authService: AuthService, private courseService: CourseService) {}
 
   ngOnInit(): void {
-    this.courseService.titleSource.subscribe(data => (this.title = data));
+    this.courseService.titleSource.subscribe((response: string) => (this.title = response));
+  }
+
+  onClick() {
+    this.courseService.title$.next('');
   }
 }

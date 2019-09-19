@@ -12,7 +12,6 @@ export class CoursesComponent implements OnInit {
   search: string;
   courses: Course[] = [];
   course: Course;
-  // show = false;
   constructor(private courseService: CourseService, private router: Router) {}
 
   ngOnInit() {
@@ -20,8 +19,8 @@ export class CoursesComponent implements OnInit {
   }
 
   onAddNewCourse(): void {
+    this.courseService.title$.next('new course');
     this.router.navigateByUrl('/courses/new');
-    // this.show = true;
   }
 
   public loadMore(): void {

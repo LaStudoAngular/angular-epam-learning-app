@@ -7,8 +7,12 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 })
 export class CourseService {
   private courses: Course[];
+
+  // STREAM OF COURSES
   private stream$ = new BehaviorSubject<Course[]>(null);
   public source = this.stream$.asObservable();
+
+  // STREAM OF BREADCRUMBS TITLE
   public title$ = new BehaviorSubject<string>(null);
   public titleSource = this.title$.asObservable();
 
