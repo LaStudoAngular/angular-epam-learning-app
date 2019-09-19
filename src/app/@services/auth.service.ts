@@ -15,14 +15,11 @@ export class AuthService {
 
   public login(email?: string, password?: string): void {
     this.isAuthSource.next(false);
-    this.router.navigate(['courses']);
     localStorage.setItem('user', JSON.stringify({ email, password }));
-    console.log(`logged in successfully`);
   }
 
   public logout(): void {
     this.isAuthSource.next(true);
-    this.router.navigate(['login']);
     localStorage.removeItem('user');
   }
 
