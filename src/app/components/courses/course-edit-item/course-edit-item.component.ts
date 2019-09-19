@@ -43,6 +43,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
         });
       });
     });
+    this.courseService.title$.next(String(this.courseID));
   }
 
   onSubmit(): void {
@@ -74,6 +75,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
   public goBack(): void {
     this.form.reset();
     this.courseID = null;
+    this.courseService.title$.next('');
     this.router.navigateByUrl('/courses');
   }
 

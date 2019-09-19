@@ -9,6 +9,8 @@ export class CourseService {
   private courses: Course[];
   private stream$ = new BehaviorSubject<Course[]>(null);
   public source = this.stream$.asObservable();
+  public title$ = new BehaviorSubject<string>(null);
+  public titleSource = this.title$.asObservable();
 
   constructor() {
     this.courses = [

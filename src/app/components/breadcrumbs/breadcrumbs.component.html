@@ -1,6 +1,7 @@
 <ul *ngIf="authService.isAuth$ | async" class="list">
   <li class="list__item">
-    <a class="list__link" href="#">courses</a>
+    <a class="list__link" routerLink='/courses'>Courses</a>
+    <span class="list__link" *ngIf="title"> / {{ title }} </span>
   </li>
 </ul>
 

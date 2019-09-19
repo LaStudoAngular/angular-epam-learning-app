@@ -10,7 +10,7 @@ export class AuthService {
   public isAuth$ = this.isAuthSource.asObservable();
 
   constructor() {
-    // костыль из-за отсутствия ngrx
+    // костыль из-за отсутствия NgRx
     // при перезагрузки страницы isAuth === null, даже если user есть в localStorage
     const user: Login = JSON.parse(localStorage.getItem('user'));
     if (user) {
