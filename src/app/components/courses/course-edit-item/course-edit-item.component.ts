@@ -35,13 +35,13 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
       this.courseID = Number(data.id);
       this.courseService.getSelectedCourse(this.courseID).subscribe((course: Course) => {
         this.form.patchValue({
-          title: course.title,
-          creationDate: this.formatDate(course.creationDate),
-          duration: course.duration,
+          title: course.name,
+          creationDate: this.formatDate(course.date),
+          duration: course.length,
           description: course.description,
           authors: course.authors,
         });
-        this.courseService.title$.next(`video course ${course.title}`);
+        this.courseService.title$.next(`video course ${course.name}`);
       });
     });
   }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Course } from '../@interfaces/course';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,9 @@ export class CourseService {
   }
 
   public getSelectedCourse(id: number): Observable<Course> {
-    return of(this.courses.find((course: Course) => course.id === id));
+    return this.http
+      .get('http://localhost:3004/courses')
+      .pipe(filter((course: Course) => course.id === id));
   }
 
   public createCourse(title, creationDate, duration, description, authors): Observable<boolean> {
