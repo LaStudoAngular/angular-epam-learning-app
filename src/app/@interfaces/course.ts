@@ -1,9 +1,11 @@
+import { Author } from './author';
+
 export interface Course {
   id: number;
-  title: string;
-  creationDate: Date;
-  duration: number;
+  name: string;
   description: string;
-  topRated: boolean;
-  authors: string[];
+  isTopRated: boolean;
+  date: string;
+  authors: Author[];
+  length: number;
 }

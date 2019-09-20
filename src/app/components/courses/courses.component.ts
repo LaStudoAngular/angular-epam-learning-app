@@ -15,7 +15,7 @@ export class CoursesComponent implements OnInit {
   constructor(private courseService: CourseService, private router: Router) {}
 
   ngOnInit() {
-    this.courseService.source.subscribe((response: Course[]) => (this.courses = response));
+    this.courseService.getAllCourses().subscribe((courses: Course[]) => (this.courses = courses));
   }
 
   onAddNewCourse(): void {

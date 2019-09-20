@@ -1,18 +1,18 @@
-<div class="wrapper" [ngClass]="{'wrapper-top': course.topRated}" epCreationDate [creationDate]="course.creationDate">
+<div class="wrapper" [ngClass]="{'wrapper-top': course.isTopRated}" epCreationDate [creationDate]="course.date">
   <div class="primary" style="width: 100%">
     <header class="header d-flex justify-content-between">
       <div class="d-flex align-items-center">
-        <h3 class="title text-capitalize mr-2">{{ course.id }}. video course - {{ course.title | uppercase }}</h3>
-        <i *ngIf="course.topRated" class="fa fa-star"></i>
+        <h3 class="title text-capitalize mr-2">{{ course.id }}. video course - {{ course.name | uppercase }}</h3>
+        <i *ngIf="course.isTopRated" class="fa fa-star"></i>
       </div>
       <ul class="meta d-flex justify-content-between align-items-end">
         <li class="item">
           <i class="fa fa-clock-o"></i>
-          <a class="item__link" href="#">{{ course.duration | hours }}</a>
+          <a class="item__link" href="#">{{ course.length | hours }}</a>
         </li>
         <li class="item">
           <i class="fa fa-calendar"></i>
-          <a class="item__link" href="#">{{ course.creationDate | date:'dd MMM, yyyy' }}</a>
+          <a class="item__link" href="#">{{ course.date | date:'dd MMM, yyyy' }}</a>
         </li>
       </ul>
     </header>
@@ -43,7 +43,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Do you really want to delete the course <span class="text-danger">{{ course.title | uppercase }}</span>?</p>
+        <p>Do you really want to delete the course <span class="text-danger">{{ course.name | uppercase }}</span>?</p>
       </div>
       <div class="modal-footer">
         <button (click)="deleteCourse(course)" type="button" class="btn btn-danger bg-danger">Yes, delete this course!</button>

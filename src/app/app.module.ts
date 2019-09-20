@@ -12,17 +12,20 @@ import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.compo
 import { CoursesComponent } from './components/courses/courses.component';
 import { CoursesListItemComponent } from './components/courses/courses-list-item/courses-list-item.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { CourseNewItemComponent } from './components/courses/course-new-item/course-new-item.component';
+import { CourseEditItemComponent } from './components/courses/course-edit-item/course-edit-item.component';
 
 // DIRECTIVES
 import { CreationDateDirective } from './@directives/creation-date.directive';
 
+// MODULES
+import { LoginModule } from './components/login/login.module';
+import { HttpClientModule } from '@angular/common/http';
+
 // PIPES
 import { HouresPipe } from './@pipes/houres.pipe';
 import { OrderByPipe } from './@pipes/order-by.pipe';
-import { LoginModule } from './components/login/login.module';
 import { SearchByPipe } from './@pipes/search-by.pipe';
-import { CourseNewItemComponent } from './components/courses/course-new-item/course-new-item.component';
-import { CourseEditItemComponent } from './components/courses/course-edit-item/course-edit-item.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +43,14 @@ import { CourseEditItemComponent } from './components/courses/course-edit-item/c
     CourseNewItemComponent,
     CourseEditItemComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, LoginModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    LoginModule,
+    HttpClientModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
