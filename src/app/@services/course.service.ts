@@ -24,6 +24,11 @@ export class CourseService {
     return this.http.get('http://localhost:3004/courses');
   }
 
+  public getLimitCourses(count: number): Observable<any> {
+    console.log(count);
+    return this.http.get(`http://localhost:3004/courses?start=0&count=${count}`);
+  }
+
   public getSelectedCourse(id: number): Observable<Course> {
     return this.http
       .get('http://localhost:3004/courses')

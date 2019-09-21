@@ -12,19 +12,35 @@ export class CoursesComponent implements OnInit {
   search: string;
   courses: Course[] = [];
   course: Course;
+  count: number;
+  showMore: boolean;
   constructor(private courseService: CourseService, private router: Router) {}
 
   ngOnInit() {
-    this.courseService.getAllCourses().subscribe((courses: Course[]) => (this.courses = courses));
+    this.count = 3;
+    this.showMore = false;
+    this.courseService
+      .getLimitCourses(this.count)
+      .subscribe((courses: Course[]) => (this.courses = courses));
   }
 
   onAddNewCourse(): void {
     this.courseService.title$.next('new course');
-    this.router.navigateByUrl('/courses/new');
+    this.router.navigate(['courses/new']);
   }
 
   public loadMore(): void {
-    console.log(`load more courses`);
+    this.count += this.count;
+    this.courseService.getAllCourses().subscribe((response: Course[]) => {
+      if (response.length > this.count) {
+        this.courseService.getLimitCourses(this.count).subscribe((courses: Course[]) => {
+          this.courses = courses;
+        });
+      } else {
+        this.showMore = true;
+        return;
+      }
+    });
   }
 
   trackByFn(index, item): void {
