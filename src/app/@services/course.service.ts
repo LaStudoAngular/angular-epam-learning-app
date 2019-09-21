@@ -69,6 +69,7 @@ export class CourseService {
       .pipe(filter((course: Course) => course.id === id));
   }
 
+  // ADD NEW COURSE IN SERVER DATABASE
   public createCourse(course: Course): Observable<boolean> {
     this.http.post('http://localhost:3004/courses', course).subscribe((response: Course) => {
       this.courses.push(response);
@@ -77,24 +78,28 @@ export class CourseService {
     return of(true);
   }
 
-  // public editCourse(course: Course): Observable<boolean> {
-  //   this.courses = [...this.courses].map((course: Course) => {
-  //     if (course.id === id) {
-  //       return {
-  //         id,
-  //         title,
-  //         creationDate,
-  //         duration,
-  //         description,
-  //         topRated: course.isTopRated,
-  //         authors: Array.isArray(authors) ? authors : authors.split(','),
-  //       };
-  //     }
-  //     return course;
-  //   });
-  //   this.stream$.next(this.courses);
-  //   return of(true);
-  // }
+  // EDIT COURSE
+  public editCourse(course: Course): Observable<boolean> {
+    this.http.post('http://localhost:3004/courses', course).subscribe((response: Course) => {
+      console.log(response);
+    });
+    // this.courses = [...this.courses].map((course: Course) => {
+    //   if (course.id === id) {
+    //     return {
+    //       id,
+    //       title,
+    //       creationDate,
+    //       duration,
+    //       description,
+    //       topRated: course.isTopRated,
+    //       authors: Array.isArray(authors) ? authors : authors.split(','),
+    //     };
+    //   }
+    //   return course;
+    // });
+    // this.stream$.next(this.courses);
+    return of(true);
+  }
 
   // DELETE SELECTED COURSE FROM DATABASE
   public removeCourse(course: Course): Observable<any> {
@@ -103,16 +108,5 @@ export class CourseService {
       this.limitedStream$.next(this.courses);
     });
     return;
-  }
-
-  private setID(): number {
-    let count = 1;
-    this.courses.forEach(el => {
-      if (el.id > count) {
-        count = el.id;
-      }
-    });
-    count += 1;
-    return count;
   }
 }

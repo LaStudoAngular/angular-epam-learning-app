@@ -37,7 +37,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
       this.courseService.getSelectedCourse(this.courseID).subscribe((course: Course) => {
         this.form.patchValue({
           title: course.name,
-          creationDate: this.formatDate(course.date),
+          date: this.formatDate(course.date),
           duration: course.length,
           description: course.description,
           authors: course.authors,
@@ -52,10 +52,10 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
       const { title, date, duration, description, authors } = this.form.value;
       const author: Author = new Author(authors.split(' ')[0], authors.split(' ')[1]);
       const course: Course = new Course(title, description, false, date, [author], duration);
-      // this.courseService.editCourse(course).subscribe(() => {
-      //   this.goBack();
-      //   takeUntil(this.destroyedSource);
-      // });
+      this.courseService.editCourse(course).subscribe(() => {
+        // this.goBack();
+        takeUntil(this.destroyedSource);
+      });
     }
   }
 
