@@ -12,18 +12,11 @@ export class CoursesComponent implements OnInit {
   search: string;
   courses: Course[] = [];
   course: Course;
-  count: number;
-  countStep = 3;
-  showMore: boolean;
+  showMore = false;
   constructor(private courseService: CourseService, private router: Router) {}
 
   ngOnInit() {
-    this.count = this.countStep;
-    this.showMore = false;
-    this.courseService.getAllCourses();
-    this.courseService
-      .getLimitCourses(this.count)
-      .subscribe((courses: Course[]) => (this.courses = courses));
+    this.courseService.sourceLimited.subscribe((response: Course[]) => (this.courses = response));
   }
 
   onAddNewCourse(): void {
@@ -32,17 +25,9 @@ export class CoursesComponent implements OnInit {
   }
 
   public loadMore(): void {
-    this.count += this.countStep;
-    this.courseService.source.subscribe((response: Course[]) => {
-      if (this.count <= response.length) {
-        this.courseService.getLimitCourses(this.count).subscribe((courses: Course[]) => {
-          this.courses = courses;
-        });
-      }
-      if (this.count >= response.length) {
-        this.showMore = true;
-      }
-    });
+    this.courseService
+      .fetchLimitedCourses()
+      .subscribe((response: boolean) => (this.showMore = response));
   }
 
   trackByFn(index, item): void {

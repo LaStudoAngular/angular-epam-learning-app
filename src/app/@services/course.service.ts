@@ -9,27 +9,58 @@ import { Course } from '../@models/course';
 })
 export class CourseService {
   private courses: Course[];
+  private count = 3;
 
   // STREAM OF COURSES
   private stream$ = new BehaviorSubject<Course[]>(null);
   public source = this.stream$.asObservable();
 
+  private limitedStream$ = new BehaviorSubject<Course[]>(null);
+  public sourceLimited = this.limitedStream$.asObservable();
+
   // STREAM OF BREADCRUMBS TITLE
   public title$ = new BehaviorSubject<string>(null);
   public titleSource = this.title$.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.getAllCourses();
+    this.getLimitCourses();
+  }
 
-  public getAllCourses(): void {
+  // GET ALL COURSES FROM SERVER DATABASE
+  private getAllCourses(): void {
     this.http.get('http://localhost:3004/courses').subscribe((response: Course[]) => {
       this.courses = response;
       this.stream$.next(this.courses);
     });
   }
 
-  public getLimitCourses(count: number): Observable<any> {
-    console.log(count);
-    return this.http.get(`http://localhost:3004/courses?start=0&count=${count}`);
+  public getLimitCourses(): void {
+    this.http
+      .get(`http://localhost:3004/courses?start=0&count=${this.count}`)
+      .subscribe((data: Course[]) => {
+        this.limitedStream$.next(data);
+      });
+  }
+
+  public fetchLimitedCourses(): Observable<boolean> {
+    let flag: boolean;
+    this.count += 3;
+    this.http.get('http://localhost:3004/courses').subscribe((response: Course[]) => {
+      if (this.count <= response.length) {
+        this.http
+          .get(`http://localhost:3004/courses?start=0&count=${this.count}`)
+          .subscribe((data: Course[]) => {
+            this.courses = data;
+            this.limitedStream$.next(this.courses);
+            flag = false;
+          });
+      }
+      if (this.count > response.length) {
+        flag = true;
+      }
+    });
+    return of(flag);
   }
 
   public getSelectedCourse(id: number): Observable<Course> {
@@ -63,9 +94,13 @@ export class CourseService {
   //   return of(true);
   // }
 
-  public removeCourse(course: Course): void {
-    this.courses = this.courses.filter(el => el.id !== course.id);
-    this.stream$.next(this.courses);
+  // DELETE SELECTED COURSE FROM DATABASE
+  public removeCourse(course: Course): Observable<any> {
+    this.http.delete(`http://localhost:3004/courses/${course.id}`).subscribe(() => {
+      this.courses = this.courses.filter(el => el.id !== course.id);
+      this.limitedStream$.next(this.courses);
+    });
+    return;
   }
 
   private setID(): number {
