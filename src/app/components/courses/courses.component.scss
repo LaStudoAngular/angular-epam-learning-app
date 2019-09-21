@@ -50,7 +50,7 @@ $dark-sky-blue: #30b6dd;
   background-color: $sick-green;
   color: white;
   text-transform: capitalize;
-  transition: background-color .2s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
 
   &:hover {
     background-color: darken($sick-green, 10%);
@@ -61,7 +61,7 @@ $dark-sky-blue: #30b6dd;
   background-color: $dark-sky-blue;
   color: white;
   font-size: 14px;
-  transition: background-color .2s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
 
   & > .fa {
     margin-right: 12px;
@@ -73,19 +73,24 @@ $dark-sky-blue: #30b6dd;
 }
 
 .more {
+  width: 100%;
+  border: none;
   border-radius: 6px;
   box-shadow: 0 1px 24px 0 rgba(18, 21, 35, 0.08);
-  background-color: white;
   text-align: center;
   padding: 12px 0;
+  text-transform: uppercase;
+  color: white;
+  background-color: #30b6dd;
+  transition: background-color 0.2s ease-in-out;
 
-  &__link {
-    font-size: 12px;
-    line-height: 1.5;
-    text-transform: uppercase;
-    text-decoration: underline;
-    cursor: pointer;
-    color: $soft-blue;
+  &:hover {
+    background-color: #1f98bb;
+  }
+
+  &:focus,
+  &:active {
+    outline: none;
   }
 }
 
@@ -98,6 +103,3 @@ $dark-sky-blue: #30b6dd;
   text-transform: uppercase;
   color: #2c2f3c;
 }
-
-
-

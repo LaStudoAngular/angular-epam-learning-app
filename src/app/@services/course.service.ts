@@ -20,8 +20,11 @@ export class CourseService {
 
   constructor(private http: HttpClient) {}
 
-  public getAllCourses(): Observable<any> {
-    return this.http.get('http://localhost:3004/courses');
+  public getAllCourses(): void {
+    this.http.get('http://localhost:3004/courses').subscribe((response: Course[]) => {
+      this.courses = response;
+      this.stream$.next(this.courses);
+    });
   }
 
   public getLimitCourses(count: number): Observable<any> {

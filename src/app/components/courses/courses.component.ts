@@ -13,12 +13,14 @@ export class CoursesComponent implements OnInit {
   courses: Course[] = [];
   course: Course;
   count: number;
+  countStep = 3;
   showMore: boolean;
   constructor(private courseService: CourseService, private router: Router) {}
 
   ngOnInit() {
-    this.count = 3;
+    this.count = this.countStep;
     this.showMore = false;
+    this.courseService.getAllCourses();
     this.courseService
       .getLimitCourses(this.count)
       .subscribe((courses: Course[]) => (this.courses = courses));
@@ -30,15 +32,15 @@ export class CoursesComponent implements OnInit {
   }
 
   public loadMore(): void {
-    this.count += this.count;
-    this.courseService.getAllCourses().subscribe((response: Course[]) => {
-      if (response.length > this.count) {
+    this.count += this.countStep;
+    this.courseService.source.subscribe((response: Course[]) => {
+      if (this.count <= response.length) {
         this.courseService.getLimitCourses(this.count).subscribe((courses: Course[]) => {
           this.courses = courses;
         });
-      } else {
+      }
+      if (this.count >= response.length) {
         this.showMore = true;
-        return;
       }
     });
   }
