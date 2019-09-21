@@ -51,6 +51,6 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
   }
 
   public goBack(): void {
-    this.router.navigateByUrl('/courses');
+    this.router.navigate(['courses']);
   }
 }

@@ -10,6 +10,7 @@ import { Course } from '../@models/course';
 export class CourseService {
   private courses: Course[];
   private count = 3;
+  flag: boolean;
 
   // STREAM OF COURSES
   private stream$ = new BehaviorSubject<Course[]>(null);
@@ -44,7 +45,6 @@ export class CourseService {
   }
 
   public fetchLimitedCourses(): Observable<boolean> {
-    let flag: boolean;
     this.count += 3;
     this.http.get('http://localhost:3004/courses').subscribe((response: Course[]) => {
       if (this.count <= response.length) {
@@ -53,14 +53,14 @@ export class CourseService {
           .subscribe((data: Course[]) => {
             this.courses = data;
             this.limitedStream$.next(this.courses);
-            flag = false;
+            this.flag = false;
           });
       }
       if (this.count > response.length) {
-        flag = true;
+        this.flag = true;
       }
     });
-    return of(flag);
+    return of(this.flag);
   }
 
   public getSelectedCourse(id: number): Observable<Course> {
@@ -70,8 +70,10 @@ export class CourseService {
   }
 
   public createCourse(course: Course): Observable<boolean> {
-    this.courses.push(course);
-    this.stream$.next(this.courses);
+    this.http.post('http://localhost:3004/courses', course).subscribe((response: Course) => {
+      this.courses.push(response);
+      this.limitedStream$.next(this.courses);
+    });
     return of(true);
   }
 

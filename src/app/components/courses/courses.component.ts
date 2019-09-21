@@ -11,7 +11,6 @@ import { Course } from '../../@models/course';
 export class CoursesComponent implements OnInit {
   search: string;
   courses: Course[] = [];
-  course: Course;
   showMore = false;
   constructor(private courseService: CourseService, private router: Router) {}
 
