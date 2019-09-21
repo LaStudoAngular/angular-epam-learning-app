@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Course } from '../@interfaces/course';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { filter } from 'rxjs/operators';
+import { Course } from '../@models/course';
 
 @Injectable({
   providedIn: 'root',
@@ -30,39 +30,30 @@ export class CourseService {
       .pipe(filter((course: Course) => course.id === id));
   }
 
-  public createCourse(title, creationDate, duration, description, authors): Observable<boolean> {
-    const newCourse = {
-      id: this.setID(),
-      title,
-      creationDate: new Date(creationDate),
-      duration,
-      description,
-      topRated: false,
-      authors: authors.split(','),
-    };
-    this.courses.push(newCourse);
+  public createCourse(course: Course): Observable<boolean> {
+    this.courses.push(course);
     this.stream$.next(this.courses);
     return of(true);
   }
 
-  public editCourse(title, creationDate, duration, description, id, authors): Observable<boolean> {
-    this.courses = [...this.courses].map((course: Course) => {
-      if (course.id === id) {
-        return {
-          id,
-          title,
-          creationDate,
-          duration,
-          description,
-          topRated: course.topRated,
-          authors: Array.isArray(authors) ? authors : authors.split(','),
-        };
-      }
-      return course;
-    });
-    this.stream$.next(this.courses);
-    return of(true);
-  }
+  // public editCourse(course: Course): Observable<boolean> {
+  //   this.courses = [...this.courses].map((course: Course) => {
+  //     if (course.id === id) {
+  //       return {
+  //         id,
+  //         title,
+  //         creationDate,
+  //         duration,
+  //         description,
+  //         topRated: course.isTopRated,
+  //         authors: Array.isArray(authors) ? authors : authors.split(','),
+  //       };
+  //     }
+  //     return course;
+  //   });
+  //   this.stream$.next(this.courses);
+  //   return of(true);
+  // }
 
   public removeCourse(course: Course): void {
     this.courses = this.courses.filter(el => el.id !== course.id);

@@ -4,7 +4,8 @@ import { CourseService } from '../../../@services/course.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Course } from '../../../@interfaces/course';
+import { Course } from '../../../@models/course';
+import { Author } from '../../../@models/author';
 
 @Component({
   selector: 'ep-course-edit-item',
@@ -26,7 +27,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.form = this.fb.group({
       title: [null, Validators.required],
-      creationDate: [null, Validators.required],
+      date: [null, Validators.required],
       duration: [null, Validators.required],
       description: [null, Validators.required],
       authors: [null, [Validators.required]],
@@ -48,13 +49,13 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.form.valid) {
-      const { title, creationDate, duration, description, authors } = this.form.value;
-      this.courseService
-        .editCourse(title, creationDate, duration, description, this.courseID, authors)
-        .subscribe(() => {
-          this.goBack();
-          takeUntil(this.destroyedSource);
-        });
+      const { title, date, duration, description, authors } = this.form.value;
+      const author: Author = new Author(authors.split(' ')[0], authors.split(' ')[1]);
+      const course: Course = new Course(title, description, false, date, [author], duration);
+      // this.courseService.editCourse(course).subscribe(() => {
+      //   this.goBack();
+      //   takeUntil(this.destroyedSource);
+      // });
     }
   }
 
@@ -76,7 +77,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     this.form.reset();
     this.courseID = null;
     this.courseService.title$.next('');
-    this.router.navigateByUrl('/courses');
+    this.router.navigate(['courses']);
   }
 
   public ngOnDestroy(): void {

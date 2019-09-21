@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Course } from '../@interfaces/course';
+import { Course } from '../@models/course';
 
 @Pipe({
   name: 'searchBy',
@@ -10,7 +10,7 @@ export class SearchByPipe implements PipeTransform {
       return courses;
     }
     return courses.filter(
-      (course: Course) => course.title.toLowerCase().indexOf(searchCourse.toLowerCase()) !== -1,
+      (course: Course) => course.name.toLowerCase().indexOf(searchCourse.toLowerCase()) !== -1,
     );
   }
 }

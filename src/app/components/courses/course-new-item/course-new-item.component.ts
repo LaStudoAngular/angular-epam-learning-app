@@ -4,6 +4,8 @@ import { takeUntil } from 'rxjs/operators';
 import { CourseService } from '../../../@services/course.service';
 import { ReplaySubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { Author } from '../../../@models/author';
+import { Course } from '../../../@models/course';
 
 @Component({
   selector: 'ep-course-new-item',
@@ -24,7 +26,7 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.form = this.fb.group({
       title: [null, Validators.required],
-      creationDate: [null, Validators.required],
+      date: [null, Validators.required],
       duration: [null, Validators.required],
       description: [null, Validators.required],
       authors: [null, [Validators.required]],
@@ -33,13 +35,13 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
 
   public onSubmit(): void {
     if (this.form.valid) {
-      const { title, creationDate, duration, description, authors } = this.form.value;
-      this.courseService
-        .createCourse(title, creationDate, duration, description, authors)
-        .subscribe(() => {
-          this.goBack();
-          takeUntil(this.destroyedSource);
-        });
+      const { title, date, duration, description, authors } = this.form.value;
+      const author: Author = new Author(authors.split(' ')[0], authors.split(' ')[1]);
+      const course: Course = new Course(title, description, false, date, [author], duration);
+      this.courseService.createCourse(course).subscribe(() => {
+        this.goBack();
+        takeUntil(this.destroyedSource);
+      });
     }
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CourseService } from '../../@services/course.service';
-import { Course } from '../../@interfaces/course';
 import { Router } from '@angular/router';
+import { Course } from '../../@models/course';
 
 @Component({
   selector: 'ep-courses',

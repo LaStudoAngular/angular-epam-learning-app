@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Course } from '../../../@interfaces/course';
 import { CourseService } from '../../../@services/course.service';
 import { Router } from '@angular/router';
+import { Course } from '../../../@models/course';
 
 @Component({
   selector: 'ep-courses-list-item',
