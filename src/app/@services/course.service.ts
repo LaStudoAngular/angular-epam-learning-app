@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-// import { filter } from 'rxjs/operators';
 import { Course } from '../@models/course';
 
 @Injectable({
@@ -9,8 +8,6 @@ import { Course } from '../@models/course';
 })
 export class CourseService {
   private courses: Course[];
-  // private count = 3;
-  // flag: boolean;
 
   // STREAM OF COURSES
   private stream$ = new BehaviorSubject<Course[]>(null);

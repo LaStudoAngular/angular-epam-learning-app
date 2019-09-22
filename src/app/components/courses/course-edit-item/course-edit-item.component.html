@@ -1,4 +1,4 @@
-<h2 class="form-title text-capitalize mb-3">{{ title }}</h2>
+<h2 class="form-title text-capitalize mb-3">edit course</h2>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="form-group">
     <label class="form-label text-capitalize" for="title">title: <span>*required</span></label>
@@ -17,10 +17,15 @@
     <input formControlName="duration" type="number" class="form-control" id="duration" placeholder="input in minutes">
   </div>
 
-  <div class="form-group">
-    <label class="form-label text-capitalize" for="authors">authors: <span>*required</span></label>
-    <input formControlName="authors" type="text" class="form-control text-capitalize" id="authors" placeholder="start typing ..." />
-  </div>
+  <ng-select [items]="course.authors"
+             [addTag]="addTagFn"
+             [hideSelected]="true"
+             multiple="true"
+             bindLabel="firstName"
+             formControlName="authors"
+             >
+  </ng-select>
+
   <button class="btn btn-primary text-capitalize mr-2" type="submit">save</button>
   <button class="btn btn-secondary text-capitalize" (click)="goBack()" type="button">cancel</button>
 </form>

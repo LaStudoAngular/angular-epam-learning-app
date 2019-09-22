@@ -21,6 +21,7 @@ import { CreationDateDirective } from './@directives/creation-date.directive';
 // MODULES
 import { LoginModule } from './components/login/login.module';
 import { HttpClientModule } from '@angular/common/http';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 // PIPES
 import { HouresPipe } from './@pipes/houres.pipe';
@@ -50,6 +51,7 @@ import { SearchByPipe } from './@pipes/search-by.pipe';
     ReactiveFormsModule,
     LoginModule,
     HttpClientModule,
+    NgSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

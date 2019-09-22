@@ -19,10 +19,9 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
   ) {}
-  public title = 'edit course';
   private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   public form: FormGroup;
-  // private courseID: number;
+  course: Course;
 
   public ngOnInit(): void {
     // GENERATE FORM
@@ -39,13 +38,13 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
       const courseID = Number(data.id);
       // GET SELECTED COURSE FROM LOCAL DATABASE
       this.courseService.getSelectedCourse(courseID).subscribe((course: Course) => {
-        const listAuthors = course.authors.map(el => `${el.firstName} ${el.lastName}`).join(', ');
+        this.course = course;
         this.form.patchValue({
           title: course.name,
           date: this.formatDate(course.date),
           duration: course.length,
           description: course.description,
-          authors: listAuthors,
+          authors: this.course.authors,
         });
         // GENERATE BREADCRUMBS FROM SELECTED COURSE
         this.courseService.title$.next(`${course.name}`);
@@ -84,6 +83,10 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     // this.courseID = null;
     this.courseService.title$.next('');
     this.router.navigate(['courses']);
+  }
+
+  addTagFn(name) {
+    return { name: name, tag: true };
   }
 
   public ngOnDestroy(): void {
