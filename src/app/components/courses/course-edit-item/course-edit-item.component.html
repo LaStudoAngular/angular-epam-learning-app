@@ -17,14 +17,19 @@
     <input formControlName="duration" type="number" class="form-control" id="duration" placeholder="input in minutes">
   </div>
 
-  <ng-select [items]="course.authors"
-             [addTag]="addTagFn"
-             [hideSelected]="true"
-             multiple="true"
-             bindLabel="firstName"
-             formControlName="authors"
-             >
-  </ng-select>
+  <div class="form-group">
+    <label class="form-label text-capitalize">authors: <span>*required</span></label>
+    <ng-select
+      class="custom"
+      [items]="course.authors"
+      [addTag]="addTagFn"
+      [hideSelected]="true"
+      multiple="true"
+      bindLabel="firstName"
+      formControlName="authors"
+    >
+    </ng-select>
+  </div>
 
   <button class="btn btn-primary text-capitalize mr-2" type="submit">save</button>
   <button class="btn btn-secondary text-capitalize" (click)="goBack()" type="button">cancel</button>

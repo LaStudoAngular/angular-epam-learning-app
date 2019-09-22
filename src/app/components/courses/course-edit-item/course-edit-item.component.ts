@@ -40,10 +40,10 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
       this.courseService.getSelectedCourse(courseID).subscribe((course: Course) => {
         this.course = course;
         this.form.patchValue({
-          title: course.name,
+          title: this.course.name,
           date: this.formatDate(course.date),
-          duration: course.length,
-          description: course.description,
+          duration: this.course.length,
+          description: this.course.description,
           authors: this.course.authors,
         });
         // GENERATE BREADCRUMBS FROM SELECTED COURSE
