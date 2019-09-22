@@ -55,12 +55,15 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.form.valid) {
       const { title, date, duration, description, authors } = this.form.value;
-      const author: Author = new Author(authors.split(' ')[0], authors.split(' ')[1]);
-      const course: Course = new Course(title, description, false, date, [author], duration);
+      console.log(authors);
+      // const author: Author = new Author(authors.split(' ')[0], authors.split(' ')[1]);
+      // const course: Course = new Course(title, description, false, date, [author], duration);
+      /*
       this.courseService.editCourse(course).subscribe(() => {
-        // this.goBack();
+        this.goBack();
         takeUntil(this.destroyedSource);
       });
+      */
     }
   }
 
@@ -80,13 +83,12 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
 
   public goBack(): void {
     this.form.reset();
-    // this.courseID = null;
     this.courseService.title$.next('');
     this.router.navigate(['courses']);
   }
 
   addTagFn(name) {
-    return { name: name, tag: true };
+    return { firstName: name.split(' ')[0], lastName: name.split(' ')[1] };
   }
 
   public ngOnDestroy(): void {

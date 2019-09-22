@@ -17,8 +17,8 @@
     <input formControlName="duration" type="number" class="form-control" id="duration" placeholder="input in minutes">
   </div>
 
-  <div class="form-group">
-    <label class="form-label text-capitalize">authors: <span>*required</span></label>
+<!--  <div class="form-group">-->
+<!--    <label class="form-label text-capitalize">authors: <span>*required</span></label>-->
     <ng-select
       class="custom"
       [items]="course.authors"
@@ -29,7 +29,7 @@
       formControlName="authors"
     >
     </ng-select>
-  </div>
+<!--  </div>-->
 
   <button class="btn btn-primary text-capitalize mr-2" type="submit">save</button>
   <button class="btn btn-secondary text-capitalize" (click)="goBack()" type="button">cancel</button>
