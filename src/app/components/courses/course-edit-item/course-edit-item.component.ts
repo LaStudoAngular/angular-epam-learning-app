@@ -22,9 +22,10 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
   public title = 'edit course';
   private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   public form: FormGroup;
-  private courseID: number;
+  // private courseID: number;
 
   public ngOnInit(): void {
+    // GENERATE FORM
     this.form = this.fb.group({
       title: [null, Validators.required],
       date: [null, Validators.required],
@@ -32,17 +33,22 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
       description: [null, Validators.required],
       authors: [null, [Validators.required]],
     });
+
+    // GET ID OF SELECTED COURSE
     this.route.params.subscribe((data: { id: string }) => {
-      this.courseID = Number(data.id);
-      this.courseService.getSelectedCourse(this.courseID).subscribe((course: Course) => {
+      const courseID = Number(data.id);
+      // GET SELECTED COURSE FROM LOCAL DATABASE
+      this.courseService.getSelectedCourse(courseID).subscribe((course: Course) => {
+        const listAuthors = course.authors.map(el => `${el.firstName} ${el.lastName}`).join(', ');
         this.form.patchValue({
           title: course.name,
           date: this.formatDate(course.date),
           duration: course.length,
           description: course.description,
-          authors: course.authors,
+          authors: listAuthors,
         });
-        this.courseService.title$.next(`video course ${course.name}`);
+        // GENERATE BREADCRUMBS FROM SELECTED COURSE
+        this.courseService.title$.next(`${course.name}`);
       });
     });
   }
@@ -75,7 +81,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
 
   public goBack(): void {
     this.form.reset();
-    this.courseID = null;
+    // this.courseID = null;
     this.courseService.title$.next('');
     this.router.navigate(['courses']);
   }

@@ -10,12 +10,12 @@ import { Course } from '../../@models/course';
 })
 export class CoursesComponent implements OnInit {
   search: string;
-  courses: Course[] = [];
+  courses: Course[] | null = [];
   showMore = false;
   constructor(private courseService: CourseService, private router: Router) {}
 
   ngOnInit() {
-    this.courseService.sourceLimited.subscribe((response: Course[]) => (this.courses = response));
+    this.courseService.source.subscribe((response: Course[]) => (this.courses = response));
   }
 
   onAddNewCourse(): void {
@@ -24,9 +24,7 @@ export class CoursesComponent implements OnInit {
   }
 
   public loadMore(): void {
-    this.courseService
-      .fetchLimitedCourses()
-      .subscribe((response: boolean) => (this.showMore = response));
+    //
   }
 
   trackByFn(index, item): void {
