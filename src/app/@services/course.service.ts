@@ -46,10 +46,13 @@ export class CourseService {
   }
 
   // EDIT COURSE
-  public editCourse(course: Course): Observable<boolean> {
-    this.http.post('http://localhost:3004/courses', course).subscribe((response: Course) => {
-      console.log(response);
-    });
+  public editCourse(course: Course): void {
+    // console.log(course);
+    this.http
+      .put(`http://localhost:3004/courses/${course.id}`, course)
+      .subscribe((response: Course) => {
+        console.log(response);
+      });
     // this.courses = [...this.courses].map((course: Course) => {
     //   if (course.id === id) {
     //     return {
@@ -65,7 +68,8 @@ export class CourseService {
     //   return course;
     // });
     // this.stream$.next(this.courses);
-    return of(true);
+
+    // return of(true);
   }
 
   // DELETE SELECTED COURSE FROM DATABASE

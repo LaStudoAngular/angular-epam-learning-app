@@ -55,15 +55,20 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.form.valid) {
       const { title, date, duration, description, authors } = this.form.value;
-      console.log(authors);
-      // const author: Author = new Author(authors.split(' ')[0], authors.split(' ')[1]);
-      // const course: Course = new Course(title, description, false, date, [author], duration);
-      /*
+      const course: Course = new Course(
+        title,
+        description,
+        this.course.isTopRated,
+        date,
+        authors,
+        duration,
+        this.course.id,
+      );
+
       this.courseService.editCourse(course).subscribe(() => {
         this.goBack();
         takeUntil(this.destroyedSource);
       });
-      */
     }
   }
 
@@ -88,7 +93,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
   }
 
   addTagFn(name) {
-    return { firstName: name.split(' ')[0], lastName: name.split(' ')[1] };
+    return new Author(name.split(' ')[0], name.split(' ')[1]);
   }
 
   public ngOnDestroy(): void {
