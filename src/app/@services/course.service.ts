@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Course } from '../@models/course';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,7 @@ export class CourseService {
 
   // GET ALL COURSES FROM SERVER DATABASE
   private getAllCourses(): void {
-    this.http.get('http://localhost:3004/courses').subscribe((response: Course[]) => {
+    this.http.get(`${environment.baseURL}/courses`).subscribe((response: Course[]) => {
       this.courses = response;
       this.stream$.next(this.courses);
     });
@@ -38,7 +39,7 @@ export class CourseService {
 
   // ADD NEW COURSE IN SERVER DATABASE
   public createCourse(course: Course): Observable<boolean> {
-    this.http.post(`http://localhost:3004/courses`, course).subscribe((response: Course) => {
+    this.http.post(`${environment.baseURL}/courses`, course).subscribe((response: Course) => {
       this.courses.push(response);
       this.stream$.next(this.courses);
     });
@@ -48,7 +49,7 @@ export class CourseService {
   // EDIT COURSE
   public editCourse(course: Course): Observable<boolean> {
     this.http
-      .put(`http://localhost:3004/courses/${course.id}`, course)
+      .put(`${environment.baseURL}/courses/${course.id}`, course)
       .subscribe((response: Course) => {
         this.courses = [...this.courses].map((element: Course) => {
           if (element.id === response.id) {
@@ -70,7 +71,7 @@ export class CourseService {
 
   // DELETE SELECTED COURSE FROM DATABASE
   public removeCourse(course: Course): Observable<any> {
-    this.http.delete(`http://localhost:3004/courses/${course.id}`).subscribe(() => {
+    this.http.delete(`${environment.baseURL}/courses/${course.id}`).subscribe(() => {
       this.courses = this.courses.filter(el => el.id !== course.id);
       this.stream$.next(this.courses);
     });
