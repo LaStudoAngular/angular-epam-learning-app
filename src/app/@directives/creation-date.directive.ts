@@ -4,7 +4,7 @@ import { Directive, HostBinding, Input, OnInit } from '@angular/core';
   selector: '[epCreationDate]',
 })
 export class CreationDateDirective implements OnInit {
-  @Input() creationDate: Date;
+  @Input() creationDate: string;
 
   @HostBinding('style.borderColor') bdColor: string;
 

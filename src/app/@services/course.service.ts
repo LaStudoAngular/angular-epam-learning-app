@@ -38,7 +38,7 @@ export class CourseService {
 
   // ADD NEW COURSE IN SERVER DATABASE
   public createCourse(course: Course): Observable<boolean> {
-    this.http.post('http://localhost:3004/courses', course).subscribe((response: Course) => {
+    this.http.post(`http://localhost:3004/courses`, course).subscribe((response: Course) => {
       this.courses.push(response);
       this.stream$.next(this.courses);
     });
@@ -46,30 +46,26 @@ export class CourseService {
   }
 
   // EDIT COURSE
-  public editCourse(course: Course): void {
-    // console.log(course);
+  public editCourse(course: Course): Observable<boolean> {
     this.http
       .put(`http://localhost:3004/courses/${course.id}`, course)
       .subscribe((response: Course) => {
-        console.log(response);
+        this.courses = [...this.courses].map((element: Course) => {
+          if (element.id === response.id) {
+            return {
+              name: response.name,
+              description: response.description,
+              isTopRated: response.isTopRated,
+              date: response.date,
+              authors: response.authors,
+              length: response.length,
+              id: response.id,
+            };
+          }
+        });
+        this.stream$.next(this.courses);
       });
-    // this.courses = [...this.courses].map((course: Course) => {
-    //   if (course.id === id) {
-    //     return {
-    //       id,
-    //       title,
-    //       creationDate,
-    //       duration,
-    //       description,
-    //       topRated: course.isTopRated,
-    //       authors: Array.isArray(authors) ? authors : authors.split(','),
-    //     };
-    //   }
-    //   return course;
-    // });
-    // this.stream$.next(this.courses);
-
-    // return of(true);
+    return of(true);
   }
 
   // DELETE SELECTED COURSE FROM DATABASE
