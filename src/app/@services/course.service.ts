@@ -76,12 +76,12 @@ export class CourseService {
   }
 
   // DELETE SELECTED COURSE FROM DATABASE
-  public removeCourse(course: Course): Observable<any> {
+  public removeCourse(course: Course): Observable<boolean> {
     this.http.delete(`${environment.baseURL}/courses/${course.id}`).subscribe(() => {
       // EDIT LOCAL DATABASE
       this.courses = this.courses.filter(el => el.id !== course.id);
       this.stream$.next(this.courses);
     });
-    return;
+    return of(true);
   }
 }
