@@ -42,7 +42,7 @@ export class CourseService {
   // ADD NEW COURSE IN SERVER DATABASE
   public createCourse(course: Course): Observable<boolean> {
     this.http.post(`${environment.baseURL}/courses`, course).subscribe((response: Course) => {
-      this.courses.unshift(response);
+      this.courses.push(response);
       this.stream$.next(this.courses);
     });
     return of(true);

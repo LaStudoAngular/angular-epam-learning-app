@@ -47,6 +47,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
           authors: this.course.authors.map(el => {
             return {
               ...el,
+              // ADD FIELD FOR PLUGIN OUTPUT
               fullName: `${el.firstName} ${el.lastName}`,
             };
           }),
@@ -60,7 +61,8 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.form.valid) {
       const { title, date, duration, description, authors } = this.form.value;
-      const list = authors.map(el => {
+      // DELETE FIELD FROM OBJECT
+      const listOfAuthors = authors.map(el => {
         return {
           firstName: el.firstName,
           lastName: el.lastName,
@@ -72,7 +74,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
         description,
         this.course.isTopRated,
         date,
-        list,
+        listOfAuthors,
         duration,
         this.course.id,
       );
@@ -104,7 +106,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     this.router.navigate(['courses']);
   }
 
-  private addAuthors(name) {
+  private addAuthors(name: string) {
     return new Author(
       name.split(' ')[0],
       name.split(' ')[1],

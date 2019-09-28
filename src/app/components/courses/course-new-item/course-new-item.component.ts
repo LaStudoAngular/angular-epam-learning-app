@@ -16,6 +16,7 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public title = 'create new course';
   private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
+  authors: any[];
 
   constructor(
     private fb: FormBuilder,
@@ -36,13 +37,36 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
   public onSubmit(): void {
     if (this.form.valid) {
       const { title, date, duration, description, authors } = this.form.value;
-      const author: Author = new Author(authors.split(' ')[0], authors.split(' ')[1]);
-      const course: Course = new Course(title, description, false, date, [author], duration);
+      const listOfAuthors = authors.map(el => {
+        return {
+          firstName: el.firstName,
+          lastName: el.lastName,
+          id: el.id,
+        };
+      });
+      const course: Course = new Course(
+        title,
+        description,
+        false,
+        date,
+        listOfAuthors,
+        duration,
+        Math.floor(Math.random() * 10000),
+      );
       this.courseService.createCourse(course).subscribe(() => {
         this.goBack();
         takeUntil(this.destroyedSource);
       });
     }
+  }
+
+  private addAuthors(author: string) {
+    return new Author(
+      author.split(' ')[0],
+      author.split(' ')[1],
+      author,
+      Math.floor(Math.random() * 10000),
+    );
   }
 
   public ngOnDestroy(): void {
