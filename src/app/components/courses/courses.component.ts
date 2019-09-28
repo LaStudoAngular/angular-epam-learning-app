@@ -24,7 +24,9 @@ export class CoursesComponent implements OnInit {
   }
 
   public loadMore(): void {
-    //
+    this.courseService
+      .getSelectedQuantityCourses()
+      .subscribe((response: boolean) => (this.showMore = response));
   }
 
   trackByFn(index, item): void {

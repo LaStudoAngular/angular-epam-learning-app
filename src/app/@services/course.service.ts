@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class CourseService {
   private courses: Course[];
+  private counter = 3;
 
   // STREAM OF COURSES
   private stream$ = new BehaviorSubject<Course[]>(null);
@@ -27,8 +28,15 @@ export class CourseService {
     this.http.get(`${environment.baseURL}/courses`).subscribe((response: Course[]) => {
       // INIT LOCAL DATABASE
       this.courses = response;
-      this.stream$.next(this.courses);
+      this.stream$.next(this.getPortionOfCourses(this.courses, this.counter));
     });
+  }
+
+  // GET SELECTED QUANTITY OF COURSES
+  public getSelectedQuantityCourses(): Observable<boolean> {
+    this.counter += 3;
+    this.stream$.next(this.getPortionOfCourses(this.courses, this.counter));
+    return this.counter <= this.courses.length ? of(false) : of(true);
   }
 
   // GET SELECTED COURSE FROM LOCAL DATABASE
@@ -43,7 +51,7 @@ export class CourseService {
   public createCourse(course: Course): Observable<boolean> {
     this.http.post(`${environment.baseURL}/courses`, course).subscribe((response: Course) => {
       this.courses.push(response);
-      this.stream$.next(this.courses);
+      this.stream$.next(this.getPortionOfCourses(this.courses, this.counter));
     });
     return of(true);
   }
@@ -70,7 +78,7 @@ export class CourseService {
             return el;
           }
         });
-        this.stream$.next(this.courses);
+        this.stream$.next(this.getPortionOfCourses(this.courses, this.counter));
       });
     return of(true);
   }
@@ -80,8 +88,13 @@ export class CourseService {
     this.http.delete(`${environment.baseURL}/courses/${course.id}`).subscribe(() => {
       // EDIT LOCAL DATABASE
       this.courses = this.courses.filter(el => el.id !== course.id);
-      this.stream$.next(this.courses);
+      this.stream$.next(this.getPortionOfCourses(this.courses, this.counter));
     });
     return of(true);
+  }
+
+  // SLICE LIST OF COURSES
+  private getPortionOfCourses(courses: Course[], count: number): Course[] {
+    return courses.slice(0, count);
   }
 }
