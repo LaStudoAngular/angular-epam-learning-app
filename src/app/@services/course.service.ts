@@ -30,6 +30,7 @@ export class CourseService {
     });
   }
 
+  // GET SELECTED COURSE FROM LOCAL DATABASE
   public getSelectedCourse(id: number): Observable<Course> {
     const course: Course = this.courses.find((el: Course) => el.id === id);
     if (course) {
@@ -51,8 +52,8 @@ export class CourseService {
     this.http
       .put(`${environment.baseURL}/courses/${course.id}`, course)
       .subscribe((response: Course) => {
-        this.courses = [...this.courses].map((element: Course) => {
-          if (element.id === response.id) {
+        this.courses = this.courses.map((el: Course) => {
+          if (el.id === course.id) {
             return {
               name: response.name,
               description: response.description,
@@ -62,6 +63,8 @@ export class CourseService {
               length: response.length,
               id: response.id,
             };
+          } else {
+            return el;
           }
         });
         this.stream$.next(this.courses);

@@ -9,6 +9,7 @@ export class CreationDateDirective implements OnInit {
   @HostBinding('style.borderColor') bdColor: string;
 
   ngOnInit(): void {
+    console.log(this.creationDate);
     if (this.creationDate < this.currentDate() && this.creationDate >= this.daysBefore(14)) {
       this.bdColor = '#9bc837';
     } else if (this.creationDate > this.currentDate()) {
