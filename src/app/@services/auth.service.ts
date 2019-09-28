@@ -22,27 +22,21 @@ export class AuthService {
   }
 
   public login(login: string, password: string): void {
-    const user: User = this.getUser(login, password);
-    if (user) {
-      this.isAuthSource.next(true);
-      localStorage.setItem('fakeToken', JSON.stringify(user.fakeToken));
-    }
+    this.http.get(`${environment.baseURL}/users`).subscribe((users: User[]) => {
+      const user: User = users.find(
+        el =>
+          el.login.toLowerCase() === login.toLowerCase() &&
+          el.password.toLowerCase() === password.toLowerCase(),
+      );
+      if (user) {
+        this.isAuthSource.next(true);
+        localStorage.setItem('fakeToken', JSON.stringify(user.fakeToken));
+      }
+    });
   }
 
   public logout(): void {
     this.isAuthSource.next(false);
     localStorage.removeItem('fakeToken');
-  }
-
-  private getUser(login: string, password: string): User | null {
-    let user: User = null;
-    this.http.get(`${environment.baseURL}/users`).subscribe((users: User[]) => {
-      user = users.find(
-        (el: User) =>
-          el.login.toLowerCase() === login.toLowerCase() &&
-          el.password.toLowerCase() === password.toLowerCase(),
-      );
-    });
-    return user;
   }
 }
