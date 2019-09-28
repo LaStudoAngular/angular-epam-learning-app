@@ -92,7 +92,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     this.router.navigate(['courses']);
   }
 
-  addTagFn(name) {
+  private addAuthors(name) {
     return new Author(name.split(' ')[0], name.split(' ')[1]);
   }
 

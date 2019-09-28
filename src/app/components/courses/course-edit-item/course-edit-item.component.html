@@ -46,16 +46,19 @@
     />
   </div>
 
-  <ng-select
-    class="custom"
-    [items]="course.authors"
-    [addTag]="addTagFn"
-    [hideSelected]="true"
-    multiple="true"
-    bindLabel="firstName"
-    formControlName="authors"
-  >
-  </ng-select>
+  <div class="form-group" style="margin-bottom: 3rem">
+    <label class="form-label text-capitalize" for="duration">authors: <span>*required</span></label>
+    <ng-select
+      style="text-transform: capitalize"
+      [items]="course.authors"
+      [addTag]="addAuthors"
+      [hideSelected]="true"
+      multiple="true"
+      bindLabel="firstName"
+      formControlName="authors"
+    >
+    </ng-select>
+  </div>
 
   <button class="btn btn-primary text-capitalize mr-2" type="submit">save</button>
   <button class="btn btn-secondary text-capitalize" (click)="goBack()" type="button">cancel</button>
