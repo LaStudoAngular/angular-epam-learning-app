@@ -13,12 +13,12 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     // при перезагрузки страницы isAuth === null, даже если token есть в localStorage
-    const token: string = JSON.parse(localStorage.getItem('fakeToken'));
-    if (token) {
-      this.isAuthSource.next(true);
-    } else {
-      this.isAuthSource.next(false);
-    }
+    // const token: string = JSON.parse(localStorage.getItem('fakeToken'));
+    // if (token) {
+    //   this.isAuthSource.next(true);
+    // } else {
+    //   this.isAuthSource.next(false);
+    // }
   }
 
   public login(login: string, password: string): void {

@@ -22,9 +22,10 @@ export class AuthGuard implements CanActivate, OnDestroy {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this.authService.isAuth$
-      .pipe(takeUntil(this.destroy))
-      .subscribe((response: boolean) => (this.result = response));
+    this.authService.isAuth$.pipe(takeUntil(this.destroy)).subscribe((response: boolean) => {
+      this.result = response;
+    });
+
     if (this.result) {
       return this.result;
     } else {
