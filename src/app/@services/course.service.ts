@@ -25,6 +25,7 @@ export class CourseService {
   // GET ALL COURSES FROM SERVER DATABASE
   private getAllCourses(): void {
     this.http.get(`${environment.baseURL}/courses`).subscribe((response: Course[]) => {
+      // INIT LOCAL DATABASE
       this.courses = response;
       this.stream$.next(this.courses);
     });
@@ -41,7 +42,7 @@ export class CourseService {
   // ADD NEW COURSE IN SERVER DATABASE
   public createCourse(course: Course): Observable<boolean> {
     this.http.post(`${environment.baseURL}/courses`, course).subscribe((response: Course) => {
-      this.courses.push(response);
+      this.courses.unshift(response);
       this.stream$.next(this.courses);
     });
     return of(true);
@@ -49,9 +50,11 @@ export class CourseService {
 
   // EDIT COURSE
   public editCourse(course: Course): Observable<boolean> {
+    // EDIT REMOTE DATABASE
     this.http
       .put(`${environment.baseURL}/courses/${course.id}`, course)
       .subscribe((response: Course) => {
+        // EDIT LOCAL DATABASE
         this.courses = this.courses.map((el: Course) => {
           if (el.id === course.id) {
             return {
@@ -75,6 +78,7 @@ export class CourseService {
   // DELETE SELECTED COURSE FROM DATABASE
   public removeCourse(course: Course): Observable<any> {
     this.http.delete(`${environment.baseURL}/courses/${course.id}`).subscribe(() => {
+      // EDIT LOCAL DATABASE
       this.courses = this.courses.filter(el => el.id !== course.id);
       this.stream$.next(this.courses);
     });
