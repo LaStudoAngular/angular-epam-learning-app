@@ -44,7 +44,12 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
           date: this.formatDate(course.date),
           duration: this.course.length,
           description: this.course.description,
-          authors: this.course.authors,
+          authors: this.course.authors.map(el => {
+            return {
+              ...el,
+              fullName: `${el.firstName} ${el.lastName}`,
+            };
+          }),
         });
         // GENERATE BREADCRUMBS FROM SELECTED COURSE
         this.courseService.title$.next(`${course.name}`);
@@ -55,12 +60,19 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.form.valid) {
       const { title, date, duration, description, authors } = this.form.value;
+      const list = authors.map(el => {
+        return {
+          firstName: el.firstName,
+          lastName: el.lastName,
+          id: el.id,
+        };
+      });
       const course: Course = new Course(
         title,
         description,
         this.course.isTopRated,
         date,
-        authors,
+        list,
         duration,
         this.course.id,
       );
@@ -93,7 +105,12 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
   }
 
   private addAuthors(name) {
-    return new Author(name.split(' ')[0], name.split(' ')[1]);
+    return new Author(
+      name.split(' ')[0],
+      name.split(' ')[1],
+      name,
+      Math.floor(Math.random() * 10000),
+    );
   }
 
   public ngOnDestroy(): void {
