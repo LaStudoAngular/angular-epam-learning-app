@@ -73,7 +73,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
         title,
         description,
         this.course.isTopRated,
-        date,
+        new Date(date).toISOString(),
         listOfAuthors,
         duration,
         this.course.id,

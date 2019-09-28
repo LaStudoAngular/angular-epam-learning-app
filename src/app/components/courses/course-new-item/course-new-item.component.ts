@@ -44,7 +44,14 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
           id: el.id,
         };
       });
-      const course: Course = new Course(title, description, false, date, listOfAuthors, duration);
+      const course: Course = new Course(
+        title,
+        description,
+        false,
+        new Date(date).toISOString(),
+        listOfAuthors,
+        duration,
+      );
       this.courseService.createCourse(course).subscribe(() => {
         this.goBack();
         takeUntil(this.destroyedSource);
