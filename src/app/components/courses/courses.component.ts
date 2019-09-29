@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CourseService } from '../../@services/course.service';
 import { Router } from '@angular/router';
 import { Course } from '../../@models/course';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'ep-courses',
@@ -12,7 +13,11 @@ export class CoursesComponent implements OnInit {
   search: string;
   courses: Course[] | null = [];
   showMore = false;
-  constructor(private courseService: CourseService, private router: Router) {}
+  constructor(
+    private courseService: CourseService,
+    private router: Router,
+    private http: HttpClient,
+  ) {}
 
   ngOnInit() {
     this.courseService.source.subscribe((response: Course[]) => (this.courses = response));
@@ -27,6 +32,12 @@ export class CoursesComponent implements OnInit {
     this.courseService
       .getSelectedQuantityCourses()
       .subscribe((response: boolean) => (this.showMore = response));
+  }
+
+  public onSearch(): void {
+    this.http
+      .get(`http://localhost:3004/courses?q=${this.search}`)
+      .subscribe(response => console.log(response));
   }
 
   trackByFn(index, item): void {
