@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { User } from '../@models/user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -11,28 +12,20 @@ export class AuthService {
   private isAuthSource = new BehaviorSubject<boolean>(null);
   public isAuth$ = this.isAuthSource.asObservable();
 
-  constructor(private http: HttpClient) {
-    // при перезагрузки страницы isAuth === null, даже если token есть в localStorage
-    // const token: string = JSON.parse(localStorage.getItem('fakeToken'));
-    // if (token) {
-    //   this.isAuthSource.next(true);
-    // } else {
-    //   this.isAuthSource.next(false);
-    // }
-  }
+  constructor(private http: HttpClient, private router: Router) {}
 
   public login(login: string, password: string): void {
-    this.http.get(`${environment.baseURL}/users`).subscribe((users: User[]) => {
-      const user: User = users.find(
-        el =>
-          el.login.toLowerCase() === login.toLowerCase() &&
-          el.password.toLowerCase() === password.toLowerCase(),
-      );
-      if (user) {
-        this.isAuthSource.next(true);
-        localStorage.setItem('fakeToken', JSON.stringify(user.fakeToken));
-      }
-    });
+    this.http
+      .get(`${environment.baseURL}/users?login=${login}&password=${password}`)
+      .subscribe((response: User[] | []) => {
+        if (response.length !== 0) {
+          this.isAuthSource.next(true);
+          this.router.navigate(['courses']);
+          localStorage.setItem('fakeToken', JSON.stringify(response[0].fakeToken));
+        } else {
+          this.isAuthSource.next(false);
+        }
+      });
   }
 
   public logout(): void {

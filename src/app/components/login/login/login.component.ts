@@ -24,7 +24,6 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const { login, password } = this.loginForm.value;
       this.authService.login(login, password);
-      this.router.navigate(['courses']);
     }
   }
 }
