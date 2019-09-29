@@ -20,13 +20,15 @@ import { CreationDateDirective } from './@directives/creation-date.directive';
 
 // MODULES
 import { LoginModule } from './components/login/login.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 // PIPES
 import { HouresPipe } from './@pipes/houres.pipe';
 import { OrderByPipe } from './@pipes/order-by.pipe';
 import { SearchByPipe } from './@pipes/search-by.pipe';
+import { AuthService } from './@services/auth.service';
+import { AuthInterceptor } from './@interceptors/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,14 @@ import { SearchByPipe } from './@pipes/search-by.pipe';
     HttpClientModule,
     NgSelectModule,
   ],
-  providers: [],
+  providers: [
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
