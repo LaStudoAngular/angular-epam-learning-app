@@ -36,7 +36,7 @@ export class CoursesComponent implements OnInit {
 
   public onSearch(): void {
     this.http
-      .get(`http://localhost:3004/courses?q=${this.search}`)
+      .get(`http://localhost:3004/courses?textFragment=${this.search}`)
       .subscribe(response => console.log(response));
   }
 
