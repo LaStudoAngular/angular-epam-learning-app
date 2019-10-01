@@ -9,49 +9,44 @@ import { environment } from '../../environments/environment';
 })
 export class CourseService {
   private courses: Course[];
-  private counter = 3;
+  private COURSES_PER_ONE_LOADING = 3;
+  private CURRENT_INDEX_COURSE = 0;
 
-  // STREAM OF COURSES
-  private stream$ = new BehaviorSubject<Course[]>(null);
-  public source = this.stream$.asObservable();
+  // STREAM OF COURSES TITLE
+  private coursesSource = new BehaviorSubject<Course[]>(null);
+  public courses$ = this.coursesSource.asObservable();
 
   // STREAM OF BREADCRUMBS TITLE
   public title$ = new BehaviorSubject<string>(null);
   public titleSource = this.title$.asObservable();
 
   constructor(private http: HttpClient) {
-    this.getAllCourses();
+    this.getCourses();
   }
 
-  // GET ALL COURSES FROM SERVER DATABASE
-  private getAllCourses(): void {
-    this.http.get(`${environment.baseURL}/courses`).subscribe((response: Course[]) => {
-      // INIT LOCAL DATABASE
-      this.courses = response;
-      this.stream$.next(this.getPortionOfCourses(this.courses, this.counter));
-    });
+  // GET COURSES FROM SERVER DATABASE
+  public getCourses(): void {
+    this.http
+      .get<Course[]>(
+        `${environment.baseURL}/courses?start=${this.CURRENT_INDEX_COURSE}&count=${this.COURSES_PER_ONE_LOADING}`,
+      )
+      .subscribe((response: Course[]) => {
+        this.courses = [...this.courses, ...response];
+        this.coursesSource.next(this.courses);
+      });
   }
 
   // GET SELECTED QUANTITY OF COURSES
-  public getSelectedQuantityCourses(): Observable<boolean> {
-    this.counter += 3;
-    this.stream$.next(this.getPortionOfCourses(this.courses, this.counter));
-    return this.counter <= this.courses.length ? of(false) : of(true);
-  }
-
-  // GET SELECTED COURSE FROM LOCAL DATABASE
-  public getSelectedCourse(id: number): Observable<Course> {
-    const course: Course = this.courses.find((el: Course) => el.id === id);
-    if (course) {
-      return of(course);
-    }
+  public getPortionOfCourses(): void {
+    this.CURRENT_INDEX_COURSE += this.COURSES_PER_ONE_LOADING;
+    this.getCourses();
   }
 
   // ADD NEW COURSE IN SERVER DATABASE
   public createCourse(course: Course): Observable<boolean> {
     this.http.post(`${environment.baseURL}/courses`, course).subscribe((response: Course) => {
-      this.courses.push(response);
-      this.stream$.next(this.getPortionOfCourses(this.courses, this.counter));
+      // this.courses.push(response);
+      // this.stream$.next(this.getPortionOfCourses(this.courses, this.counter));
     });
     return of(true);
   }
@@ -91,10 +86,5 @@ export class CourseService {
       this.stream$.next(this.getPortionOfCourses(this.courses, this.counter));
     });
     return of(true);
-  }
-
-  // SLICE LIST OF COURSES
-  private getPortionOfCourses(courses: Course[], count: number): Course[] {
-    return courses.slice(0, count);
   }
 }

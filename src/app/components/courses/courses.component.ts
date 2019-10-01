@@ -20,7 +20,7 @@ export class CoursesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.courseService.source.subscribe((response: Course[]) => (this.courses = response));
+    this.courseService.courses$.subscribe((response: Course[]) => (this.courses = response));
   }
 
   onAddNewCourse(): void {
@@ -29,9 +29,7 @@ export class CoursesComponent implements OnInit {
   }
 
   public loadMore(): void {
-    this.courseService
-      .getSelectedQuantityCourses()
-      .subscribe((response: boolean) => (this.showMore = response));
+    this.courseService.getPortionOfCourses();
   }
 
   public onSearch(): void {
