@@ -40,4 +40,9 @@ export class AuthService {
     this.isAuthSource.next(false);
     localStorage.removeItem('fakeToken');
   }
+
+  // get token
+  public getToken(): string {
+    return localStorage.getItem('fakeToken');
+  }
 }
