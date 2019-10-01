@@ -12,7 +12,15 @@ export class AuthService {
   private isAuthSource = new BehaviorSubject<boolean>(null);
   public isAuth$ = this.isAuthSource.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    // ПРИ ПЕРЕЗАГРУЗКИ СТРАНИЦЫ isAuth$ === NULL, ДАЖЕ ЕСЛИ fakeToken ЕСТЬ В LOCALSTORAGE
+    const token: string = JSON.parse(localStorage.getItem('fakeToken'));
+    if (token) {
+      this.isAuthSource.next(true);
+    } else {
+      this.isAuthSource.next(false);
+    }
+  }
 
   public login(login: string, password: string): void {
     this.http
