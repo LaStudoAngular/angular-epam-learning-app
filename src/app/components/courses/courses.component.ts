@@ -1,18 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CourseService } from '../../@services/course.service';
 import { Router } from '@angular/router';
 import { Course } from '../../@models/course';
 import { HttpClient } from '@angular/common/http';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'ep-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss'],
 })
-export class CoursesComponent implements OnInit {
+export class CoursesComponent implements OnInit, OnDestroy {
   search: string;
   courses: Course[];
   showMore = false;
+  spinner: boolean;
+  private destroy = new Subject();
   constructor(
     private courseService: CourseService,
     private router: Router,
@@ -20,7 +24,12 @@ export class CoursesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.courseService.courses$.subscribe((response: Course[]) => (this.courses = response));
+    this.courseService.courses$
+      .pipe(takeUntil(this.destroy))
+      .subscribe((response: Course[]) => (this.courses = response));
+    this.courseService.spinner$
+      .pipe(takeUntil(this.destroy))
+      .subscribe((response: boolean) => (this.spinner = response));
   }
 
   onAddNewCourse(): void {
@@ -40,5 +49,10 @@ export class CoursesComponent implements OnInit {
 
   trackByFn(index, item): void {
     return item ? item.id : undefined;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next();
+    this.destroy.complete();
   }
 }

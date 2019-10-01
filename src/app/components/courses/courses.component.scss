@@ -99,7 +99,14 @@ $dark-sky-blue: #30b6dd;
   box-shadow: 0 1px 24px 0 rgba(18, 21, 35, 0.08);
   background-color: white;
   text-align: center;
-  padding: 12px 0;
   text-transform: uppercase;
   color: #2c2f3c;
+  padding: 2rem 0;
+  margin-top: 2rem;
+
+  & .nodata-text {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
 }

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Course } from '../@models/course';
 import { environment } from '../../environments/environment';
 import { IAuthor } from '../@interfaces/author';
+import { delay, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,10 @@ export class CourseService {
   private courses: Course[] = [];
   private COURSES_PER_ONE_LOADING = 3;
   private CURRENT_INDEX_COURSE = 0;
+
+  // INDICATOR
+  private spinnerSource = new BehaviorSubject<boolean>(true);
+  public spinner$ = this.spinnerSource.asObservable();
 
   // STREAM OF COURSES
   private coursesSource = new BehaviorSubject<Course[]>(null);
@@ -31,6 +36,10 @@ export class CourseService {
     this.http
       .get<Course[]>(
         `${environment.baseURL}/courses?start=${this.CURRENT_INDEX_COURSE}&count=${this.COURSES_PER_ONE_LOADING}`,
+      )
+      .pipe(
+        delay(2000),
+        tap(() => this.spinnerSource.next(false)),
       )
       .subscribe((response: Course[]) => {
         this.courses = [...this.courses, ...response];
