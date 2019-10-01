@@ -12,7 +12,7 @@ export class CourseService {
   private COURSES_PER_ONE_LOADING = 3;
   private CURRENT_INDEX_COURSE = 0;
 
-  // STREAM OF COURSES TITLE
+  // STREAM OF COURSES
   private coursesSource = new BehaviorSubject<Course[]>(null);
   public courses$ = this.coursesSource.asObservable();
 
@@ -88,6 +88,7 @@ export class CourseService {
     return of(true);
   }
 
+  // GET SELECTED COURSE FROM LOCAL DATABASE
   public getSelectedCourse(id: number): Observable<Course> {
     const course: Course = this.courses.find((el: Course) => el.id === id);
     return of(course);

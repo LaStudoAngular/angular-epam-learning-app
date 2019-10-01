@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CoursesComponent implements OnInit {
   search: string;
-  courses: Course[] | null = [];
+  courses: Course[];
   showMore = false;
   constructor(
     private courseService: CourseService,

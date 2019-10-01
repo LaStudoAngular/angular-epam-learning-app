@@ -26,5 +26,5 @@
     ></ep-courses-list-item>
     <button class="more" (click)="loadMore()" [hidden]="showMore">load more</button>
   </div>
-  <div class="nodata" *ngIf="courses.length === 0">no data. feel free to add new course</div>
+  <div class="nodata" *ngIf="!courses">no data. feel free to add new course</div>
 </div>
