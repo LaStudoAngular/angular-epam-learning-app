@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { User } from '../@models/user';
@@ -29,6 +29,7 @@ export class AuthService {
         if (response.length !== 0) {
           this.isAuthSource.next(true);
           this.router.navigate(['courses']);
+          localStorage.setItem('user', JSON.stringify(response[0]));
           localStorage.setItem('fakeToken', JSON.stringify(response[0].fakeToken));
         } else {
           this.isAuthSource.next(false);
@@ -41,8 +42,7 @@ export class AuthService {
     localStorage.removeItem('fakeToken');
   }
 
-  // get token
-  public getToken(): string {
-    return localStorage.getItem('fakeToken');
+  getUser(): Observable<User> {
+    return of(JSON.parse(localStorage.getItem('user')));
   }
 }
