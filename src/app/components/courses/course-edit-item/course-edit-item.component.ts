@@ -6,6 +6,7 @@ import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Course } from '../../../@models/course';
 import { Author } from '../../../@models/author';
+import uuid from 'uuid/v1';
 
 @Component({
   selector: 'ep-course-edit-item',
@@ -107,12 +108,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
   }
 
   private addAuthors(name: string) {
-    return new Author(
-      name.split(' ')[0],
-      name.split(' ')[1],
-      name,
-      Math.floor(Math.random() * 10000),
-    );
+    return new Author(name.split(' ')[0], name.split(' ')[1], uuid(), name);
   }
 
   public ngOnDestroy(): void {

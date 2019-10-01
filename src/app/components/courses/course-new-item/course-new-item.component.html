@@ -48,11 +48,12 @@
       id="authors"
       style="text-transform: capitalize"
       [items]="authors"
-      [addTag]="addAuthors"
-      [hideSelected]="true"
+      [closeOnSelect]="false"
+      [searchable]="false"
       multiple="true"
-      bindLabel="fullName"
+      bindLabel="name"
       formControlName="authors"
+      placeholder="Select authors"
     >
     </ng-select>
   </div>

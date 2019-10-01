@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Course } from '../@models/course';
 import { environment } from '../../environments/environment';
+import { IAuthor } from '../@interfaces/author';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,7 @@ export class CourseService {
 
   constructor(private http: HttpClient) {
     this.getCourses();
+    this.getAuthors();
   }
 
   // GET COURSES FROM SERVER DATABASE
@@ -92,5 +94,10 @@ export class CourseService {
   public getSelectedCourse(id: number): Observable<Course> {
     const course: Course = this.courses.find((el: Course) => el.id === id);
     return of(course);
+  }
+
+  // GET AUTHORS
+  public getAuthors(): Observable<IAuthor[]> {
+    return this.http.get<IAuthor[]>(`${environment.baseURL}/authors`);
   }
 }

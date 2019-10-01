@@ -6,6 +6,8 @@ import { ReplaySubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Author } from '../../../@models/author';
 import { Course } from '../../../@models/course';
+import uuid from 'uuid/v1';
+import { IAuthor } from '../../../@interfaces/author';
 
 @Component({
   selector: 'ep-course-new-item',
@@ -16,7 +18,7 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public title = 'create new course';
   private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
-  authors: any[];
+  authors: IAuthor[];
 
   constructor(
     private fb: FormBuilder,
@@ -32,40 +34,29 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
       description: [null, Validators.required],
       authors: [null, [Validators.required]],
     });
+    this.courseService.getAuthors().subscribe((authors: IAuthor[]) => {
+      this.authors = authors;
+      takeUntil(this.destroyedSource);
+    });
   }
 
   public onSubmit(): void {
     if (this.form.valid) {
       const { title, date, duration, description, authors } = this.form.value;
-      const listOfAuthors = authors.map(el => {
-        return {
-          firstName: el.firstName,
-          lastName: el.lastName,
-          id: el.id,
-        };
-      });
       const course: Course = new Course(
         title,
         description,
         false,
         new Date(date).toISOString(),
-        listOfAuthors,
+        authors,
         duration,
       );
+      console.log(course);
       this.courseService.createCourse(course).subscribe(() => {
         this.goBack();
         takeUntil(this.destroyedSource);
       });
     }
-  }
-
-  private addAuthors(author: string) {
-    return new Author(
-      author.split(' ')[0],
-      author.split(' ')[1],
-      author,
-      Math.floor(Math.random() * 10000),
-    );
   }
 
   public ngOnDestroy(): void {
