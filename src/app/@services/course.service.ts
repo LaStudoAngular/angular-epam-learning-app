@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class CourseService {
-  private courses: Course[];
+  private courses: Course[] = [];
   private COURSES_PER_ONE_LOADING = 3;
   private CURRENT_INDEX_COURSE = 0;
 
@@ -45,8 +45,8 @@ export class CourseService {
   // ADD NEW COURSE IN SERVER DATABASE
   public createCourse(course: Course): Observable<boolean> {
     this.http.post(`${environment.baseURL}/courses`, course).subscribe((response: Course) => {
-      // this.courses.push(response);
-      // this.stream$.next(this.getPortionOfCourses(this.courses, this.counter));
+      this.courses = [...this.courses, response];
+      this.coursesSource.next(this.courses);
     });
     return of(true);
   }
@@ -73,7 +73,7 @@ export class CourseService {
             return el;
           }
         });
-        this.stream$.next(this.getPortionOfCourses(this.courses, this.counter));
+        this.coursesSource.next(this.courses);
       });
     return of(true);
   }
@@ -82,9 +82,14 @@ export class CourseService {
   public removeCourse(course: Course): Observable<boolean> {
     this.http.delete(`${environment.baseURL}/courses/${course.id}`).subscribe(() => {
       // EDIT LOCAL DATABASE
-      this.courses = this.courses.filter(el => el.id !== course.id);
-      this.stream$.next(this.getPortionOfCourses(this.courses, this.counter));
+      this.courses = this.courses.filter((el: Course) => el.id !== course.id);
+      this.coursesSource.next(this.courses);
     });
     return of(true);
+  }
+
+  public getSelectedCourse(id: number): Observable<Course> {
+    const course: Course = this.courses.find((el: Course) => el.id === id);
+    return of(course);
   }
 }

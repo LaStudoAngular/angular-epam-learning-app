@@ -44,7 +44,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
           date: this.formatDate(course.date),
           duration: this.course.length,
           description: this.course.description,
-          authors: this.course.authors.map(el => {
+          authors: this.course.authors.map((el: Author) => {
             return {
               ...el,
               // ADD FIELD FOR PLUGIN OUTPUT
@@ -62,7 +62,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       const { title, date, duration, description, authors } = this.form.value;
       // DELETE FIELD FROM OBJECT
-      const listOfAuthors = authors.map(el => {
+      const listOfAuthors = authors.map((el: Author) => {
         return {
           firstName: el.firstName,
           lastName: el.lastName,
