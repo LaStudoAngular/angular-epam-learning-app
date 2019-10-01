@@ -4,6 +4,10 @@ import { takeUntil } from 'rxjs/operators';
 import { CourseService } from '../../../@services/course.service';
 import { ReplaySubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { Author } from '../../../@models/author';
+import { Course } from '../../../@models/course';
+import uuid from 'uuid/v1';
+import { IAuthor } from '../../../@interfaces/author';
 
 @Component({
   selector: 'ep-course-new-item',
@@ -14,6 +18,7 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public title = 'create new course';
   private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
+  authors: IAuthor[];
 
   constructor(
     private fb: FormBuilder,
@@ -24,22 +29,33 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.form = this.fb.group({
       title: [null, Validators.required],
-      creationDate: [null, Validators.required],
+      date: [null, Validators.required],
       duration: [null, Validators.required],
       description: [null, Validators.required],
       authors: [null, [Validators.required]],
+    });
+    this.courseService.getAuthors().subscribe((authors: IAuthor[]) => {
+      this.authors = authors;
+      takeUntil(this.destroyedSource);
     });
   }
 
   public onSubmit(): void {
     if (this.form.valid) {
-      const { title, creationDate, duration, description, authors } = this.form.value;
-      this.courseService
-        .createCourse(title, creationDate, duration, description, authors)
-        .subscribe(() => {
-          this.goBack();
-          takeUntil(this.destroyedSource);
-        });
+      const { title, date, duration, description, authors } = this.form.value;
+      const course: Course = new Course(
+        title,
+        description,
+        false,
+        new Date(date).toISOString(),
+        authors,
+        duration,
+      );
+      console.log(course);
+      this.courseService.createCourse(course).subscribe(() => {
+        this.goBack();
+        takeUntil(this.destroyedSource);
+      });
     }
   }
 
@@ -49,6 +65,6 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
   }
 
   public goBack(): void {
-    this.router.navigateByUrl('/courses');
+    this.router.navigate(['courses']);
   }
 }

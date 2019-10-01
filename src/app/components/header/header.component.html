@@ -1,8 +1,11 @@
 <div class="container py-3 d-flex justify-content-between align-items-center">
   <a href="#">
-    <img src="../../../assets/images/logo.png" width="137" alt="video courses">
+    <img src="../../../assets/images/logo.png" width="137" alt="video courses" />
   </a>
   <ul *ngIf="authService.isAuth$ | async" class="list d-flex">
+    <li *ngIf="user" class="list__item" style="color: white">
+      {{ user.name.first + ' ' + user.name.last }}
+    </li>
     <li class="list__item">
       <a (click)="onLogOut()" class="list__link list__logoff">
         <i class="fa fa-sign-out"></i>

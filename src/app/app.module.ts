@@ -12,17 +12,23 @@ import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.compo
 import { CoursesComponent } from './components/courses/courses.component';
 import { CoursesListItemComponent } from './components/courses/courses-list-item/courses-list-item.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { CourseNewItemComponent } from './components/courses/course-new-item/course-new-item.component';
+import { CourseEditItemComponent } from './components/courses/course-edit-item/course-edit-item.component';
 
 // DIRECTIVES
 import { CreationDateDirective } from './@directives/creation-date.directive';
 
+// MODULES
+import { LoginModule } from './components/login/login.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgSelectModule } from '@ng-select/ng-select';
+
 // PIPES
 import { HouresPipe } from './@pipes/houres.pipe';
 import { OrderByPipe } from './@pipes/order-by.pipe';
-import { LoginModule } from './components/login/login.module';
 import { SearchByPipe } from './@pipes/search-by.pipe';
-import { CourseNewItemComponent } from './components/courses/course-new-item/course-new-item.component';
-import { CourseEditItemComponent } from './components/courses/course-edit-item/course-edit-item.component';
+import { AuthService } from './@services/auth.service';
+import { AuthInterceptor } from './@interceptors/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -40,8 +46,23 @@ import { CourseEditItemComponent } from './components/courses/course-edit-item/c
     CourseNewItemComponent,
     CourseEditItemComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, LoginModule],
-  providers: [],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    LoginModule,
+    HttpClientModule,
+    NgSelectModule,
+  ],
+  providers: [
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

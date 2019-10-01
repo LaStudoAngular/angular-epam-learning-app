@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'courses/:id', component: CourseEditItemComponent, canActivate: [AuthGuard] },
   {
     path: 'login',
-    loadChildren: () => import('./components/login/login.module').then(mod => mod.LoginModule),
+    loadChildren: () => import('./components/login/login.module').then(m => m.LoginModule),
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },

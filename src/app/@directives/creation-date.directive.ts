@@ -4,15 +4,21 @@ import { Directive, HostBinding, Input, OnInit } from '@angular/core';
   selector: '[epCreationDate]',
 })
 export class CreationDateDirective implements OnInit {
-  @Input() creationDate: Date;
-
+  @Input() creationDate: string;
   @HostBinding('style.borderColor') bdColor: string;
+  colors = {
+    green: '#9bc837',
+    blue: '#30b6dd',
+  };
 
   ngOnInit(): void {
-    if (this.creationDate < this.currentDate() && this.creationDate >= this.daysBefore(14)) {
-      this.bdColor = '#9bc837';
-    } else if (this.creationDate > this.currentDate()) {
-      this.bdColor = '#30b6dd';
+    if (
+      new Date(this.creationDate) < this.currentDate() &&
+      new Date(this.creationDate) >= this.daysBefore(14)
+    ) {
+      this.bdColor = this.colors.green;
+    } else if (new Date(this.creationDate) > this.currentDate()) {
+      this.bdColor = this.colors.blue;
     }
   }
 

@@ -4,7 +4,9 @@ import { CourseService } from '../../../@services/course.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Course } from '../../../@interfaces/course';
+import { Course } from '../../../@models/course';
+import { Author } from '../../../@models/author';
+import uuid from 'uuid/v1';
 
 @Component({
   selector: 'ep-course-edit-item',
@@ -18,43 +20,70 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
   ) {}
-  public title = 'edit course';
   private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   public form: FormGroup;
-  private courseID: number;
+  course: Course;
 
   public ngOnInit(): void {
+    // GENERATE FORM
     this.form = this.fb.group({
       title: [null, Validators.required],
-      creationDate: [null, Validators.required],
+      date: [null, Validators.required],
       duration: [null, Validators.required],
       description: [null, Validators.required],
       authors: [null, [Validators.required]],
     });
+
+    // GET ID OF SELECTED COURSE
     this.route.params.subscribe((data: { id: string }) => {
-      this.courseID = Number(data.id);
-      this.courseService.getSelectedCourse(this.courseID).subscribe((course: Course) => {
+      const courseID = Number(data.id);
+      // GET SELECTED COURSE FROM LOCAL DATABASE
+      this.courseService.getSelectedCourse(courseID).subscribe((course: Course) => {
+        this.course = course;
         this.form.patchValue({
-          title: course.title,
-          creationDate: this.formatDate(course.creationDate),
-          duration: course.duration,
-          description: course.description,
-          authors: course.authors,
+          title: this.course.name,
+          date: this.formatDate(course.date),
+          duration: this.course.length,
+          description: this.course.description,
+          authors: this.course.authors.map((el: Author) => {
+            return {
+              ...el,
+              // ADD FIELD FOR PLUGIN OUTPUT
+              fullName: `${el.firstName} ${el.lastName}`,
+            };
+          }),
         });
-        this.courseService.title$.next(`video course ${course.title}`);
+        // GENERATE BREADCRUMBS FROM SELECTED COURSE
+        this.courseService.title$.next(`${course.name}`);
       });
     });
   }
 
   onSubmit(): void {
     if (this.form.valid) {
-      const { title, creationDate, duration, description, authors } = this.form.value;
-      this.courseService
-        .editCourse(title, creationDate, duration, description, this.courseID, authors)
-        .subscribe(() => {
-          this.goBack();
-          takeUntil(this.destroyedSource);
-        });
+      const { title, date, duration, description, authors } = this.form.value;
+      // DELETE FIELD FROM OBJECT
+      const listOfAuthors = authors.map((el: Author) => {
+        return {
+          firstName: el.firstName,
+          lastName: el.lastName,
+          id: el.id,
+        };
+      });
+      const course: Course = new Course(
+        title,
+        description,
+        this.course.isTopRated,
+        new Date(date).toISOString(),
+        listOfAuthors,
+        duration,
+        this.course.id,
+      );
+
+      this.courseService.editCourse(course).subscribe(() => {
+        this.goBack();
+        takeUntil(this.destroyedSource);
+      });
     }
   }
 
@@ -74,9 +103,12 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
 
   public goBack(): void {
     this.form.reset();
-    this.courseID = null;
     this.courseService.title$.next('');
-    this.router.navigateByUrl('/courses');
+    this.router.navigate(['courses']);
+  }
+
+  private addAuthors(name: string) {
+    return new Author(name.split(' ')[0], name.split(' ')[1], uuid(), name);
   }
 
   public ngOnDestroy(): void {

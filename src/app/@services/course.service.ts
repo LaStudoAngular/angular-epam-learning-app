@@ -1,117 +1,103 @@
 import { Injectable } from '@angular/core';
-import { Course } from '../@interfaces/course';
 import { BehaviorSubject, Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Course } from '../@models/course';
+import { environment } from '../../environments/environment';
+import { IAuthor } from '../@interfaces/author';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CourseService {
-  private courses: Course[];
+  private courses: Course[] = [];
+  private COURSES_PER_ONE_LOADING = 3;
+  private CURRENT_INDEX_COURSE = 0;
 
   // STREAM OF COURSES
-  private stream$ = new BehaviorSubject<Course[]>(null);
-  public source = this.stream$.asObservable();
+  private coursesSource = new BehaviorSubject<Course[]>(null);
+  public courses$ = this.coursesSource.asObservable();
 
   // STREAM OF BREADCRUMBS TITLE
   public title$ = new BehaviorSubject<string>(null);
   public titleSource = this.title$.asObservable();
 
-  constructor() {
-    this.courses = [
-      {
-        id: 1,
-        title: 'Angular',
-        creationDate: new Date(2019, 1, 9),
-        duration: 88,
-        description:
-          'Learn about where you can find course descriptions, what information they include, how they work, ' +
-          'and details about various components of a course description.Course descriptions report information about ' +
-          "a university or college's classes. They're published both in course catalogs that outline degree requirements " +
-          'and in course schedules that contain descriptions for all courses offered during a particular semester.',
-        topRated: false,
-        authors: ['john papa'],
-      },
-      {
-        id: 2,
-        title: 'Vue.js',
-        creationDate: new Date(2019, 7, 10),
-        duration: 148,
-        description:
-          'Learn about where you can find course descriptions, what information they include, how they work, ' +
-          'and details about various components of a course description. Course descriptions report information ' +
-          "about a university or college's classes. They're published both in course catalogs that outline degree " +
-          'requirements and in course schedules that contain descriptions for all courses offered during a particular semester.',
-        topRated: true,
-        authors: ['evan you'],
-      },
-      {
-        id: 3,
-        title: 'React.js',
-        creationDate: new Date(2019, 10, 5),
-        duration: 208,
-        description:
-          'Learn about where you can find course descriptions, what information they include, how they work, ' +
-          'and details about various components of a course description. Course descriptions report information ' +
-          "about a university or college's classes. They're published both in course catalogs that outline degree " +
-          'requirements and in course schedules that contain descriptions for all courses offered during a particular semester.',
-        topRated: false,
-        authors: ['den abramov'],
-      },
-    ];
-    this.stream$.next(this.courses);
+  constructor(private http: HttpClient) {
+    this.getCourses();
+    this.getAuthors();
   }
 
+  // GET COURSES FROM SERVER DATABASE
+  public getCourses(): void {
+    this.http
+      .get<Course[]>(
+        `${environment.baseURL}/courses?start=${this.CURRENT_INDEX_COURSE}&count=${this.COURSES_PER_ONE_LOADING}`,
+      )
+      .subscribe((response: Course[]) => {
+        this.courses = [...this.courses, ...response];
+        this.coursesSource.next(this.courses);
+      });
+  }
+
+  // GET SELECTED QUANTITY OF COURSES
+  public getPortionOfCourses(): void {
+    this.CURRENT_INDEX_COURSE += this.COURSES_PER_ONE_LOADING;
+    this.getCourses();
+  }
+
+  // ADD NEW COURSE IN SERVER DATABASE
+  public createCourse(course: Course): Observable<boolean> {
+    this.http.post(`${environment.baseURL}/courses`, course).subscribe((response: Course) => {
+      this.courses = [...this.courses, response];
+      this.coursesSource.next(this.courses);
+    });
+    return of(true);
+  }
+
+  // EDIT COURSE
+  public editCourse(course: Course): Observable<boolean> {
+    // EDIT REMOTE DATABASE
+    this.http
+      .put(`${environment.baseURL}/courses/${course.id}`, course)
+      .subscribe((response: Course) => {
+        // EDIT LOCAL DATABASE
+        this.courses = this.courses.map((el: Course) => {
+          if (el.id === course.id) {
+            return {
+              name: response.name,
+              description: response.description,
+              isTopRated: response.isTopRated,
+              date: response.date,
+              authors: response.authors,
+              length: response.length,
+              id: response.id,
+            };
+          } else {
+            return el;
+          }
+        });
+        this.coursesSource.next(this.courses);
+      });
+    return of(true);
+  }
+
+  // DELETE SELECTED COURSE FROM DATABASE
+  public removeCourse(course: Course): Observable<boolean> {
+    this.http.delete(`${environment.baseURL}/courses/${course.id}`).subscribe(() => {
+      // EDIT LOCAL DATABASE
+      this.courses = this.courses.filter((el: Course) => el.id !== course.id);
+      this.coursesSource.next(this.courses);
+    });
+    return of(true);
+  }
+
+  // GET SELECTED COURSE FROM LOCAL DATABASE
   public getSelectedCourse(id: number): Observable<Course> {
-    return of(this.courses.find((course: Course) => course.id === id));
+    const course: Course = this.courses.find((el: Course) => el.id === id);
+    return of(course);
   }
 
-  public createCourse(title, creationDate, duration, description, authors): Observable<boolean> {
-    const newCourse = {
-      id: this.setID(),
-      title,
-      creationDate: new Date(creationDate),
-      duration,
-      description,
-      topRated: false,
-      authors: authors.split(','),
-    };
-    this.courses.push(newCourse);
-    this.stream$.next(this.courses);
-    return of(true);
-  }
-
-  public editCourse(title, creationDate, duration, description, id, authors): Observable<boolean> {
-    this.courses = [...this.courses].map((course: Course) => {
-      if (course.id === id) {
-        return {
-          id,
-          title,
-          creationDate,
-          duration,
-          description,
-          topRated: course.topRated,
-          authors: Array.isArray(authors) ? authors : authors.split(','),
-        };
-      }
-      return course;
-    });
-    this.stream$.next(this.courses);
-    return of(true);
-  }
-
-  public removeCourse(course: Course): void {
-    this.courses = this.courses.filter(el => el.id !== course.id);
-    this.stream$.next(this.courses);
-  }
-
-  private setID(): number {
-    let count = 1;
-    this.courses.forEach(el => {
-      if (el.id > count) {
-        count = el.id;
-      }
-    });
-    count += 1;
-    return count;
+  // GET AUTHORS
+  public getAuthors(): Observable<IAuthor[]> {
+    return this.http.get<IAuthor[]>(`${environment.baseURL}/authors`);
   }
 }
