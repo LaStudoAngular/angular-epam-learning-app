@@ -29,6 +29,7 @@ import { OrderByPipe } from './@pipes/order-by.pipe';
 import { SearchByPipe } from './@pipes/search-by.pipe';
 import { AuthService } from './@services/auth.service';
 import { AuthInterceptor } from './@interceptors/auth-interceptor';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { AuthInterceptor } from './@interceptors/auth-interceptor';
     NotFoundComponent,
     CourseNewItemComponent,
     CourseEditItemComponent,
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,
