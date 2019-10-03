@@ -1,10 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CourseService } from '../../@services/course.service';
 import { Router } from '@angular/router';
 import { Course } from '../../@models/course';
 import { HttpClient } from '@angular/common/http';
-import { delay, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import {
+  debounceTime,
+  delay,
+  distinctUntilChanged,
+  map,
+  switchMap,
+  takeUntil,
+} from 'rxjs/operators';
+import { fromEvent, Subject } from 'rxjs';
 
 @Component({
   selector: 'ep-courses',
@@ -12,10 +19,12 @@ import { Subject } from 'rxjs';
   styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit, OnDestroy {
-  search: string;
+  @ViewChild('input', { static: true }) input: ElementRef;
   courses: Course[];
   showMore = false;
   indicator = true;
+  search: any;
+
   private destroy = new Subject();
   constructor(
     private courseService: CourseService,
@@ -24,15 +33,34 @@ export class CoursesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // GET COURSES FROM DATABASE
     this.courseService.courses$
       .pipe(takeUntil(this.destroy))
       .subscribe((response: Course[]) => (this.courses = response));
+
+    // INITIALIZE INDICATOR STATUS
     this.courseService.spinner$
       .pipe(
         delay(1000),
         takeUntil(this.destroy),
       )
       .subscribe((response: boolean) => (this.indicator = response));
+
+    // SEARCH
+    fromEvent(this.input.nativeElement, 'input')
+      .pipe(
+        debounceTime(2000),
+        distinctUntilChanged(),
+        switchMap((event: any) => {
+          const value: string = event.target.value;
+          if (value.length >= 3) {
+            return this.http.get(`http://localhost:3004/courses?textFragment=${value}`);
+          }
+        }),
+      )
+      .subscribe((response: Course[]) => {
+        this.courses = response;
+      });
   }
 
   onAddNewCourse(): void {
@@ -42,12 +70,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   public loadMore(): void {
     this.courseService.getPortionOfCourses();
-  }
-
-  public onSearch(): void {
-    this.http
-      .get(`http://localhost:3004/courses?textFragment=${this.search}`)
-      .subscribe(response => console.log(response));
   }
 
   trackByFn(index, item): void {
