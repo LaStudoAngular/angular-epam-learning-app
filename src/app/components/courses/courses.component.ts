@@ -15,7 +15,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   search: string;
   courses: Course[];
   showMore = false;
-  spinner = true;
+  indicator = true;
   private destroy = new Subject();
   constructor(
     private courseService: CourseService,
@@ -32,7 +32,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
         delay(1000),
         takeUntil(this.destroy),
       )
-      .subscribe((response: boolean) => (this.spinner = response));
+      .subscribe((response: boolean) => (this.indicator = response));
   }
 
   onAddNewCourse(): void {
