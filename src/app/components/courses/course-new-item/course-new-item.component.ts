@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { takeUntil } from 'rxjs/operators';
+import { delay, takeUntil } from 'rxjs/operators';
 import { CourseService } from '../../../@services/course.service';
 import { ReplaySubject } from 'rxjs';
 import { Router } from '@angular/router';
@@ -17,6 +17,7 @@ import { IAuthor } from '../../../@interfaces/author';
 export class CourseNewItemComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public title = 'create new course';
+  public indicator = true;
   private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   authors: IAuthor[];
 
@@ -27,6 +28,7 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
+    // INITIALIZE FORM
     this.form = this.fb.group({
       title: [null, Validators.required],
       date: [null, Validators.required],
@@ -34,10 +36,20 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
       description: [null, Validators.required],
       authors: [null, [Validators.required]],
     });
+
+    // GET LIST OF AUTHORS
     this.courseService.getAuthors().subscribe((authors: IAuthor[]) => {
       this.authors = authors;
       takeUntil(this.destroyedSource);
     });
+
+    // GET INDICATOR STATUS
+    this.courseService.spinner$
+      .pipe(
+        delay(1000),
+        takeUntil(this.destroyedSource),
+      )
+      .subscribe((response: boolean) => (this.indicator = response));
   }
 
   public onSubmit(): void {
