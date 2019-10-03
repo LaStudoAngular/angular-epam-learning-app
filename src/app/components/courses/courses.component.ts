@@ -7,11 +7,11 @@ import {
   debounceTime,
   delay,
   distinctUntilChanged,
-  map,
+  isEmpty,
   switchMap,
   takeUntil,
 } from 'rxjs/operators';
-import { fromEvent, Subject } from 'rxjs';
+import { EMPTY, fromEvent, Subject } from 'rxjs';
 
 @Component({
   selector: 'ep-courses',
@@ -21,9 +21,9 @@ import { fromEvent, Subject } from 'rxjs';
 export class CoursesComponent implements OnInit, OnDestroy {
   @ViewChild('input', { static: true }) input: ElementRef;
   courses: Course[];
+  originCourses: Course[] = [];
   showMore = false;
   indicator = true;
-  search: any;
 
   private destroy = new Subject();
   constructor(
@@ -55,11 +55,19 @@ export class CoursesComponent implements OnInit, OnDestroy {
           const value: string = event.target.value;
           if (value.length >= 3) {
             return this.http.get(`http://localhost:3004/courses?textFragment=${value}`);
+          } else {
+            return EMPTY.pipe(isEmpty());
           }
         }),
       )
       .subscribe((response: Course[]) => {
-        this.courses = response;
+        if (Array.isArray(response)) {
+          this.courses = response;
+        } else {
+          this.courseService.courses$
+            .pipe(takeUntil(this.destroy))
+            .subscribe((response: Course[]) => (this.courses = response));
+        }
       });
   }
 

@@ -28,8 +28,8 @@ export class AuthService {
       .subscribe((response: User[] | []) => {
         if (response.length !== 0) {
           this.isAuthSource.next(true);
-          this.router.navigate(['courses']);
           localStorage.setItem('user', JSON.stringify(response[0]));
+          this.router.navigate(['courses']);
         } else {
           this.isAuthSource.next(false);
         }

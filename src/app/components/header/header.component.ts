@@ -19,7 +19,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService
       .getUser()
       .pipe(takeUntil(this.destroy))
-      .subscribe((user: User) => (this.user = user));
+      .subscribe((user: User) => {
+        this.user = user;
+      });
   }
 
   onLogOut(): void {
