@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CourseService } from '../../../@services/course.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { delay, takeUntil } from 'rxjs/operators';
 import { Course } from '../../../@models/course';
 import { Author } from '../../../@models/author';
 import uuid from 'uuid/v1';
@@ -14,6 +14,7 @@ import uuid from 'uuid/v1';
   styleUrls: ['./course-edit-item.component.scss'],
 })
 export class CourseEditItemComponent implements OnInit, OnDestroy {
+  public indicator = true;
   constructor(
     private fb: FormBuilder,
     private courseService: CourseService,
@@ -25,6 +26,14 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
   course: Course;
 
   public ngOnInit(): void {
+    // GET INDICATOR STATUS
+    this.courseService.spinner$
+      .pipe(
+        delay(1000),
+        takeUntil(this.destroyedSource),
+      )
+      .subscribe((response: boolean) => (this.indicator = response));
+
     // GENERATE FORM
     this.form = this.fb.group({
       title: [null, Validators.required],
