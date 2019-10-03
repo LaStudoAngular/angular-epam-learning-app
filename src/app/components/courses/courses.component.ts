@@ -21,7 +21,6 @@ import { EMPTY, fromEvent, Subject } from 'rxjs';
 export class CoursesComponent implements OnInit, OnDestroy {
   @ViewChild('input', { static: true }) input: ElementRef;
   courses: Course[];
-  originCourses: Course[] = [];
   showMore = false;
   indicator = true;
 
