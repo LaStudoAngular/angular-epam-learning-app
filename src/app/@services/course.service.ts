@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Course } from '../@models/course';
 import { environment } from '../../environments/environment';
 import { IAuthor } from '../@interfaces/author';
-import { delay, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -37,10 +37,7 @@ export class CourseService {
       .get<Course[]>(
         `${environment.baseURL}/courses?start=${this.CURRENT_INDEX_COURSE}&count=${this.COURSES_PER_ONE_LOADING}`,
       )
-      .pipe(
-        delay(2000),
-        tap(() => this.spinnerSource.next(false)),
-      )
+      .pipe(tap(() => this.spinnerSource.next(false)))
       .subscribe((response: Course[]) => {
         this.courses = [...this.courses, ...response];
         this.coursesSource.next(this.courses);

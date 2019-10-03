@@ -19,15 +19,15 @@
       </button>
     </div>
   </header>
-  <div *ngIf="courses">
+  <div class="nodata" *ngIf="spinner">
+    <ep-spinner></ep-spinner>
+    <span class="text-success nodata-text">no data. feel free to add new course</span>
+  </div>
+  <div *ngIf="!spinner">
     <ep-courses-list-item
       [course]="course"
       *ngFor="let course of courses | orderBy | searchBy: search; trackBy: trackByFn"
     ></ep-courses-list-item>
     <button class="more" (click)="loadMore()" [hidden]="showMore">load more</button>
-  </div>
-  <div class="nodata" *ngIf="!courses">
-    <ep-spinner *ngIf="spinner"></ep-spinner>
-    <span class="text-success nodata-text">no data. feel free to add new course</span>
   </div>
 </div>

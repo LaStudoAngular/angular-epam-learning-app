@@ -3,7 +3,7 @@ import { CourseService } from '../../@services/course.service';
 import { Router } from '@angular/router';
 import { Course } from '../../@models/course';
 import { HttpClient } from '@angular/common/http';
-import { takeUntil } from 'rxjs/operators';
+import { delay, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -15,7 +15,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   search: string;
   courses: Course[];
   showMore = false;
-  spinner: boolean;
+  spinner = true;
   private destroy = new Subject();
   constructor(
     private courseService: CourseService,
@@ -28,7 +28,10 @@ export class CoursesComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy))
       .subscribe((response: Course[]) => (this.courses = response));
     this.courseService.spinner$
-      .pipe(takeUntil(this.destroy))
+      .pipe(
+        delay(1000),
+        takeUntil(this.destroy),
+      )
       .subscribe((response: boolean) => (this.spinner = response));
   }
 
