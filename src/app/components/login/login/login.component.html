@@ -1,4 +1,5 @@
-<form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<ep-spinner *ngIf="indicator"></ep-spinner>
+<form *ngIf="!indicator" class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
   <h4 class="form__title text-capitalize">login</h4>
   <div class="form-group">
     <label class="form__label d-flex justify-content-between" for="login"

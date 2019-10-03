@@ -21,6 +21,7 @@ import { CreationDateDirective } from './@directives/creation-date.directive';
 // MODULES
 import { LoginModule } from './components/login/login.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { SpinnerModule } from './components/spinner/spinner.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 // PIPES
@@ -29,7 +30,6 @@ import { OrderByPipe } from './@pipes/order-by.pipe';
 import { SearchByPipe } from './@pipes/search-by.pipe';
 import { AuthService } from './@services/auth.service';
 import { AuthInterceptor } from './@interceptors/auth-interceptor';
-import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +46,6 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     NotFoundComponent,
     CourseNewItemComponent,
     CourseEditItemComponent,
-    SpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,6 +55,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     LoginModule,
     HttpClientModule,
     NgSelectModule,
+    SpinnerModule,
   ],
   providers: [
     AuthService,
@@ -66,5 +66,6 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     },
   ],
   bootstrap: [AppComponent],
+  exports: [],
 })
 export class AppModule {}
