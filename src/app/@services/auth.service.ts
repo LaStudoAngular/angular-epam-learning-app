@@ -13,9 +13,9 @@ export class AuthService {
   public isAuth$ = this.isAuthSource.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {
-    // ПРИ ПЕРЕЗАГРУЗКИ СТРАНИЦЫ isAuth$ === NULL, ДАЖЕ ЕСЛИ fakeToken ЕСТЬ В LOCALSTORAGE
-    const token: string = JSON.parse(localStorage.getItem('fakeToken'));
-    if (token) {
+    // ПРИ ПЕРЕЗАГРУЗКИ СТРАНИЦЫ isAuth$ === NULL, ДАЖЕ ЕСЛИ user ЕСТЬ В LOCALSTORAGE
+    const user: User = JSON.parse(localStorage.getItem('user'));
+    if (user) {
       this.isAuthSource.next(true);
     } else {
       this.isAuthSource.next(false);
@@ -28,9 +28,8 @@ export class AuthService {
       .subscribe((response: User[] | []) => {
         if (response.length !== 0) {
           this.isAuthSource.next(true);
-          this.router.navigate(['courses']);
           localStorage.setItem('user', JSON.stringify(response[0]));
-          localStorage.setItem('fakeToken', JSON.stringify(response[0].fakeToken));
+          this.router.navigate(['courses']);
         } else {
           this.isAuthSource.next(false);
         }
@@ -39,7 +38,7 @@ export class AuthService {
 
   public logout(): void {
     this.isAuthSource.next(false);
-    localStorage.removeItem('fakeToken');
+    localStorage.removeItem('user');
   }
 
   getUser(): Observable<User> {

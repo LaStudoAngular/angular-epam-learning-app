@@ -21,6 +21,7 @@ import { CreationDateDirective } from './@directives/creation-date.directive';
 // MODULES
 import { LoginModule } from './components/login/login.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { SpinnerModule } from './components/spinner/spinner.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 // PIPES
@@ -54,6 +55,7 @@ import { AuthInterceptor } from './@interceptors/auth-interceptor';
     LoginModule,
     HttpClientModule,
     NgSelectModule,
+    SpinnerModule,
   ],
   providers: [
     AuthService,
@@ -64,5 +66,6 @@ import { AuthInterceptor } from './@interceptors/auth-interceptor';
     },
   ],
   bootstrap: [AppComponent],
+  exports: [],
 })
 export class AppModule {}
