@@ -32,16 +32,11 @@ export class CourseService {
   }
 
   // GET COURSES FROM SERVER DATABASE
-  public getCourses(): void {
-    this.http
-      .get<Course[]>(
-        `${environment.baseURL}/courses?start=${this.CURRENT_INDEX_COURSE}&count=${this.COURSES_PER_ONE_LOADING}`,
-      )
-      .pipe(tap(() => this.spinnerSource.next(false)))
-      .subscribe((response: Course[]) => {
-        this.courses = [...this.courses, ...response];
-        this.coursesSource.next(this.courses);
-      });
+  public getCourses(): Observable<Course[]> {
+    return this.http.get<Course[]>(
+      `${environment.baseURL}/courses?start=${this.CURRENT_INDEX_COURSE}&count=${this.COURSES_PER_ONE_LOADING}`,
+    );
+    // .pipe(tap(() => this.spinnerSource.next(false)));
   }
 
   // GET SELECTED QUANTITY OF COURSES
