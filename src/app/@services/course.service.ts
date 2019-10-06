@@ -33,10 +33,11 @@ export class CourseService {
 
   // GET COURSES FROM SERVER DATABASE
   public getCourses(): Observable<Course[]> {
-    return this.http.get<Course[]>(
-      `${environment.baseURL}/courses?start=${this.CURRENT_INDEX_COURSE}&count=${this.COURSES_PER_ONE_LOADING}`,
-    );
-    // .pipe(tap(() => this.spinnerSource.next(false)));
+    return this.http
+      .get<Course[]>(
+        `${environment.baseURL}/courses?start=${this.CURRENT_INDEX_COURSE}&count=${this.COURSES_PER_ONE_LOADING}`,
+      )
+      .pipe(tap(() => this.spinnerSource.next(false)));
   }
 
   // GET SELECTED QUANTITY OF COURSES
@@ -46,49 +47,54 @@ export class CourseService {
   }
 
   // ADD NEW COURSE IN SERVER DATABASE
-  public createCourse(course: Course): Observable<boolean> {
+  public createCourse(course: Course): Observable<any> {
+    // TODO: replace any type
+    return this.http.post(`${environment.baseURL}/courses`, course);
+    /*
     this.http.post(`${environment.baseURL}/courses`, course).subscribe((response: Course) => {
       this.courses = [...this.courses, response];
       this.coursesSource.next(this.courses);
     });
     return of(true);
+    */
   }
 
   // EDIT COURSE
-  public editCourse(course: Course): Observable<boolean> {
+  public editCourse(course: Course): Observable<any> {
+    // TODO: replace any type
     // EDIT REMOTE DATABASE
-    this.http
-      .put(`${environment.baseURL}/courses/${course.id}`, course)
-      .subscribe((response: Course) => {
-        // EDIT LOCAL DATABASE
-        this.courses = this.courses.map((el: Course) => {
-          if (el.id === course.id) {
-            return {
-              name: response.name,
-              description: response.description,
-              isTopRated: response.isTopRated,
-              date: response.date,
-              authors: response.authors,
-              length: response.length,
-              id: response.id,
-            };
-          } else {
-            return el;
-          }
-        });
-        this.coursesSource.next(this.courses);
-      });
-    return of(true);
+    return this.http.put(`${environment.baseURL}/courses/${course.id}`, course);
+    // .subscribe((response: Course) => {
+    //   // EDIT LOCAL DATABASE
+    //   this.courses = this.courses.map((el: Course) => {
+    //     if (el.id === course.id) {
+    //       return {
+    //         name: response.name,
+    //         description: response.description,
+    //         isTopRated: response.isTopRated,
+    //         date: response.date,
+    //         authors: response.authors,
+    //         length: response.length,
+    //         id: response.id,
+    //       };
+    //     } else {
+    //       return el;
+    //     }
+    //   });
+    //   this.coursesSource.next(this.courses);
+    // });
+    // return of(true);
   }
 
   // DELETE SELECTED COURSE FROM DATABASE
-  public removeCourse(course: Course): Observable<boolean> {
-    this.http.delete(`${environment.baseURL}/courses/${course.id}`).subscribe(() => {
-      // EDIT LOCAL DATABASE
-      this.courses = this.courses.filter((el: Course) => el.id !== course.id);
-      this.coursesSource.next(this.courses);
-    });
-    return of(true);
+  public removeCourse(course: Course): Observable<any> {
+    return this.http.delete(`${environment.baseURL}/courses/${course.id}`);
+    // this.http.delete(`${environment.baseURL}/courses/${course.id}`).subscribe(() => {
+    //   // EDIT LOCAL DATABASE
+    //   this.courses = this.courses.filter((el: Course) => el.id !== course.id);
+    //   this.coursesSource.next(this.courses);
+    // });
+    // return of(true);
   }
 
   // GET SELECTED COURSE FROM LOCAL DATABASE
