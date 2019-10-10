@@ -9,7 +9,7 @@ export const courseReducers = (
     case ECourseActions.GetCoursesSuccess:
       return {
         ...state,
-        courses: action.payload,
+        courses: [...action.payload],
       };
     default:
       return state;
