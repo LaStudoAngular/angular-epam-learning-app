@@ -2,6 +2,9 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CourseService } from '../../../@services/course.service';
 import { Router } from '@angular/router';
 import { Course } from '../../../@models/course';
+import { Store } from '@ngrx/store';
+import { ICourseStates } from '../../../store/state/course.states';
+import { DeleteCourse } from '../../../store/actions/course.actions';
 
 @Component({
   selector: 'ep-courses-list-item',
@@ -12,7 +15,11 @@ import { Course } from '../../../@models/course';
 export class CoursesListItemComponent {
   @Input() course: Course;
   show = false;
-  constructor(private courseService: CourseService, private router: Router) {}
+  constructor(
+    private courseService: CourseService,
+    private router: Router,
+    private store: Store<ICourseStates>,
+  ) {}
 
   // SHOW DIALOG WINDOW
   onDeleteCourse(): void {
@@ -27,6 +34,7 @@ export class CoursesListItemComponent {
   // DELETE COURSE FROM DATABASE
   deleteCourse(course: Course) {
     this.courseService.removeCourse(course).subscribe(() => (this.show = false));
+    this.store.dispatch(new DeleteCourse(course));
   }
 
   // NAVIGATE TO EDIT COURSE PAGE

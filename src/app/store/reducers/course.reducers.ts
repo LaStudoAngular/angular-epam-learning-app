@@ -11,6 +11,11 @@ export const courseReducers = (
         ...state,
         courses: [...action.payload],
       };
+    case ECourseActions.DeleteCourseSuccess:
+      return {
+        ...state,
+        // courses: action.type
+      };
     default:
       return state;
   }

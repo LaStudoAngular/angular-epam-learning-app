@@ -4,6 +4,8 @@ import { Course } from '../../@models/course';
 export enum ECourseActions {
   GetCourses = '[Course] Get Courses',
   GetCoursesSuccess = '[Course] Get Courses Success',
+  DeleteCourse = '[Course] Delete Course',
+  DeleteCourseSuccess = '[Course] Delete Course Success',
 }
 
 export class GetCourses implements Action {
@@ -15,4 +17,13 @@ export class GetCoursesSuccess implements Action {
   constructor(public payload: Course[]) {}
 }
 
-export type CourseActions = GetCourses | GetCoursesSuccess;
+export class DeleteCourse implements Action {
+  public readonly type = ECourseActions.DeleteCourse;
+  constructor(public payload: Course) {}
+}
+
+export class DeleteCourseSuccess implements Action {
+  public readonly type = ECourseActions.DeleteCourseSuccess;
+}
+
+export type CourseActions = GetCourses | GetCoursesSuccess | DeleteCourse | DeleteCourseSuccess;

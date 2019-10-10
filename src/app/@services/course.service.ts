@@ -31,8 +31,14 @@ export class CourseService {
     this.getAuthors();
   }
 
+  // 1
   public getCourse(): Observable<any> {
     return this.http.get(`${environment.baseURL}/courses`);
+  }
+
+  // 2
+  public deleteCourse(course: Course): Observable<any> {
+    return this.http.delete(`${environment.baseURL}/courses/${course.id}`);
   }
 
   // GET COURSES FROM SERVER DATABASE
