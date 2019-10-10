@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .subscribe((response: boolean) => (this.indicator = response));
 
     // DISPATCH ACTION TO GET COURSES
-    this.store.dispatch(new GetCourses());
+    // this.store.dispatch(new GetCourses());
   }
 
   onSubmit(): void {

@@ -1,12 +1,12 @@
 import { Course } from '../../@models/course';
-import { Author } from '../../@models/author';
+// import { Author } from '../../@models/author';
 
 export interface ICourseStates {
   courses: Course[];
-  authors: Author[];
+  // authors: Author[];
 }
 
 export const initialCourseStates: ICourseStates = {
   courses: [],
-  authors: [],
+  // authors: [],
 };

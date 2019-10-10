@@ -33,7 +33,8 @@ import { AuthInterceptor } from './@interceptors/auth-interceptor';
 import { StoreModule } from '@ngrx/store';
 import { courseReducers } from './store/reducers/course.reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { CourseEffects } from './store/effects/course.effects';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,11 @@ import { environment } from '../environments/environment';
     HttpClientModule,
     NgSelectModule,
     SpinnerModule,
+    StoreModule.forRoot({ courses: courseReducers }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 20,
+    }),
+    EffectsModule.forRoot([CourseEffects]),
   ],
   providers: [
     AuthService,
