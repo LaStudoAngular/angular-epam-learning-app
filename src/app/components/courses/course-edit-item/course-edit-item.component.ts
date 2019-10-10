@@ -46,6 +46,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     // GET ID OF SELECTED COURSE
     this.route.params.subscribe((data: { id: string }) => {
       const courseID = Number(data.id);
+
       // GET SELECTED COURSE FROM LOCAL DATABASE
       this.courseService.getSelectedCourse(courseID).subscribe((course: Course) => {
         this.course = course;
