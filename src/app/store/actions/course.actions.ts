@@ -6,6 +6,10 @@ export enum ECourseActions {
   GetCoursesSuccess = '[Course] Get Courses Success',
   DeleteCourse = '[Course] Delete Course',
   DeleteCourseSuccess = '[Course] Delete Course Success',
+  AddCourse = '[Course] Add Course',
+  AddCourseSuccess = '[Course] Add Course Success',
+  EditCourse = '[Course] Edit Course',
+  EditCourseSuccess = '[Course] Edit Course Success',
 }
 
 export class GetCourses implements Action {
@@ -27,4 +31,30 @@ export class DeleteCourseSuccess implements Action {
   constructor(public payload: number) {}
 }
 
-export type CourseActions = GetCourses | GetCoursesSuccess | DeleteCourse | DeleteCourseSuccess;
+export class AddCourse implements Action {
+  public readonly type = ECourseActions.AddCourse;
+  constructor(public payload: Course) {}
+}
+
+export class AddCourseSuccess implements Action {
+  public readonly type = ECourseActions.AddCourseSuccess;
+  constructor(public payload: Course) {}
+}
+
+export class EditCourse implements Action {
+  public readonly type = ECourseActions.EditCourse;
+}
+
+export class EditCourseSuccess implements Action {
+  public readonly type = ECourseActions.EditCourseSuccess;
+}
+
+export type CourseActions =
+  | GetCourses
+  | GetCoursesSuccess
+  | DeleteCourse
+  | DeleteCourseSuccess
+  | AddCourse
+  | AddCourseSuccess
+  | EditCourse
+  | EditCourseSuccess;

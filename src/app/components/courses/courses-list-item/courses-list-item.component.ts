@@ -23,12 +23,12 @@ export class CoursesListItemComponent {
 
   // SHOW DIALOG WINDOW
   onDeleteCourse(): void {
-    this.courseService.dialogSource.next(true);
+    this.courseService.dialogOpen();
   }
 
   // CLOSE DIALOG WINDOW
   cancelDelete() {
-    this.courseService.dialogSource.next(false);
+    this.courseService.dialogClose();
   }
 
   // DELETE COURSE FROM DATABASE

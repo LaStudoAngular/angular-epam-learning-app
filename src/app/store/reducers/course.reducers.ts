@@ -16,6 +16,11 @@ export const courseReducers = (
         ...state,
         courses: state.courses.filter(el => el.id !== action.payload),
       };
+    case ECourseActions.AddCourseSuccess:
+      return {
+        ...state,
+        courses: [...state.courses, action.payload],
+      };
     default:
       return state;
   }

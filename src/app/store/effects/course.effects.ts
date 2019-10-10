@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { act, Actions, Effect, ofType } from '@ngrx/effects';
 import { CourseService } from '../../@services/course.service';
 import {
+  AddCourse,
+  AddCourseSuccess,
   DeleteCourse,
   DeleteCourseSuccess,
   ECourseActions,
@@ -10,10 +12,15 @@ import {
 import { of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Course } from '../../@models/course';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class CourseEffects {
-  constructor(private actions$: Actions, private courseService: CourseService) {}
+  constructor(
+    private actions$: Actions,
+    private courseService: CourseService,
+    private router: Router,
+  ) {}
 
   @Effect() GetCourses$ = this.actions$.pipe(
     ofType(ECourseActions.GetCourses),
@@ -27,12 +34,20 @@ export class CourseEffects {
     switchMap((course: Course) =>
       this.courseService
         .deleteCourse(course)
-        .pipe(
-          map(
-            () => new DeleteCourseSuccess(course.id),
-            this.courseService.dialogSource.next(false),
-          ),
-        ),
+        .pipe(map(() => new DeleteCourseSuccess(course.id), this.courseService.dialogClose())),
+    ),
+  );
+
+  @Effect() AddCourse$ = this.actions$.pipe(
+    ofType(ECourseActions.AddCourse),
+    switchMap((action: AddCourse) => {
+      console.log(action);
+      return of(action.payload);
+    }),
+    switchMap((course: Course) =>
+      this.courseService
+        .addCourse(course)
+        .pipe(map(() => new AddCourseSuccess(course), this.router.navigate(['courses']))),
     ),
   );
 }

@@ -15,7 +15,7 @@ export class CourseService {
   private CURRENT_INDEX_COURSE = 0;
 
   // DIALOG SHOW
-  public dialogSource = new BehaviorSubject<boolean>(false);
+  private dialogSource = new BehaviorSubject<boolean>(false);
   public dialog$ = this.dialogSource.asObservable();
 
   // INDICATOR
@@ -43,6 +43,19 @@ export class CourseService {
   // 2
   public deleteCourse(course: Course): Observable<any> {
     return this.http.delete(`${environment.baseURL}/courses/${course.id}`);
+  }
+
+  // 3
+  public addCourse(course: Course): Observable<any> {
+    return this.http.post(`${environment.baseURL}/courses`, course);
+  }
+
+  public dialogClose() {
+    this.dialogSource.next(false);
+  }
+
+  public dialogOpen() {
+    this.dialogSource.next(true);
   }
 
   // GET COURSES FROM SERVER DATABASE
