@@ -33,7 +33,6 @@ export class CoursesListItemComponent {
 
   // DELETE COURSE FROM DATABASE
   deleteCourse(course: Course) {
-    this.courseService.removeCourse(course).subscribe(() => (this.show = false));
     this.store.dispatch(new DeleteCourse(course));
   }
 

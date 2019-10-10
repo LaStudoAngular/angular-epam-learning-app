@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { act, Actions, Effect, ofType } from '@ngrx/effects';
 import { CourseService } from '../../@services/course.service';
-import { DeleteCourseSuccess, ECourseActions, GetCoursesSuccess } from '../actions/course.actions';
+import {
+  DeleteCourse,
+  DeleteCourseSuccess,
+  ECourseActions,
+  GetCoursesSuccess,
+} from '../actions/course.actions';
 import { of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { Course } from '../../@models/course';
 
 @Injectable()
@@ -18,7 +23,9 @@ export class CourseEffects {
 
   @Effect() DeleteCourse$ = this.actions$.pipe(
     ofType(ECourseActions.DeleteCourse),
-    switchMap((course: Course) => this.courseService.deleteCourse(course)),
-    switchMap(() => of(new DeleteCourseSuccess())),
+    switchMap((action: DeleteCourse) => of(action.payload)),
+    switchMap((course: Course) =>
+      this.courseService.deleteCourse(course).pipe(map(() => new DeleteCourseSuccess(course.id))),
+    ),
   );
 }

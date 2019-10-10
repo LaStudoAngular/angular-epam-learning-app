@@ -24,6 +24,7 @@ export class DeleteCourse implements Action {
 
 export class DeleteCourseSuccess implements Action {
   public readonly type = ECourseActions.DeleteCourseSuccess;
+  constructor(public payload: number) {}
 }
 
 export type CourseActions = GetCourses | GetCoursesSuccess | DeleteCourse | DeleteCourseSuccess;

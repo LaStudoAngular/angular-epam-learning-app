@@ -14,7 +14,7 @@ export const courseReducers = (
     case ECourseActions.DeleteCourseSuccess:
       return {
         ...state,
-        // courses: action.type
+        courses: state.courses.filter(el => el.id !== action.payload),
       };
     default:
       return state;
