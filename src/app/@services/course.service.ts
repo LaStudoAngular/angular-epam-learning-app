@@ -31,6 +31,10 @@ export class CourseService {
     this.getAuthors();
   }
 
+  public getCourse(): Observable<any> {
+    return this.http.get(`${environment.baseURL}/courses`);
+  }
+
   // GET COURSES FROM SERVER DATABASE
   public getCourses(): void {
     this.http

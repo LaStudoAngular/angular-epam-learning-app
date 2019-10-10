@@ -30,6 +30,10 @@ import { OrderByPipe } from './@pipes/order-by.pipe';
 import { SearchByPipe } from './@pipes/search-by.pipe';
 import { AuthService } from './@services/auth.service';
 import { AuthInterceptor } from './@interceptors/auth-interceptor';
+import { StoreModule } from '@ngrx/store';
+import { courseReducers } from './store/reducers/course.reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [

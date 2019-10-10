@@ -4,6 +4,9 @@ import { AuthService } from '../../../@services/auth.service';
 import { CourseService } from '../../../@services/course.service';
 import { delay, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { ICourseStates } from '../../../store/state/course.states';
+import { GetCourses } from '../../../store/actions/course.actions';
 
 @Component({
   selector: 'ep-login',
@@ -19,6 +22,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private authService: AuthService,
     private courseService: CourseService,
+    private store: Store<ICourseStates>,
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +39,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy),
       )
       .subscribe((response: boolean) => (this.indicator = response));
+
+    // DISPATCH ACTION TO GET COURSES
+    this.store.dispatch(new GetCourses());
   }
 
   onSubmit(): void {

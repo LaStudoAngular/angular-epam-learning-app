@@ -5,3 +5,8 @@ export interface ICourseStates {
   courses: Course[];
   authors: Author[];
 }
+
+export const initialCourseStates: ICourseStates = {
+  courses: [],
+  authors: [],
+};

@@ -23,6 +23,7 @@
     "@ngrx/core": "^1.2.0",
     "@ngrx/effects": "^8.4.0",
     "@ngrx/store": "^8.4.0",
+    "@ngrx/store-devtools": "^8.4.0",
     "@types/dom-inputevent": "^1.0.5",
     "bootstrap": "^4.3.1",
     "font-awesome": "^4.7.0",

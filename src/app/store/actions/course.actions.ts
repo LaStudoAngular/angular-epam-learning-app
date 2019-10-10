@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { Course } from '../../@models/course';
 
 export enum ECourseActions {
   GetCourses = '[Course] Get Courses',
@@ -11,6 +12,7 @@ export class GetCourses implements Action {
 
 export class GetCoursesSuccess implements Action {
   public readonly type = ECourseActions.GetCoursesSuccess;
+  constructor(public payload: Course[]) {}
 }
 
 export type CourseActions = GetCourses | GetCoursesSuccess;
