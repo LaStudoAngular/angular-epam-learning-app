@@ -35,6 +35,7 @@ import { courseReducers } from './store/reducers/course.reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { CourseEffects } from './store/effects/course.effects';
+import { environment } from '../environments/environment.prod';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { CourseEffects } from './store/effects/course.effects';
     StoreModule.forRoot({ courses: courseReducers }),
     StoreDevtoolsModule.instrument({
       maxAge: 20,
+      logOnly: environment.production,
     }),
     EffectsModule.forRoot([CourseEffects]),
   ],
