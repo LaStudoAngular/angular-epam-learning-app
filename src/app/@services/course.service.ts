@@ -14,6 +14,10 @@ export class CourseService {
   private COURSES_PER_ONE_LOADING = 3;
   private CURRENT_INDEX_COURSE = 0;
 
+  // DIALOG SHOW
+  public dialogSource = new BehaviorSubject<boolean>(false);
+  public dialog$ = this.dialogSource.asObservable();
+
   // INDICATOR
   private spinnerSource = new BehaviorSubject<boolean>(true);
   public spinner$ = this.spinnerSource.asObservable();

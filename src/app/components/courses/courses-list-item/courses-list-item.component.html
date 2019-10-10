@@ -42,8 +42,8 @@
 
 <div
   class="modal"
-  [ngClass]="{ show: show }"
-  [ngStyle]="{ display: show ? 'block' : 'none' }"
+  [ngClass]="{ show: courseService.dialog$ | async }"
+  [ngStyle]="{ display: (courseService.dialog$ | async) ? 'block' : 'none' }"
   tabindex="-1"
   role="dialog"
 >

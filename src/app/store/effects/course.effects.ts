@@ -25,7 +25,14 @@ export class CourseEffects {
     ofType(ECourseActions.DeleteCourse),
     switchMap((action: DeleteCourse) => of(action.payload)),
     switchMap((course: Course) =>
-      this.courseService.deleteCourse(course).pipe(map(() => new DeleteCourseSuccess(course.id))),
+      this.courseService
+        .deleteCourse(course)
+        .pipe(
+          map(
+            () => new DeleteCourseSuccess(course.id),
+            this.courseService.dialogSource.next(false),
+          ),
+        ),
     ),
   );
 }

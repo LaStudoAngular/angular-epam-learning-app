@@ -14,7 +14,7 @@ import { DeleteCourse } from '../../../store/actions/course.actions';
 })
 export class CoursesListItemComponent {
   @Input() course: Course;
-  show = false;
+
   constructor(
     private courseService: CourseService,
     private router: Router,
@@ -23,12 +23,12 @@ export class CoursesListItemComponent {
 
   // SHOW DIALOG WINDOW
   onDeleteCourse(): void {
-    this.show = true;
+    this.courseService.dialogSource.next(true);
   }
 
   // CLOSE DIALOG WINDOW
   cancelDelete() {
-    this.show = false;
+    this.courseService.dialogSource.next(false);
   }
 
   // DELETE COURSE FROM DATABASE
