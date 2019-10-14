@@ -41,7 +41,6 @@ export class CourseEffects {
   @Effect() AddCourse$ = this.actions$.pipe(
     ofType(ECourseActions.AddCourse),
     switchMap((action: AddCourse) => {
-      console.log(action);
       return of(action.payload);
     }),
     switchMap((course: Course) =>

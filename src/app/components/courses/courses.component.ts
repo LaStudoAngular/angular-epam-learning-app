@@ -12,6 +12,9 @@ import {
   takeUntil,
 } from 'rxjs/operators';
 import { EMPTY, fromEvent, Subject } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { ICourseStates } from 'src/app/store/state/course.states';
+import { selectCourses } from 'src/app/store/selectors/course.selectors';
 
 @Component({
   selector: 'ep-courses',
@@ -29,13 +32,15 @@ export class CoursesComponent implements OnInit, OnDestroy {
     private courseService: CourseService,
     private router: Router,
     private http: HttpClient,
+    private store: Store<ICourseStates>
   ) {}
 
   ngOnInit() {
     // GET COURSES FROM DATABASE
-    this.courseService.courses$
-      .pipe(takeUntil(this.destroy))
-      .subscribe((response: Course[]) => (this.courses = response));
+    this.store.pipe(select(selectCourses), takeUntil(this.destroy))
+      .subscribe((response: Course[]) => {
+        this.courses = response;
+      });
 
     // INITIALIZE INDICATOR STATUS
     this.courseService.spinner$
