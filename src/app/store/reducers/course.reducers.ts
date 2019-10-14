@@ -21,6 +21,11 @@ export const courseReducers = (
         ...state,
         courses: [...state.courses.concat(action.payload)],
       };
+    case ECourseActions.EditCourseSuccess:
+      return {
+        ...state,
+        // courses: state.courses.push(action.payload)
+      }
     default:
       return state;
   }

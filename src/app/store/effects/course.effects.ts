@@ -8,6 +8,7 @@ import {
   DeleteCourseSuccess,
   ECourseActions,
   GetCoursesSuccess,
+  EditCourse,
 } from '../actions/course.actions';
 import { of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -48,5 +49,11 @@ export class CourseEffects {
         .addCourse(course)
         .pipe(map(() => new AddCourseSuccess(course), this.router.navigate(['courses']))),
     ),
+  );
+
+  @Effect() EditCourse$ = this.actions$.pipe(
+    ofType(ECourseActions.EditCourse),
+    switchMap((action: EditCourse) => of(action.payload)),
+    switchMap((course: Course) => this.courseService.alterCourse(course))
   );
 }

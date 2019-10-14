@@ -43,10 +43,12 @@ export class AddCourseSuccess implements Action {
 
 export class EditCourse implements Action {
   public readonly type = ECourseActions.EditCourse;
+  constructor(public payload: Course) { }
 }
 
 export class EditCourseSuccess implements Action {
   public readonly type = ECourseActions.EditCourseSuccess;
+  constructor(public payload: Course) { }
 }
 
 export type CourseActions =
