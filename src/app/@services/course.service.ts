@@ -58,6 +58,11 @@ export class CourseService {
     this.dialogSource.next(true);
   }
 
+  // EDIT COURSE
+  public alterCourse(course: Course): Observable<any> {
+    return this.http.put(`${environment.baseURL}/courses/${course.id}`, course);
+  }
+
   // GET COURSES FROM SERVER DATABASE
   public getCourses(): void {
     this.http
