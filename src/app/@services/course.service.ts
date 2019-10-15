@@ -56,11 +56,6 @@ export class CourseService {
     return this.http.put(`${environment.baseURL}/courses/${course.id}`, course);
   }
 
-  // GET SELECTED QUANTITY OF COURSES
-  // public getPortionOfCourses(): void {
-  //   this.CURRENT_INDEX_COURSE += this.COURSES_PER_ONE_LOADING;
-  // }
-
   // GET AUTHORS
   public getAuthors(): Observable<IAuthor[]> {
     return this.http.get<IAuthor[]>(`${environment.baseURL}/authors`);
