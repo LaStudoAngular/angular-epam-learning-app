@@ -22,19 +22,15 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+
     // INITIALIZE FORM
     this.loginForm = this.fb.group({
       login: [null, [Validators.required, Validators.minLength(2)]],
       password: [null, [Validators.required, Validators.minLength(2)]],
     });
 
-    // GET INDICATOR STATUS
-    this.courseService.spinner$
-      .pipe(
-        delay(1000),
-        takeUntil(this.destroy),
-      )
-      .subscribe((response: boolean) => (this.indicator = response));
+    // SET INDICATOR
+    setTimeout(() => this.indicator = false, 1000);
   }
 
   onSubmit(): void {

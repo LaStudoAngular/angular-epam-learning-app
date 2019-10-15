@@ -17,10 +17,6 @@ export class CourseService {
   private dialogSource = new BehaviorSubject<boolean>(false);
   public dialog$ = this.dialogSource.asObservable();
 
-  // INDICATOR
-  private spinnerSource = new BehaviorSubject<boolean>(true);
-  public spinner$ = this.spinnerSource.asObservable();
-
   // STREAM OF BREADCRUMBS TITLE
   public title$ = new BehaviorSubject<string>(null);
   public titleSource = this.title$.asObservable();
@@ -67,10 +63,5 @@ export class CourseService {
   // GET AUTHORS
   public getAuthors(): Observable<IAuthor[]> {
     return this.http.get<IAuthor[]>(`${environment.baseURL}/authors`);
-  }
-
-  // CLOSE SPINNER
-  public closeSpinner(): void {
-    this.spinnerSource.next(false);
   }
 }

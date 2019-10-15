@@ -48,12 +48,7 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
     });
 
     // GET INDICATOR STATUS
-    this.courseService.spinner$
-      .pipe(
-        delay(1000),
-        takeUntil(this.destroyedSource),
-      )
-      .subscribe((response: boolean) => (this.indicator = response));
+    setTimeout(() => this.indicator = false, 1000);
   }
 
   public onSubmit(): void {

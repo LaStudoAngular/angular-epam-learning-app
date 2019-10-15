@@ -41,39 +41,32 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.store.pipe(select(selectCourses), takeUntil(this.destroy))
       .subscribe((response: Course[]) => {
         this.courses = response;
+        setTimeout(() => this.indicator = false, 1000)
       });
-
-    // INITIALIZE INDICATOR STATUS
-    this.courseService.spinner$
-      .pipe(
-        delay(1000),
-        takeUntil(this.destroy),
-      )
-      .subscribe((response: boolean) => (this.indicator = response));
 
     // SEARCH
-    fromEvent(this.input.nativeElement, 'input')
-      .pipe(
-        debounceTime(2000),
-        distinctUntilChanged(),
-        switchMap((event: any) => {
-          const value: string = event.target.value;
-          if (value.length >= 3) {
-            return this.http.get(`http://localhost:3004/courses?textFragment=${value}`);
-          } else {
-            return EMPTY.pipe(isEmpty());
-          }
-        }),
-      )
-      .subscribe((response: Course[]) => {
-        if (Array.isArray(response)) {
-          this.courses = response;
-        } else {
-          this.courseService.courses$
-            .pipe(takeUntil(this.destroy))
-            .subscribe((response: Course[]) => (this.courses = response));
-        }
-      });
+    // fromEvent(this.input.nativeElement, 'input')
+    //   .pipe(
+    //     debounceTime(2000),
+    //     distinctUntilChanged(),
+    //     switchMap((event: any) => {
+    //       const value: string = event.target.value;
+    //       if (value.length >= 3) {
+    //         return this.http.get(`http://localhost:3004/courses?textFragment=${value}`);
+    //       } else {
+    //         return EMPTY.pipe(isEmpty());
+    //       }
+    //     }),
+    //   )
+    //   .subscribe((response: Course[]) => {
+    //     if (Array.isArray(response)) {
+    //       this.courses = response;
+    //     } else {
+    //       this.courseService.courses$
+    //         .pipe(takeUntil(this.destroy))
+    //         .subscribe((response: Course[]) => (this.courses = response));
+    //     }
+    //   });
   }
 
   onAddNewCourse(): void {
