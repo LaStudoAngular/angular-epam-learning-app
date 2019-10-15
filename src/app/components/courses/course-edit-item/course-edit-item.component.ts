@@ -10,6 +10,7 @@ import uuid from 'uuid/v1';
 import { Store, select } from '@ngrx/store';
 import { ICourseStates } from 'src/app/store/state/course.states';
 import { selectSelectedCourse } from 'src/app/store/selectors/course.selectors';
+import { EditCourse } from 'src/app/store/actions/course.actions';
 
 @Component({
   selector: 'ep-course-edit-item',
@@ -30,6 +31,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
   course: Course;
 
   public ngOnInit(): void {
+
     // GET INDICATOR STATUS
     this.courseService.spinner$
       .pipe(
@@ -77,6 +79,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.form.valid) {
       const { title, date, duration, description, authors } = this.form.value;
+
       // DELETE FIELD FROM OBJECT
       const listOfAuthors = authors.map((el: Author) => {
         return {
@@ -95,10 +98,7 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
         this.course.id,
       );
 
-      this.courseService.editCourse(course).subscribe(() => {
-        this.goBack();
-        takeUntil(this.destroyedSource);
-      });
+      this.store.dispatch(new EditCourse(course));
     }
   }
 
