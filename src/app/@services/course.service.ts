@@ -26,7 +26,9 @@ export class CourseService {
 
   // GET COURSES
   public getCourse(): Observable<any> {
-    return this.http.get(`${environment.baseURL}/courses`);
+    const response = this.http.get(`${environment.baseURL}/courses?start=${this.CURRENT_INDEX_COURSE}&count=${this.COURSES_PER_ONE_LOADING}`);
+    this.CURRENT_INDEX_COURSE += this.COURSES_PER_ONE_LOADING;
+    return response;
   }
 
   // DELETE SELECTED COURSE
@@ -55,9 +57,9 @@ export class CourseService {
   }
 
   // GET SELECTED QUANTITY OF COURSES
-  public getPortionOfCourses(): void {
-    this.CURRENT_INDEX_COURSE += this.COURSES_PER_ONE_LOADING;
-  }
+  // public getPortionOfCourses(): void {
+  //   this.CURRENT_INDEX_COURSE += this.COURSES_PER_ONE_LOADING;
+  // }
 
   // GET AUTHORS
   public getAuthors(): Observable<IAuthor[]> {

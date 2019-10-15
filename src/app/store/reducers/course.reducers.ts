@@ -10,7 +10,7 @@ export const courseReducers = (
     case ECourseActions.GetCoursesSuccess:
       return {
         ...state,
-        courses: [...action.payload],
+        courses: [ ...state.courses, ...action.payload],
       };
     case ECourseActions.DeleteCourseSuccess:
       return {

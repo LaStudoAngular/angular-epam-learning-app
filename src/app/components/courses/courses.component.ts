@@ -12,7 +12,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { ICourseStates } from 'src/app/store/state/course.states';
 import { selectCourses } from 'src/app/store/selectors/course.selectors';
-import { SearchCourse, SearchCourseError } from 'src/app/store/actions/course.actions';
+import { SearchCourse, SearchCourseError, GetCourses } from 'src/app/store/actions/course.actions';
 
 @Component({
   selector: 'ep-courses',
@@ -65,7 +65,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   }
 
   public loadMore(): void {
-    this.courseService.getPortionOfCourses();
+    this.store.dispatch(new GetCourses);
   }
 
   trackByFn(index: any, item: any): void {
