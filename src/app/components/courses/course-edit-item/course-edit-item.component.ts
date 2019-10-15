@@ -74,25 +74,15 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.form.valid) {
       const { title, date, duration, description, authors } = this.form.value;
-
-      // DELETE FIELD FROM OBJECT
-      const listOfAuthors = authors.map((el: Author) => {
-        return {
-          firstName: el.firstName,
-          lastName: el.lastName,
-          id: el.id,
-        };
-      });
       const course: Course = new Course(
         title,
         description,
         this.course.isTopRated,
         new Date(date).toISOString(),
-        listOfAuthors,
+        authors,
         duration,
         this.course.id,
       );
-
       this.store.dispatch(new EditCourse(course));
     }
   }
@@ -115,10 +105,6 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     this.form.reset();
     this.courseService.title$.next('');
     this.router.navigate(['courses']);
-  }
-
-  private addAuthors(name: string) {
-    return new Author(name.split(' ')[0], name.split(' ')[1], uuid(), name);
   }
 
   public ngOnDestroy(): void {

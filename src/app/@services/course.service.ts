@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Course } from '../@models/course';
 import { environment } from '../../environments/environment';
 import { IAuthor } from '../@interfaces/author';
-import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
