@@ -68,4 +68,10 @@ export class CourseEffects {
     switchMap((value: string) => this.courseService.searchCourses(value)),
     switchMap((courses: Course[]) => of(new SearchCourseSuccess(courses)))
   );
+
+  @Effect() SearchCourseError$ = this.actions$.pipe(
+    ofType(ECourseActions.SearchCourseError),
+    switchMap(() => this.courseService.getCourse()),
+    switchMap((courses: Course[]) => of(new GetCoursesSuccess(courses))),
+  );
 }

@@ -12,6 +12,7 @@ export enum ECourseActions {
   EditCourseSuccess = '[Course] Edit Course Success',
   SearchCourse = '[Course] Search Course',
   SearchCourseSuccess = '[Course] Search Course Success',
+  SearchCourseError = '[Course] Search Course Error',
 }
 
 export class GetCourses implements Action {
@@ -61,6 +62,10 @@ export class SearchCourse implements Action {
 export class SearchCourseSuccess implements Action {
   public readonly type = ECourseActions.SearchCourseSuccess;
   constructor(public payload: Course[]) {}
+}
+
+export class SearchCourseError implements Action {
+  public readonly type = ECourseActions.SearchCourseError;
 }
 
 export type CourseActions =

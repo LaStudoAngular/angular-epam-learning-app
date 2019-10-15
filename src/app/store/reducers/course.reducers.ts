@@ -42,7 +42,6 @@ export const courseReducers = (
         })
       }
     case ECourseActions.SearchCourseSuccess:
-      console.log(action.payload);
       return {
         ...state,
         courses: [...action.payload]

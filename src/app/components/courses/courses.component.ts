@@ -12,7 +12,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { ICourseStates } from 'src/app/store/state/course.states';
 import { selectCourses } from 'src/app/store/selectors/course.selectors';
-import { SearchCourse } from 'src/app/store/actions/course.actions';
+import { SearchCourse, SearchCourseError } from 'src/app/store/actions/course.actions';
 
 @Component({
   selector: 'ep-courses',
@@ -21,11 +21,12 @@ import { SearchCourse } from 'src/app/store/actions/course.actions';
 })
 export class CoursesComponent implements OnInit, OnDestroy {
   @ViewChild('input', { static: true }) input: ElementRef;
+
   courses: Course[];
   showMore = false;
   indicator = true;
-
   private destroy = new Subject();
+
   constructor(
     private courseService: CourseService,
     private router: Router,
@@ -48,9 +49,12 @@ export class CoursesComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       map((value: string) => {
         if (value.length >= 3) {
-          this.store.dispatch(new SearchCourse(value))
+          this.store.dispatch(new SearchCourse(value));
+        } else {
+          this.store.dispatch(new SearchCourseError);
         }
-      })
+      }),
+      takeUntil(this.destroy)
     ).subscribe(() => {})
 
   }
