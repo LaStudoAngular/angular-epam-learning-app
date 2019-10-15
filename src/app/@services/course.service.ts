@@ -10,7 +10,6 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class CourseService {
-  private courses: Course[] = [];
   private COURSES_PER_ONE_LOADING = 3;
   private CURRENT_INDEX_COURSE = 0;
 
@@ -22,16 +21,11 @@ export class CourseService {
   private spinnerSource = new BehaviorSubject<boolean>(true);
   public spinner$ = this.spinnerSource.asObservable();
 
-  // STREAM OF COURSES
-  private coursesSource = new BehaviorSubject<Course[]>(null);
-  public courses$ = this.coursesSource.asObservable();
-
   // STREAM OF BREADCRUMBS TITLE
   public title$ = new BehaviorSubject<string>(null);
   public titleSource = this.title$.asObservable();
 
   constructor(private http: HttpClient) {
-    this.getCourses();
     this.getAuthors();
   }
 
@@ -51,12 +45,12 @@ export class CourseService {
   }
 
   // CLOSE DIALOG WINDOW
-  public dialogClose() {
+  public dialogClose(): void {
     this.dialogSource.next(false);
   }
 
   // OPEN DIALOG WINDOW
-  public dialogOpen() {
+  public dialogOpen(): void {
     this.dialogSource.next(true);
   }
 
@@ -65,27 +59,18 @@ export class CourseService {
     return this.http.put(`${environment.baseURL}/courses/${course.id}`, course);
   }
 
-  // GET COURSES FROM SERVER DATABASE
-  public getCourses(): void {
-    this.http
-      .get<Course[]>(
-        `${environment.baseURL}/courses?start=${this.CURRENT_INDEX_COURSE}&count=${this.COURSES_PER_ONE_LOADING}`,
-      )
-      .pipe(tap(() => this.spinnerSource.next(false)))
-      .subscribe((response: Course[]) => {
-        this.courses = [...this.courses, ...response];
-        this.coursesSource.next(this.courses);
-      });
-  }
-
   // GET SELECTED QUANTITY OF COURSES
   public getPortionOfCourses(): void {
     this.CURRENT_INDEX_COURSE += this.COURSES_PER_ONE_LOADING;
-    this.getCourses();
   }
 
   // GET AUTHORS
   public getAuthors(): Observable<IAuthor[]> {
     return this.http.get<IAuthor[]>(`${environment.baseURL}/authors`);
+  }
+
+  // CLOSE SPINNER
+  public closeSpinner(): void {
+    this.spinnerSource.next(false);
   }
 }

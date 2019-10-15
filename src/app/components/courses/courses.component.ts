@@ -36,6 +36,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+
     // GET COURSES FROM DATABASE
     this.store.pipe(select(selectCourses), takeUntil(this.destroy))
       .subscribe((response: Course[]) => {
