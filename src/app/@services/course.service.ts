@@ -63,4 +63,9 @@ export class CourseService {
   public getAuthors(): Observable<IAuthor[]> {
     return this.http.get<IAuthor[]>(`${environment.baseURL}/authors`);
   }
+
+  // SEARCH COURSES
+  public searchCourses(value: string): Observable<any> {
+    return this.http.get(`${environment.baseURL}/courses?textFragment=${value}`);
+  }
 }
