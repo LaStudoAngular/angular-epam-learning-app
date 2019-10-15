@@ -30,6 +30,12 @@ import { OrderByPipe } from './@pipes/order-by.pipe';
 import { SearchByPipe } from './@pipes/search-by.pipe';
 import { AuthService } from './@services/auth.service';
 import { AuthInterceptor } from './@interceptors/auth-interceptor';
+import { StoreModule } from '@ngrx/store';
+import { courseReducers } from './store/reducers/course.reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { CourseEffects } from './store/effects/course.effects';
+import { environment } from '../environments/environment.prod';
 
 @NgModule({
   declarations: [
@@ -56,6 +62,12 @@ import { AuthInterceptor } from './@interceptors/auth-interceptor';
     HttpClientModule,
     NgSelectModule,
     SpinnerModule,
+    StoreModule.forRoot({ courses: courseReducers }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 20,
+      logOnly: environment.production,
+    }),
+    EffectsModule.forRoot([CourseEffects]),
   ],
   providers: [
     AuthService,

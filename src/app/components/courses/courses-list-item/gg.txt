@@ -1,0 +1,49 @@
+  @Effect() DeleteCourse$ = this.actions$.pipe(
+    ofType(ECourseActions.DeleteCourse),
+    switchMap((course: Course) =>
+        this.courseService.deleteCourse(course).pipe(
+                map(() => DeleteCourseSuccess(course.id))
+            )
+    ),
+    //  switchMap(() => of(new GetCourses())),
+  );
+
+
+
+  course: []
+
+ courses$ | async
+
+  OnInit
+  this.courses$ = this.store.select(GeCoursesSelector)
+
+  ngOnit =-> this.store.dispatch(new GetCourses({startPos: ..., quantity: ..}));
+
+  //reducer
+  of(GetCoursesSuccess)
+  this.state = {...state, courses: action.payload,courses}
+
+    //reducer
+  of(DeleteSuccess)
+  this.state = {...state, courses: this.state.courses.filter(course => corse.id !== action.payload.id}
+
+  GeCoursesSelector -> this.state.
+
+
+  constructor(private store: Store<any>) { }
+
+
+
+this.store.dispatch(new GetCourses());
+ this.courses$ = this.store.pipe(
+      select((state) => state.courses)
+    );
+
+
+  login -> new LoginSuccess()
+
+  loginSussess$ = this.actions$.pipe(
+    ofType(Types.LoginSuccess),
+    map(() => {
+        this.router.navigate(['/courses'])
+    })

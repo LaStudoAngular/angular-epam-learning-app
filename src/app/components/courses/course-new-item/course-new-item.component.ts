@@ -8,6 +8,9 @@ import { Author } from '../../../@models/author';
 import { Course } from '../../../@models/course';
 import uuid from 'uuid/v1';
 import { IAuthor } from '../../../@interfaces/author';
+import { Store } from '@ngrx/store';
+import { ICourseStates } from '../../../store/state/course.states';
+import { AddCourse } from '../../../store/actions/course.actions';
 
 @Component({
   selector: 'ep-course-new-item',
@@ -25,6 +28,7 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private courseService: CourseService,
     private router: Router,
+    private store: Store<ICourseStates>,
   ) {}
 
   public ngOnInit(): void {
@@ -44,12 +48,7 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
     });
 
     // GET INDICATOR STATUS
-    this.courseService.spinner$
-      .pipe(
-        delay(1000),
-        takeUntil(this.destroyedSource),
-      )
-      .subscribe((response: boolean) => (this.indicator = response));
+    setTimeout(() => this.indicator = false, 1000);
   }
 
   public onSubmit(): void {
@@ -63,11 +62,7 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
         authors,
         duration,
       );
-      console.log(course);
-      this.courseService.createCourse(course).subscribe(() => {
-        this.goBack();
-        takeUntil(this.destroyedSource);
-      });
+      this.store.dispatch(new AddCourse(course));
     }
   }
 

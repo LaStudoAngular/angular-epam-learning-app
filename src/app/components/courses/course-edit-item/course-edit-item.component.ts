@@ -7,6 +7,10 @@ import { delay, takeUntil } from 'rxjs/operators';
 import { Course } from '../../../@models/course';
 import { Author } from '../../../@models/author';
 import uuid from 'uuid/v1';
+import { Store, select } from '@ngrx/store';
+import { ICourseStates } from 'src/app/store/state/course.states';
+import { selectSelectedCourse } from 'src/app/store/selectors/course.selectors';
+import { EditCourse } from 'src/app/store/actions/course.actions';
 
 @Component({
   selector: 'ep-course-edit-item',
@@ -20,19 +24,16 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     private courseService: CourseService,
     private router: Router,
     private route: ActivatedRoute,
+    private store: Store<ICourseStates>
   ) {}
   private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   public form: FormGroup;
   course: Course;
 
   public ngOnInit(): void {
+
     // GET INDICATOR STATUS
-    this.courseService.spinner$
-      .pipe(
-        delay(1000),
-        takeUntil(this.destroyedSource),
-      )
-      .subscribe((response: boolean) => (this.indicator = response));
+    setTimeout(() => this.indicator = false, 1000);
 
     // GENERATE FORM
     this.form = this.fb.group({
@@ -46,9 +47,10 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     // GET ID OF SELECTED COURSE
     this.route.params.subscribe((data: { id: string }) => {
       const courseID = Number(data.id);
-      // GET SELECTED COURSE FROM LOCAL DATABASE
-      this.courseService.getSelectedCourse(courseID).subscribe((course: Course) => {
+      // GET SELECTED COURSE FROM STORE
+      this.store.pipe(select(selectSelectedCourse(courseID))).subscribe((course: Course) => {
         this.course = course;
+        // PATCH FORM FIELDS
         this.form.patchValue({
           title: this.course.name,
           date: this.formatDate(course.date),
@@ -65,34 +67,23 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
         // GENERATE BREADCRUMBS FROM SELECTED COURSE
         this.courseService.title$.next(`${course.name}`);
       });
+
     });
   }
 
   onSubmit(): void {
     if (this.form.valid) {
       const { title, date, duration, description, authors } = this.form.value;
-      // DELETE FIELD FROM OBJECT
-      const listOfAuthors = authors.map((el: Author) => {
-        return {
-          firstName: el.firstName,
-          lastName: el.lastName,
-          id: el.id,
-        };
-      });
       const course: Course = new Course(
         title,
         description,
         this.course.isTopRated,
         new Date(date).toISOString(),
-        listOfAuthors,
+        authors,
         duration,
         this.course.id,
       );
-
-      this.courseService.editCourse(course).subscribe(() => {
-        this.goBack();
-        takeUntil(this.destroyedSource);
-      });
+      this.store.dispatch(new EditCourse(course));
     }
   }
 
@@ -114,10 +105,6 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     this.form.reset();
     this.courseService.title$.next('');
     this.router.navigate(['courses']);
-  }
-
-  private addAuthors(name: string) {
-    return new Author(name.split(' ')[0], name.split(' ')[1], uuid(), name);
   }
 
   public ngOnDestroy(): void {
