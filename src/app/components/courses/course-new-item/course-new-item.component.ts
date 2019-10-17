@@ -19,6 +19,7 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public title = 'create new course';
   public indicator = true;
+  public buttonStatus = true;
   private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   authors: IAuthor[];
 
@@ -38,6 +39,9 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
       description: [null, [Validators.required, Validators.maxLength(500)]],
       authors: [null, [Validators.required]],
     });
+
+    // BUTTON STATUS
+    this.form.valueChanges.subscribe(() => this.buttonStatus = !this.form.valid);
 
     // GET LIST OF AUTHORS
     this.courseService.getAuthors().subscribe((authors: IAuthor[]) => {

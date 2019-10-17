@@ -37,10 +37,10 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
 
     // GENERATE FORM
     this.form = this.fb.group({
-      title: [null, Validators.required],
+      title: [null, [Validators.required, Validators.maxLength(50)]],
       date: [null, Validators.required],
       duration: [null, Validators.required],
-      description: [null, Validators.required],
+      description: [null, [Validators.required, Validators.maxLength(500)]],
       authors: [null, [Validators.required]],
     });
 
