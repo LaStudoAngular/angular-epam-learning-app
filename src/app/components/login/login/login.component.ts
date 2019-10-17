@@ -41,4 +41,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.destroy.next();
     this.destroy.complete();
   }
+
+  get login() {
+    return this.loginForm.get('login');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
+  }
 }
