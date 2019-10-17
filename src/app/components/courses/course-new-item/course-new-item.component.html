@@ -3,8 +3,11 @@
   <h2 class="form-title text-capitalize mb-3">{{ title }}</h2>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <label class="text-capitalize" for="title">title: <span>*required</span></label>
-      <small *ngIf="form.get('title').invalid && (form.get('title').dirty || form.get('title').touched)" class="error-message text-danger text-uppercase">error message</small>
+      <label class="text-capitalize" for="title">
+        title:
+        <span>*required</span>
+        <small *ngIf="form.get('title').invalid && (form.get('title').dirty || form.get('title').touched)" class="error-message text-danger text-uppercase">error message</small>
+      </label>
       <input
         formControlName="title"
         type="text"
@@ -15,8 +18,11 @@
       />
     </div>
     <div class="form-group">
-      <label class="text-capitalize" for="description">description: <span>*required</span></label>
-      <small *ngIf="form.get('description').invalid && (form.get('description').dirty || form.get('description').touched)" class="error-message text-danger text-uppercase">error message</small>
+      <label class="text-capitalize" for="description">
+        description:
+        <span>*required</span>
+        <small *ngIf="form.get('description').invalid && (form.get('description').dirty || form.get('description').touched)" class="error-message text-danger text-uppercase">error message</small>
+      </label>
       <textarea
         formControlName="description"
         type="text"
@@ -28,8 +34,11 @@
       ></textarea>
     </div>
     <div class="form-group">
-      <label class="text-capitalize" for="date">date: <span>*required</span></label>
-      <small *ngIf="form.get('date').invalid && (form.get('date').dirty || form.get('date').touched)" class="error-message text-danger text-uppercase">error message</small>
+      <label class="text-capitalize" for="date">
+        date:
+        <span>*required</span>
+        <small *ngIf="form.get('date').invalid && (form.get('date').dirty || form.get('date').touched)" class="error-message text-danger text-uppercase">error message</small>
+      </label>
       <input
         formControlName="date"
         type="date"
@@ -40,8 +49,11 @@
       />
     </div>
     <div class="form-group">
-      <label class="text-capitalize" for="duration">duration: <span>*required</span></label>
-      <small *ngIf="form.get('duration').invalid && (form.get('duration').dirty || form.get('duration').touched)" class="error-message text-danger text-uppercase">error message</small>
+      <label class="text-capitalize" for="duration">
+        duration:
+        <span>*required</span>
+        <small *ngIf="form.get('duration').invalid && (form.get('duration').dirty || form.get('duration').touched)" class="error-message text-danger text-uppercase">error message</small>
+      </label>
       <input
         formControlName="duration"
         type="number"
@@ -53,8 +65,11 @@
     </div>
 
     <div class="form-group" style="margin-bottom: 3rem">
-      <label class="text-capitalize" for="authors">authors: <span>*required</span></label>
-      <small *ngIf="form.get('authors').invalid && (form.get('authors').dirty || form.get('authors').touched)" class="error-message text-danger text-uppercase">error message</small>
+      <label class="text-capitalize" for="authors">
+        authors:
+        <span>*required</span>
+        <small *ngIf="form.get('authors').invalid && (form.get('authors').dirty || form.get('authors').touched)" class="error-message text-danger text-uppercase">error message</small>
+      </label>
       <ng-select
         id="authors"
         style="text-transform: capitalize"
