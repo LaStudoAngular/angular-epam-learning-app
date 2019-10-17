@@ -36,6 +36,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { CourseEffects } from './store/effects/course.effects';
 import { environment } from '../environments/environment.prod';
+import { DateValidateDirective } from './@directives/date-validate.directive';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { environment } from '../environments/environment.prod';
     NotFoundComponent,
     CourseNewItemComponent,
     CourseEditItemComponent,
+    DateValidateDirective,
   ],
   imports: [
     BrowserModule,
