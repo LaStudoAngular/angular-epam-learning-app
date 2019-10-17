@@ -4,6 +4,7 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label class="text-capitalize" for="title">title: <span>*required</span></label>
+      <small *ngIf="form.get('title').invalid && (form.get('title').dirty || form.get('title').touched)" class="error-message text-danger text-uppercase">error message</small>
       <input
         formControlName="title"
         type="text"
@@ -14,6 +15,7 @@
     </div>
     <div class="form-group">
       <label class="text-capitalize" for="description">description: <span>*required</span></label>
+      <small *ngIf="form.get('description').invalid && (form.get('description').dirty || form.get('description').touched)" class="error-message text-danger text-uppercase">error message</small>
       <textarea
         formControlName="description"
         type="text"
@@ -25,6 +27,7 @@
     </div>
     <div class="form-group">
       <label class="text-capitalize" for="date">date: <span>*required</span></label>
+      <small *ngIf="form.get('date').invalid && (form.get('date').dirty || form.get('date').touched)" class="error-message text-danger text-uppercase">error message</small>
       <input
         formControlName="date"
         type="date"
@@ -35,6 +38,7 @@
     </div>
     <div class="form-group">
       <label class="text-capitalize" for="duration">duration: <span>*required</span></label>
+      <small *ngIf="form.get('duration').invalid && (form.get('duration').dirty || form.get('duration').touched)" class="error-message text-danger text-uppercase">error message</small>
       <input
         formControlName="duration"
         type="number"
@@ -46,6 +50,7 @@
 
     <div class="form-group" style="margin-bottom: 3rem">
       <label class="text-capitalize" for="authors">authors: <span>*required</span></label>
+      <small *ngIf="form.get('authors').invalid && (form.get('authors').dirty || form.get('authors').touched)" class="error-message text-danger text-uppercase">error message</small>
       <ng-select
         id="authors"
         style="text-transform: capitalize"
