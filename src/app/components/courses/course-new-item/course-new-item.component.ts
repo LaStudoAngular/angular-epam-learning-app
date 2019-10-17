@@ -40,9 +40,6 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
       authors: [null, [Validators.required]],
     });
 
-    // BUTTON STATUS
-    this.form.valueChanges.subscribe(() => this.buttonStatus = !this.form.valid);
-
     // GET LIST OF AUTHORS
     this.courseService.getAuthors().subscribe((authors: IAuthor[]) => {
       this.authors = authors;

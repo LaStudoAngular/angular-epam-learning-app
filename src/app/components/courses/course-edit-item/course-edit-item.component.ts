@@ -46,9 +46,6 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
       authors: [null, [Validators.required]],
     });
 
-    // BUTTON STATUS
-    this.form.valueChanges.subscribe(() => this.buttonStatus = this.form.valid);
-
     // GET ID OF SELECTED COURSE
     this.route.params.subscribe((data: { id: string }) => {
       const courseID = Number(data.id);
