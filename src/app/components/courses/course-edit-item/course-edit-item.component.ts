@@ -113,4 +113,24 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     this.destroyedSource.next(true);
     this.destroyedSource.complete();
   }
+
+  get title() {
+    return this.form.get('title');
+  }
+
+  get description() {
+    return this.form.get('description');
+  }
+
+  get date() {
+    return this.form.get('date');
+  }
+
+  get duration() {
+    return this.form.get('duration');
+  }
+
+  get authors() {
+    return this.form.get('authors');
+  }
 }
