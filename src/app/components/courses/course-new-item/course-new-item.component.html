@@ -9,6 +9,7 @@
         formControlName="title"
         type="text"
         class="form-control"
+        [class.is-invalid]="form.get('title').invalid && (form.get('title').dirty || form.get('title').touched)"
         id="title"
         placeholder="title of course"
       />
@@ -20,6 +21,7 @@
         formControlName="description"
         type="text"
         class="form-control"
+        [class.is-invalid]="form.get('description').invalid && (form.get('description').dirty || form.get('description').touched)"
         id="description"
         rows="3"
         placeholder="description of course"
@@ -32,6 +34,7 @@
         formControlName="date"
         type="date"
         class="form-control"
+        [class.is-invalid]="form.get('date').invalid && (form.get('date').dirty || form.get('date').touched)"
         id="date"
         placeholder="MM.DD.YYYY"
       />
@@ -43,6 +46,7 @@
         formControlName="duration"
         type="number"
         class="form-control"
+        [class.is-invalid]="form.get('duration').invalid && (form.get('duration').dirty || form.get('duration').touched)"
         id="duration"
         placeholder="input in minutes"
       />
@@ -60,6 +64,7 @@
         multiple="true"
         bindLabel="name"
         formControlName="authors"
+        [class.ng-select-error]="form.get('authors').invalid && (form.get('authors').dirty || form.get('authors').touched)"
         placeholder="Select authors"
       >
       </ng-select>
