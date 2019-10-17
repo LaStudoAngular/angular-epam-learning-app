@@ -52,14 +52,13 @@
       <label class="text-capitalize" for="duration">
         duration:
         <span>*required</span>
-        <!-- <small *ngIf="duration.invalid && (duration.dirty || duration.touched)" class="error-message text-danger text-uppercase">error duration</small> -->
-        <!-- <small *ngIf="duration.errors?.errorMessage" class="error-message text-danger text-uppercase">{{ duration.errors.errorMessage.value }}</small> -->
-        <small class="error-message text-danger text-uppercase" *ngIf="duration.errors?.required">required form</small>
+        <small *ngIf="duration.errors?.errorMessage && duration.invalid && (duration.dirty || duration.touched)" class="error-message text-danger text-uppercase">{{ duration.errors.errorMessage.value }}</small>
       </label>
       <input
         formControlName="duration"
         type="text"
         class="form-control"
+        [class.is-invalid]="duration.errors?.errorMessage && duration.invalid && (duration.dirty || duration.touched)"
         id="duration"
         placeholder="input in minutes"
       />
