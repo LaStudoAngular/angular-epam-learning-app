@@ -61,6 +61,7 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
         authors,
         duration,
       );
+      console.log(this.form);
       this.store.dispatch(new AddCourse(course));
     }
   }
