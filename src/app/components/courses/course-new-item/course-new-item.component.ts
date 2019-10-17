@@ -1,12 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { delay, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { CourseService } from '../../../@services/course.service';
 import { ReplaySubject } from 'rxjs';
 import { Router } from '@angular/router';
-import { Author } from '../../../@models/author';
 import { Course } from '../../../@models/course';
-import uuid from 'uuid/v1';
 import { IAuthor } from '../../../@interfaces/author';
 import { Store } from '@ngrx/store';
 import { ICourseStates } from '../../../store/state/course.states';
@@ -34,10 +32,10 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     // INITIALIZE FORM
     this.form = this.fb.group({
-      title: [null, Validators.required],
+      title: [null, [Validators.required, Validators.maxLength(50)]],
       date: [null, Validators.required],
       duration: [null, Validators.required],
-      description: [null, Validators.required],
+      description: [null, [Validators.required, Validators.maxLength(500)]],
       authors: [null, [Validators.required]],
     });
 
