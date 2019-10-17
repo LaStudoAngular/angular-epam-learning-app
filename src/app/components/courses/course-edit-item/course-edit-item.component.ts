@@ -18,7 +18,6 @@ import { EditCourse } from 'src/app/store/actions/course.actions';
   styleUrls: ['./course-edit-item.component.scss'],
 })
 export class CourseEditItemComponent implements OnInit, OnDestroy {
-  public indicator = true;
   constructor(
     private fb: FormBuilder,
     private courseService: CourseService,
@@ -26,9 +25,12 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private store: Store<ICourseStates>
   ) {}
-  private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
+
+  public indicator = true;
+  public buttonStatus = true;
   public form: FormGroup;
-  course: Course;
+  public course: Course;
+  private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
   public ngOnInit(): void {
 
@@ -43,6 +45,9 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
       description: [null, [Validators.required, Validators.maxLength(500)]],
       authors: [null, [Validators.required]],
     });
+
+    // BUTTON STATUS
+    this.form.valueChanges.subscribe(() => this.buttonStatus = this.form.valid);
 
     // GET ID OF SELECTED COURSE
     this.route.params.subscribe((data: { id: string }) => {

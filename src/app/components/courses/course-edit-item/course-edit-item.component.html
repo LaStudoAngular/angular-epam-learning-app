@@ -62,7 +62,7 @@
       </ng-select>
     </div>
 
-    <button class="btn btn-primary text-capitalize mr-2" type="submit">save</button>
+    <button (disabled)="buttonStatus" class="btn btn-primary text-capitalize mr-2" type="submit">save</button>
     <button class="btn btn-secondary text-capitalize" (click)="goBack()" type="button">
       cancel
     </button>
