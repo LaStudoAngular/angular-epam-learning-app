@@ -10,7 +10,6 @@ import { Store } from '@ngrx/store';
 import { ICourseStates } from '../../../store/state/course.states';
 import { AddCourse } from '../../../store/actions/course.actions';
 import { validateDuration } from 'src/app/shared/duration.validator';
-import { DateValidateDirective } from 'src/app/@directives/date-validate.directive';
 
 @Component({
   selector: 'ep-course-new-item',
