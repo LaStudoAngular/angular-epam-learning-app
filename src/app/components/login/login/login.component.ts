@@ -1,8 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../@services/auth.service';
-import { CourseService } from '../../../@services/course.service';
-import { delay, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -18,7 +16,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private courseService: CourseService,
   ) {}
 
   ngOnInit(): void {
@@ -43,5 +40,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy.next();
     this.destroy.complete();
+  }
+
+  get login() {
+    return this.loginForm.get('login');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
   }
 }

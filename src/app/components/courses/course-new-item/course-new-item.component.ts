@@ -1,16 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { delay, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { CourseService } from '../../../@services/course.service';
 import { ReplaySubject } from 'rxjs';
 import { Router } from '@angular/router';
-import { Author } from '../../../@models/author';
 import { Course } from '../../../@models/course';
-import uuid from 'uuid/v1';
 import { IAuthor } from '../../../@interfaces/author';
 import { Store } from '@ngrx/store';
 import { ICourseStates } from '../../../store/state/course.states';
 import { AddCourse } from '../../../store/actions/course.actions';
+import { validateDuration } from 'src/app/shared/duration.validator';
 
 @Component({
   selector: 'ep-course-new-item',
@@ -19,8 +18,8 @@ import { AddCourse } from '../../../store/actions/course.actions';
 })
 export class CourseNewItemComponent implements OnInit, OnDestroy {
   public form: FormGroup;
-  public title = 'create new course';
   public indicator = true;
+  public buttonStatus = true;
   private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   authors: IAuthor[];
 
@@ -34,10 +33,10 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     // INITIALIZE FORM
     this.form = this.fb.group({
-      title: [null, Validators.required],
+      title: [null, [Validators.required, Validators.maxLength(50)]],
       date: [null, Validators.required],
-      duration: [null, Validators.required],
-      description: [null, Validators.required],
+      duration: [null, [Validators.required, validateDuration]],
+      description: [null, [Validators.required, Validators.maxLength(500)]],
       authors: [null, [Validators.required]],
     });
 
@@ -73,5 +72,25 @@ export class CourseNewItemComponent implements OnInit, OnDestroy {
 
   public goBack(): void {
     this.router.navigate(['courses']);
+  }
+
+  get title() {
+    return this.form.get('title');
+  }
+
+  get description() {
+    return this.form.get('description');
+  }
+
+  get date() {
+    return this.form.get('date');
+  }
+
+  get duration() {
+    return this.form.get('duration');
+  }
+
+  get author() {
+    return this.form.get('authors');
   }
 }

@@ -18,7 +18,6 @@ import { EditCourse } from 'src/app/store/actions/course.actions';
   styleUrls: ['./course-edit-item.component.scss'],
 })
 export class CourseEditItemComponent implements OnInit, OnDestroy {
-  public indicator = true;
   constructor(
     private fb: FormBuilder,
     private courseService: CourseService,
@@ -26,9 +25,12 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private store: Store<ICourseStates>
   ) {}
-  private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
+
+  public indicator = true;
+  public buttonStatus = true;
   public form: FormGroup;
-  course: Course;
+  public course: Course;
+  private destroyedSource: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
   public ngOnInit(): void {
 
@@ -37,10 +39,10 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
 
     // GENERATE FORM
     this.form = this.fb.group({
-      title: [null, Validators.required],
+      title: [null, [Validators.required, Validators.maxLength(50)]],
       date: [null, Validators.required],
       duration: [null, Validators.required],
-      description: [null, Validators.required],
+      description: [null, [Validators.required, Validators.maxLength(500)]],
       authors: [null, [Validators.required]],
     });
 
@@ -110,5 +112,25 @@ export class CourseEditItemComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.destroyedSource.next(true);
     this.destroyedSource.complete();
+  }
+
+  get title() {
+    return this.form.get('title');
+  }
+
+  get description() {
+    return this.form.get('description');
+  }
+
+  get date() {
+    return this.form.get('date');
+  }
+
+  get duration() {
+    return this.form.get('duration');
+  }
+
+  get authors() {
+    return this.form.get('authors');
   }
 }
