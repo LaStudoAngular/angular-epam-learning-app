@@ -13,7 +13,9 @@ import { NG_VALIDATORS, AbstractControl } from '@angular/forms';
 })
 export class DateValidateDirective {}
 
-function ptDateValidate({value}: AbstractControl): { [key: string]: any } | null {
+function ptDateValidate({ value }: AbstractControl): { [key: string]: any } | null {
   const pattern = /(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d/;
-  return value.match(pattern) ? null : { errorDate: { value: 'date input error' } }
+  if (value) {
+    return value.match(pattern) ? null : { errorDate: { value: 'date input error' } }
+  }
 }

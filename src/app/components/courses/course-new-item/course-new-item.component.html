@@ -44,12 +44,12 @@
       </label>
       <input
         formControlName="date"
-        type="date"
+        type="text"
         class="form-control"
         [class.is-invalid]="date.invalid && (date.dirty || date.touched)"
         id="date"
         epDateValidate
-        placeholder="MM.DD.YYYY"
+        placeholder="MM/DD/YYYY"
       />
     </div>
     <div class="form-group">
