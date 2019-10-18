@@ -37,6 +37,7 @@
       <label class="text-capitalize" for="date">
         date:
         <span>*required</span>
+        <!-- <small *ngIf="date.invalid && (date.dirty || date.touched)" class="error-message text-danger text-uppercase">error date</small> -->
         <small *ngIf="date.invalid && (date.dirty || date.touched)" class="error-message text-danger text-uppercase">error date</small>
       </label>
       <input
@@ -45,6 +46,7 @@
         class="form-control"
         [class.is-invalid]="date.invalid && (date.dirty || date.touched)"
         id="date"
+        epDateValidate
         placeholder="MM.DD.YYYY"
       />
     </div>
